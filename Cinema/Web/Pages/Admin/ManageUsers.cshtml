@@ -1,0 +1,751 @@
+﻿@page
+@model Web.Pages.Admin.ManageUsersModel
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<!-- saved from url=(0048)https://flixgo.volkovdesign.com/admin/users.html -->
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="~/AdminTemplate_files/bootstrap.min.css">
+	<link rel="stylesheet" href="~/AdminTemplate_files/slimselect.css">
+	<link rel="stylesheet" href="~/AdminTemplate_files/admin.css">
+
+	<!-- Favicons -->
+	<link rel="icon" type="image/png" href="https://flixgo.volkovdesign.com/admin/icon/favicon-32x32.png" sizes="32x32">
+	<link rel="apple-touch-icon" href="https://flixgo.volkovdesign.com/admin/icon/favicon-32x32.png">
+
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Dmitry Volkov">
+	<title>FlixGo – Online Movies, TV Shows &amp; Cinema HTML Template</title>
+
+	<style id="smooth-scrollbar-style">
+		[data-scrollbar] {
+		  display: block;
+		  position: relative;
+		}
+
+		.scroll-content {
+		  -webkit-transform: translate3d(0, 0, 0);
+				  transform: translate3d(0, 0, 0);
+		}
+
+		.scrollbar-track {
+		  position: absolute;
+		  opacity: 0;
+		  z-index: 1;
+		  background: rgba(222, 222, 222, .75);
+		  -webkit-user-select: none;
+			 -moz-user-select: none;
+			  -ms-user-select: none;
+				  user-select: none;
+		  -webkit-transition: opacity 0.5s 0.5s ease-out;
+				  transition: opacity 0.5s 0.5s ease-out;
+		}
+		.scrollbar-track.show,
+		.scrollbar-track:hover {
+		  opacity: 1;
+		  -webkit-transition-delay: 0s;
+				  transition-delay: 0s;
+		}
+
+		.scrollbar-track-x {
+		  bottom: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 8px;
+		}
+		.scrollbar-track-y {
+		  top: 0;
+		  right: 0;
+		  width: 8px;
+		  height: 100%;
+		}
+		.scrollbar-thumb {
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  width: 8px;
+		  height: 8px;
+		  background: rgba(0, 0, 0, .5);
+		  border-radius: 4px;
+		}
+	</style>
+</head>
+<body>
+	<!-- header -->
+	<header class="header">
+		<div class="header__content">
+			<!-- header logo -->
+			<a href="https://flixgo.volkovdesign.com/admin/index.html" class="header__logo">
+				<img src="~/AdminTemplate_files/logo.svg" alt="">
+			</a>
+			<!-- end header logo -->
+			<!-- header menu btn -->
+			<button class="header__btn" type="button">
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
+			<!-- end header menu btn -->
+		</div>
+	</header>
+	<!-- end header -->
+	<!-- sidebar -->
+	<div class="sidebar">
+		<!-- sidebar logo -->
+		<a href="https://flixgo.volkovdesign.com/admin/index.html" class="sidebar__logo">
+			<img src="~/AdminTemplate_files/logo.svg" alt="">
+		</a>
+		<!-- end sidebar logo -->
+		<!-- sidebar user -->
+		<div class="sidebar__user">
+			<div class="sidebar__user-img">
+				<img src="~/AdminTemplate_files/user.svg" alt="">
+			</div>
+
+			<div class="sidebar__user-title">
+				<span>Admin</span>
+				<p>John Doe</p>
+			</div>
+
+			<button class="sidebar__user-btn" type="button">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,12a1,1,0,0,0,1,1h7.59l-2.3,2.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0l4-4a1,1,0,0,0,.21-.33,1,1,0,0,0,0-.76,1,1,0,0,0-.21-.33l-4-4a1,1,0,1,0-1.42,1.42L12.59,11H5A1,1,0,0,0,4,12ZM17,2H7A3,3,0,0,0,4,5V8A1,1,0,0,0,6,8V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V19a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V16a1,1,0,0,0-2,0v3a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V5A3,3,0,0,0,17,2Z"></path></svg>
+			</button>
+		</div>
+		<!-- end sidebar user -->
+		<!-- sidebar nav -->
+		@await Html.PartialAsync("_SideBarAdmin")
+		<!-- end sidebar nav -->
+		<!-- sidebar copyright -->
+		<div class="sidebar__copyright">© FlixGo, 2018—2023. <br>Create by <a href="https://themeforest.net/user/dmitryvolkov/portfolio" target="_blank" rel="noopener">Dmitry Volkov</a>.</div>
+		<!-- end sidebar copyright -->
+	</div>
+	<!-- end sidebar -->
+	<!-- main content -->
+	<main class="main">
+		<div class="container-fluid">
+			<div class="row">
+				<!-- main title -->
+				<div class="col-12">
+					<div class="main__title">
+						<h2>Users</h2>
+
+						<span class="main__title-stat">3,702 Total</span>
+
+						<div class="main__title-wrap">
+							<select class="filter__select" name="sort" id="filter__sort" data-id="ss-cpgn2b4p" tabindex="-1" aria-hidden="true" style="display: none;">
+								<option value="0">Date created</option>
+								<option value="1">Pricing plan</option>
+								<option value="2">Status</option>
+							</select><div data-id="ss-cpgn2b4p" id="ss-cpgn2b4p" tabindex="0" class="ss-main filter__select" role="combobox" aria-haspopup="listbox" aria-controls="ss-cpgn2b4p" aria-expanded="false" aria-activedescendant="2gmf3xqf"><div class="ss-values"><div class="ss-single">Date created</div></div><div class="ss-deselect ss-hide"><svg viewBox="0 0 100 100"><path d="M10,10 L90,90 M10,90 L90,10"></path></svg></div><svg class="ss-arrow" viewBox="0 0 100 100"><path d="M10,30 L50,70 L90,30"></path></svg></div>
+
+							<!-- search -->
+							<form action="https://flixgo.volkovdesign.com/admin/users.html#" class="main__title-form">
+								<input type="text" placeholder="Find user..">
+								<button type="button">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z"></path></svg>
+								</button>
+							</form>
+							<!-- end search -->
+						</div>
+					</div>
+				</div>
+				<!-- end main title -->
+				<!-- users -->
+				<div class="col-12">
+					<div class="catalog catalog--1" data-scrollbar="true" tabindex="-1" style="overflow: hidden; outline: none;">
+						<div class="scroll-content">
+							<table class="catalog__table">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>BASIC INFO</th>
+										<th>USERNAME</th>
+										<th>PRICING PLAN</th>
+										<th>COMMENTS</th>
+										<th>REVIEWS</th>
+										<th>STATUS</th>
+										<th>CRAETED DATE</th>
+										<th>ACTIONS</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<tr>
+										<td>
+											<div class="catalog__text">11</div>
+										</td>
+										<td>
+											<div class="catalog__user">
+												<div class="catalog__avatar">
+													<img src="~/AdminTemplate_files/user.svg" alt="">
+												</div>
+												<div class="catalog__meta">
+													<h3>Tess Harper</h3>
+													<span>email@email.com</span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="catalog__text">Username</div>
+										</td>
+										<td>
+											<div class="catalog__text">Premium</div>
+										</td>
+										<td>
+											<div class="catalog__text">13</div>
+										</td>
+										<td>
+											<div class="catalog__text">1</div>
+										</td>
+										<td>
+											<div class="catalog__text catalog__text--green">Approved</div>
+										</td>
+										<td>
+											<div class="catalog__text">05.02.2023</div>
+										</td>
+										<td>
+											<div class="catalog__btns">
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,13a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0V14A1,1,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"></path></svg>
+												</button>
+												<a href="https://flixgo.volkovdesign.com/admin/edit-user.html" class="catalog__btn catalog__btn--edit">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5,18H9.24a1,1,0,0,0,.71-.29l6.92-6.93h0L19.71,8a1,1,0,0,0,0-1.42L15.47,2.29a1,1,0,0,0-1.42,0L11.23,5.12h0L4.29,12.05a1,1,0,0,0-.29.71V17A1,1,0,0,0,5,18ZM14.76,4.41l2.83,2.83L16.17,8.66,13.34,5.83ZM6,13.17l5.93-5.93,2.83,2.83L8.83,16H6ZM21,20H3a1,1,0,0,0,0,2H21a1,1,0,0,0,0-2Z"></path></svg>
+												</a>
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"></path></svg>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="catalog__text">12</div>
+										</td>
+										<td>
+											<div class="catalog__user">
+												<div class="catalog__avatar">
+													<img src="~/AdminTemplate_files/user.svg" alt="">
+												</div>
+												<div class="catalog__meta">
+													<h3>Gene Graham</h3>
+													<span>email@email.com</span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="catalog__text">Username</div>
+										</td>
+										<td>
+											<div class="catalog__text">Free</div>
+										</td>
+										<td>
+											<div class="catalog__text">1</div>
+										</td>
+										<td>
+											<div class="catalog__text">15</div>
+										</td>
+										<td>
+											<div class="catalog__text catalog__text--green">Approved</div>
+										</td>
+										<td>
+											<div class="catalog__text">05.02.2023</div>
+										</td>
+										<td>
+											<div class="catalog__btns">
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,13a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0V14A1,1,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"></path></svg>
+												</button>
+												<a href="https://flixgo.volkovdesign.com/admin/edit-user.html" class="catalog__btn catalog__btn--edit">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5,18H9.24a1,1,0,0,0,.71-.29l6.92-6.93h0L19.71,8a1,1,0,0,0,0-1.42L15.47,2.29a1,1,0,0,0-1.42,0L11.23,5.12h0L4.29,12.05a1,1,0,0,0-.29.71V17A1,1,0,0,0,5,18ZM14.76,4.41l2.83,2.83L16.17,8.66,13.34,5.83ZM6,13.17l5.93-5.93,2.83,2.83L8.83,16H6ZM21,20H3a1,1,0,0,0,0,2H21a1,1,0,0,0,0-2Z"></path></svg>
+												</a>
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"></path></svg>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="catalog__text">13</div>
+										</td>
+										<td>
+											<div class="catalog__user">
+												<div class="catalog__avatar">
+													<img src="~/AdminTemplate_files/user.svg" alt="">
+												</div>
+												<div class="catalog__meta">
+													<h3>Rosa Lee</h3>
+													<span>email@email.com</span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="catalog__text">Username</div>
+										</td>
+										<td>
+											<div class="catalog__text">Premium</div>
+										</td>
+										<td>
+											<div class="catalog__text">6</div>
+										</td>
+										<td>
+											<div class="catalog__text">6</div>
+										</td>
+										<td>
+											<div class="catalog__text catalog__text--green">Approved</div>
+										</td>
+										<td>
+											<div class="catalog__text">04.02.2023</div>
+										</td>
+										<td>
+											<div class="catalog__btns">
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,13a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0V14A1,1,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"></path></svg>
+												</button>
+												<a href="https://flixgo.volkovdesign.com/admin/edit-user.html" class="catalog__btn catalog__btn--edit">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5,18H9.24a1,1,0,0,0,.71-.29l6.92-6.93h0L19.71,8a1,1,0,0,0,0-1.42L15.47,2.29a1,1,0,0,0-1.42,0L11.23,5.12h0L4.29,12.05a1,1,0,0,0-.29.71V17A1,1,0,0,0,5,18ZM14.76,4.41l2.83,2.83L16.17,8.66,13.34,5.83ZM6,13.17l5.93-5.93,2.83,2.83L8.83,16H6ZM21,20H3a1,1,0,0,0,0,2H21a1,1,0,0,0,0-2Z"></path></svg>
+												</a>
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"></path></svg>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="catalog__text">14</div>
+										</td>
+										<td>
+											<div class="catalog__user">
+												<div class="catalog__avatar">
+													<img src="~/AdminTemplate_files/user.svg" alt="">
+												</div>
+												<div class="catalog__meta">
+													<h3>Matt Jones</h3>
+													<span>email@email.com</span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="catalog__text">Username</div>
+										</td>
+										<td>
+											<div class="catalog__text">Free</div>
+										</td>
+										<td>
+											<div class="catalog__text">11</div>
+										</td>
+										<td>
+											<div class="catalog__text">15</div>
+										</td>
+										<td>
+											<div class="catalog__text catalog__text--red">Banned</div>
+										</td>
+										<td>
+											<div class="catalog__text">04.02.2023</div>
+										</td>
+										<td>
+											<div class="catalog__btns">
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,13a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0V14A1,1,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"></path></svg>
+												</button>
+												<a href="https://flixgo.volkovdesign.com/admin/edit-user.html" class="catalog__btn catalog__btn--edit">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5,18H9.24a1,1,0,0,0,.71-.29l6.92-6.93h0L19.71,8a1,1,0,0,0,0-1.42L15.47,2.29a1,1,0,0,0-1.42,0L11.23,5.12h0L4.29,12.05a1,1,0,0,0-.29.71V17A1,1,0,0,0,5,18ZM14.76,4.41l2.83,2.83L16.17,8.66,13.34,5.83ZM6,13.17l5.93-5.93,2.83,2.83L8.83,16H6ZM21,20H3a1,1,0,0,0,0,2H21a1,1,0,0,0,0-2Z"></path></svg>
+												</a>
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"></path></svg>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="catalog__text">15</div>
+										</td>
+										<td>
+											<div class="catalog__user">
+												<div class="catalog__avatar">
+													<img src="~/AdminTemplate_files/user.svg" alt="">
+												</div>
+												<div class="catalog__meta">
+													<h3>Brian Cranston</h3>
+													<span>email@email.com</span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="catalog__text">Username</div>
+										</td>
+										<td>
+											<div class="catalog__text">Basic</div>
+										</td>
+										<td>
+											<div class="catalog__text">0</div>
+										</td>
+										<td>
+											<div class="catalog__text">0</div>
+										</td>
+										<td>
+											<div class="catalog__text catalog__text--green">Approved</div>
+										</td>
+										<td>
+											<div class="catalog__text">04.02.2023</div>
+										</td>
+										<td>
+											<div class="catalog__btns">
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,13a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0V14A1,1,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"></path></svg>
+												</button>
+												<a href="https://flixgo.volkovdesign.com/admin/edit-user.html" class="catalog__btn catalog__btn--edit">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5,18H9.24a1,1,0,0,0,.71-.29l6.92-6.93h0L19.71,8a1,1,0,0,0,0-1.42L15.47,2.29a1,1,0,0,0-1.42,0L11.23,5.12h0L4.29,12.05a1,1,0,0,0-.29.71V17A1,1,0,0,0,5,18ZM14.76,4.41l2.83,2.83L16.17,8.66,13.34,5.83ZM6,13.17l5.93-5.93,2.83,2.83L8.83,16H6ZM21,20H3a1,1,0,0,0,0,2H21a1,1,0,0,0,0-2Z"></path></svg>
+												</a>
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"></path></svg>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="catalog__text">16</div>
+										</td>
+										<td>
+											<div class="catalog__user">
+												<div class="catalog__avatar">
+													<img src="~/AdminTemplate_files/user.svg" alt="">
+												</div>
+												<div class="catalog__meta">
+													<h3>Louis Leterrier</h3>
+													<span>email@email.com</span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="catalog__text">Username</div>
+										</td>
+										<td>
+											<div class="catalog__text">Free</div>
+										</td>
+										<td>
+											<div class="catalog__text">2</div>
+										</td>
+										<td>
+											<div class="catalog__text">1</div>
+										</td>
+										<td>
+											<div class="catalog__text catalog__text--green">Approved</div>
+										</td>
+										<td>
+											<div class="catalog__text">03.02.2023</div>
+										</td>
+										<td>
+											<div class="catalog__btns">
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,13a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0V14A1,1,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"></path></svg>
+												</button>
+												<a href="https://flixgo.volkovdesign.com/admin/edit-user.html" class="catalog__btn catalog__btn--edit">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5,18H9.24a1,1,0,0,0,.71-.29l6.92-6.93h0L19.71,8a1,1,0,0,0,0-1.42L15.47,2.29a1,1,0,0,0-1.42,0L11.23,5.12h0L4.29,12.05a1,1,0,0,0-.29.71V17A1,1,0,0,0,5,18ZM14.76,4.41l2.83,2.83L16.17,8.66,13.34,5.83ZM6,13.17l5.93-5.93,2.83,2.83L8.83,16H6ZM21,20H3a1,1,0,0,0,0,2H21a1,1,0,0,0,0-2Z"></path></svg>
+												</a>
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"></path></svg>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="catalog__text">17</div>
+										</td>
+										<td>
+											<div class="catalog__user">
+												<div class="catalog__avatar">
+													<img src="~/AdminTemplate_files/user.svg" alt="">
+												</div>
+												<div class="catalog__meta">
+													<h3>Son Gun</h3>
+													<span>email@email.com</span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="catalog__text">Username</div>
+										</td>
+										<td>
+											<div class="catalog__text">Cinematic</div>
+										</td>
+										<td>
+											<div class="catalog__text">65</div>
+										</td>
+										<td>
+											<div class="catalog__text">0</div>
+										</td>
+										<td>
+											<div class="catalog__text catalog__text--green">Approved</div>
+										</td>
+										<td>
+											<div class="catalog__text">02.02.2023</div>
+										</td>
+										<td>
+											<div class="catalog__btns">
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,13a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0V14A1,1,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"></path></svg>
+												</button>
+												<a href="https://flixgo.volkovdesign.com/admin/edit-user.html" class="catalog__btn catalog__btn--edit">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5,18H9.24a1,1,0,0,0,.71-.29l6.92-6.93h0L19.71,8a1,1,0,0,0,0-1.42L15.47,2.29a1,1,0,0,0-1.42,0L11.23,5.12h0L4.29,12.05a1,1,0,0,0-.29.71V17A1,1,0,0,0,5,18ZM14.76,4.41l2.83,2.83L16.17,8.66,13.34,5.83ZM6,13.17l5.93-5.93,2.83,2.83L8.83,16H6ZM21,20H3a1,1,0,0,0,0,2H21a1,1,0,0,0,0-2Z"></path></svg>
+												</a>
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"></path></svg>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="catalog__text">18</div>
+										</td>
+										<td>
+											<div class="catalog__user">
+												<div class="catalog__avatar">
+													<img src="./AdminTemplate_files/user.svg" alt="">
+												</div>
+												<div class="catalog__meta">
+													<h3>Jordana Brewster</h3>
+													<span>email@email.com</span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="catalog__text">Username</div>
+										</td>
+										<td>
+											<div class="catalog__text">Premium</div>
+										</td>
+										<td>
+											<div class="catalog__text">0</div>
+										</td>
+										<td>
+											<div class="catalog__text">0</div>
+										</td>
+										<td>
+											<div class="catalog__text catalog__text--red">Banned</div>
+										</td>
+										<td>
+											<div class="catalog__text">02.02.2023</div>
+										</td>
+										<td>
+											<div class="catalog__btns">
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,13a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0V14A1,1,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"></path></svg>
+												</button>
+												<a href="https://flixgo.volkovdesign.com/admin/edit-user.html" class="catalog__btn catalog__btn--edit">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5,18H9.24a1,1,0,0,0,.71-.29l6.92-6.93h0L19.71,8a1,1,0,0,0,0-1.42L15.47,2.29a1,1,0,0,0-1.42,0L11.23,5.12h0L4.29,12.05a1,1,0,0,0-.29.71V17A1,1,0,0,0,5,18ZM14.76,4.41l2.83,2.83L16.17,8.66,13.34,5.83ZM6,13.17l5.93-5.93,2.83,2.83L8.83,16H6ZM21,20H3a1,1,0,0,0,0,2H21a1,1,0,0,0,0-2Z"></path></svg>
+												</a>
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"></path></svg>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="catalog__text">19</div>
+										</td>
+										<td>
+											<div class="catalog__user">
+												<div class="catalog__avatar">
+													<img src="~/AdminTemplate_files/user.svg" alt="">
+												</div>
+												<div class="catalog__meta">
+													<h3>Tyreese Gibson</h3>
+													<span>email@email.com</span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="catalog__text">Username</div>
+										</td>
+										<td>
+											<div class="catalog__text">Premium</div>
+										</td>
+										<td>
+											<div class="catalog__text">13</div>
+										</td>
+										<td>
+											<div class="catalog__text">1</div>
+										</td>
+										<td>
+											<div class="catalog__text catalog__text--green">Approved</div>
+										</td>
+										<td>
+											<div class="catalog__text">01.02.2023</div>
+										</td>
+										<td>
+											<div class="catalog__btns">
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,13a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0V14A1,1,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"></path></svg>
+												</button>
+												<a href="https://flixgo.volkovdesign.com/admin/edit-user.html" class="catalog__btn catalog__btn--edit">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5,18H9.24a1,1,0,0,0,.71-.29l6.92-6.93h0L19.71,8a1,1,0,0,0,0-1.42L15.47,2.29a1,1,0,0,0-1.42,0L11.23,5.12h0L4.29,12.05a1,1,0,0,0-.29.71V17A1,1,0,0,0,5,18ZM14.76,4.41l2.83,2.83L16.17,8.66,13.34,5.83ZM6,13.17l5.93-5.93,2.83,2.83L8.83,16H6ZM21,20H3a1,1,0,0,0,0,2H21a1,1,0,0,0,0-2Z"></path></svg>
+												</a>
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"></path></svg>
+												</button>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div class="catalog__text">20</div>
+										</td>
+										<td>
+											<div class="catalog__user">
+												<div class="catalog__avatar">
+													<img src="~/AdminTemplate_files/user.svg" alt="">
+												</div>
+												<div class="catalog__meta">
+													<h3>Charlize Theron</h3>
+													<span>email@email.com</span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="catalog__text">Username</div>
+										</td>
+										<td>
+											<div class="catalog__text">Free</div>
+										</td>
+										<td>
+											<div class="catalog__text">1</div>
+										</td>
+										<td>
+											<div class="catalog__text">15</div>
+										</td>
+										<td>
+											<div class="catalog__text catalog__text--red">Banned</div>
+										</td>
+										<td>
+											<div class="catalog__text">01.02.2023</div>
+										</td>
+										<td>
+											<div class="catalog__btns">
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,13a1,1,0,0,0-1,1v3a1,1,0,0,0,2,0V14A1,1,0,0,0,12,13Zm5-4V7A5,5,0,0,0,7,7V9a3,3,0,0,0-3,3v7a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V12A3,3,0,0,0,17,9ZM9,7a3,3,0,0,1,6,0V9H9Zm9,12a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1H17a1,1,0,0,1,1,1Z"></path></svg>
+												</button>
+												<a href="https://flixgo.volkovdesign.com/admin/edit-user.html" class="catalog__btn catalog__btn--edit">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5,18H9.24a1,1,0,0,0,.71-.29l6.92-6.93h0L19.71,8a1,1,0,0,0,0-1.42L15.47,2.29a1,1,0,0,0-1.42,0L11.23,5.12h0L4.29,12.05a1,1,0,0,0-.29.71V17A1,1,0,0,0,5,18ZM14.76,4.41l2.83,2.83L16.17,8.66,13.34,5.83ZM6,13.17l5.93-5.93,2.83,2.83L8.83,16H6ZM21,20H3a1,1,0,0,0,0,2H21a1,1,0,0,0,0-2Z"></path></svg>
+												</a>
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
+													<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z"></path></svg>
+												</button>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div><div class="scrollbar-track scrollbar-track-x show" style="display: none;"><div class="scrollbar-thumb scrollbar-thumb-x" style="width: 1178px; transform: translate3d(0px, 0px, 0px);"></div></div><div class="scrollbar-track scrollbar-track-y show" style="display: none;"><div class="scrollbar-thumb scrollbar-thumb-y" style="height: 912px; transform: translate3d(0px, 0px, 0px);"></div></div>
+					</div>
+				</div>
+				<!-- end users -->
+				<!-- paginator -->
+				<div class="col-12">
+					<div class="main__paginator">
+						<!-- amount -->
+						<span class="main__paginator-pages">Showing 10 of 3702</span>
+						<!-- end amount -->
+
+						<ul class="main__paginator-list">
+							<li>
+								<a href="https://flixgo.volkovdesign.com/admin/users.html#">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17,11H9.41l3.3-3.29a1,1,0,1,0-1.42-1.42l-5,5a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l5,5a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L9.41,13H17a1,1,0,0,0,0-2Z"></path></svg>
+									<span>Prev</span>
+								</a>
+							</li>
+							<li>
+								<a href="https://flixgo.volkovdesign.com/admin/users.html#">
+									<span>Next</span>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.92,11.62a1,1,0,0,0-.21-.33l-5-5a1,1,0,0,0-1.42,1.42L14.59,11H7a1,1,0,0,0,0,2h7.59l-3.3,3.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0l5-5a1,1,0,0,0,.21-.33A1,1,0,0,0,17.92,11.62Z"></path></svg>
+								</a>
+							</li>
+						</ul>
+
+						<ul class="paginator">
+							<li class="paginator__item paginator__item--prev">
+								<a href="https://flixgo.volkovdesign.com/admin/users.html#"><svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24"><path d="M8.5,12.8l5.7,5.6c0.4,0.4,1,0.4,1.4,0c0,0,0,0,0,0c0.4-0.4,0.4-1,0-1.4l-4.9-5l4.9-5c0.4-0.4,0.4-1,0-1.4c-0.2-0.2-0.4-0.3-0.7-0.3c-0.3,0-0.5,0.1-0.7,0.3l-5.7,5.6C8.1,11.7,8.1,12.3,8.5,12.8C8.5,12.7,8.5,12.7,8.5,12.8z"></path></svg></a>
+							</li>
+							<li class="paginator__item"><a href="https://flixgo.volkovdesign.com/admin/users.html#">1</a></li>
+							<li class="paginator__item paginator__item--active"><a href="https://flixgo.volkovdesign.com/admin/users.html#">2</a></li>
+							<li class="paginator__item"><a href="https://flixgo.volkovdesign.com/admin/users.html#">3</a></li>
+							<li class="paginator__item"><a href="https://flixgo.volkovdesign.com/admin/users.html#">4</a></li>
+							<li class="paginator__item"><span>...</span></li>
+							<li class="paginator__item"><a href="https://flixgo.volkovdesign.com/admin/users.html#">29</a></li>
+							<li class="paginator__item"><a href="https://flixgo.volkovdesign.com/admin/users.html#">30</a></li>
+							<li class="paginator__item paginator__item--next">
+								<a href="https://flixgo.volkovdesign.com/admin/users.html#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.54,11.29,9.88,5.64a1,1,0,0,0-1.42,0,1,1,0,0,0,0,1.41l4.95,5L8.46,17a1,1,0,0,0,0,1.41,1,1,0,0,0,.71.3,1,1,0,0,0,.71-.3l5.66-5.65A1,1,0,0,0,15.54,11.29Z"></path></svg></a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- end paginator -->
+			</div>
+		</div>
+	</main>
+	<!-- end main content -->
+	<!-- status modal -->
+	<div class="modal fade" id="modal-status" tabindex="-1" aria-labelledby="modal-status" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal__content">
+					<form action="https://flixgo.volkovdesign.com/admin/users.html#" class="modal__form">
+						<h4 class="modal__title">Status change</h4>
+
+						<p class="modal__text">Are you sure about immediately change status?</p>
+
+						<div class="modal__btns">
+							<button class="modal__btn modal__btn--apply" type="button"><span>Apply</span></button>
+							<button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Dismiss</span></button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end status modal -->
+	<!-- delete modal -->
+	<div class="modal fade" id="modal-delete" tabindex="-1" aria-labelledby="modal-delete" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal__content">
+					<form action="https://flixgo.volkovdesign.com/admin/users.html#" class="modal__form">
+						<h4 class="modal__title">User delete</h4>
+
+						<p class="modal__text">Are you sure to permanently delete this user?</p>
+
+						<div class="modal__btns">
+							<button class="modal__btn modal__btn--apply" type="button"><span>Delete</span></button>
+							<button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Dismiss</span></button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end delete modal -->
+	<!-- JS -->
+	<script src="~/AdminTemplate_files/bootstrap.bundle.min.js.download"></script>
+	<script src="~/AdminTemplate_files/smooth-scrollbar.js.download"></script>
+	<script src="~/AdminTemplate_files/slimselect.min.js.download"></script>
+	<script src="~/AdminTemplate_files/admin.js.download"></script>
+	<div data-id="ss-cpgn2b4p" id="ss-cpgn2b4p" class="ss-content filter__select" role="listbox"><div class="ss-search ss-hide"><input readonly="" type="search" placeholder="Search" tabindex="-1" aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off"></div><div class="ss-list"><div data-id="2gmf3xqf" id="2gmf3xqf" class="ss-option ss-selected" role="option" aria-selected="true">Date created</div><div data-id="hobts5hc" id="hobts5hc" class="ss-option" role="option" aria-selected="false">Pricing plan</div><div data-id="ewztcfol" id="ewztcfol" class="ss-option" role="option" aria-selected="false">Status</div></div></div>
+
+</body>
+</html>
+}

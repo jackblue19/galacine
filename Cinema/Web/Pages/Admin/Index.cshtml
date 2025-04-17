@@ -1,0 +1,605 @@
+﻿@page
+@model Web.Pages.Admin.IndexModel
+@{
+   
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<!-- saved from url=(0048)https://flixgo.volkovdesign.com/admin/index.html -->
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="~/AdminTemplate_files/bootstrap.min.css">
+	<link rel="stylesheet" href="~/AdminTemplate_files/slimselect.css">
+	<link rel="stylesheet" href="~/AdminTemplate_files/admin.css">
+
+	<!-- Favicons -->
+	<link rel="icon" type="image/png" href="https://flixgo.volkovdesign.com/admin/icon/favicon-32x32.png" sizes="32x32">
+	<link rel="apple-touch-icon" href="https://flixgo.volkovdesign.com/admin/icon/favicon-32x32.png">
+
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Dmitry Volkov">
+	<title>FlixGo – Online Movies, TV Shows &amp; Cinema HTML Template</title>
+
+	<style id="smooth-scrollbar-style">
+		[data-scrollbar] {
+			display: block;
+			position: relative;
+		}
+
+		.scroll-content {
+			-webkit-transform: translate3d(0, 0, 0);
+			transform: translate3d(0, 0, 0);
+		}
+
+		.scrollbar-track {
+			position: absolute;
+			opacity: 0;
+			z-index: 1;
+			background: rgba(222, 222, 222, .75);
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			-webkit-transition: opacity 0.5s 0.5s ease-out;
+			transition: opacity 0.5s 0.5s ease-out;
+		}
+
+			.scrollbar-track.show,
+			.scrollbar-track:hover {
+				opacity: 1;
+				-webkit-transition-delay: 0s;
+				transition-delay: 0s;
+			}
+
+		.scrollbar-track-x {
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 8px;
+		}
+
+		.scrollbar-track-y {
+			top: 0;
+			right: 0;
+			width: 8px;
+			height: 100%;
+		}
+
+		.scrollbar-thumb {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 8px;
+			height: 8px;
+			background: rgba(0, 0, 0, .5);
+			border-radius: 4px;
+		}
+	</style>
+</head>
+<body>
+	<!-- header -->
+	<header class="header">
+		<div class="header__content">
+			<!-- header logo -->
+			<a href="https://flixgo.volkovdesign.com/admin/index.html" class="header__logo">
+				<img src="~/AdminTemplate_files/logo.svg" alt="">
+			</a>
+			<!-- end header logo -->
+			<!-- header menu btn -->
+			<button class="header__btn" type="button">
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
+			<!-- end header menu btn -->
+		</div>
+	</header>
+	<!-- end header -->
+	<!-- sidebar -->
+	<div class="sidebar">
+		<!-- sidebar logo -->
+		<a href="https://flixgo.volkovdesign.com/admin/index.html" class="sidebar__logo">
+			<img src="~/AdminTemplate_files/logo.svg" alt="">
+		</a>
+		<!-- end sidebar logo -->
+		<!-- sidebar user -->
+		<div class="sidebar__user">
+			<div class="sidebar__user-img">
+				<img src="~/AdminTemplate_files/user.svg" alt="">
+			</div>
+
+			<div class="sidebar__user-title">
+				<span>Admin</span>
+				<p>John Doe</p>
+			</div>
+
+			<button class="sidebar__user-btn" type="button">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,12a1,1,0,0,0,1,1h7.59l-2.3,2.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0l4-4a1,1,0,0,0,.21-.33,1,1,0,0,0,0-.76,1,1,0,0,0-.21-.33l-4-4a1,1,0,1,0-1.42,1.42L12.59,11H5A1,1,0,0,0,4,12ZM17,2H7A3,3,0,0,0,4,5V8A1,1,0,0,0,6,8V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V19a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V16a1,1,0,0,0-2,0v3a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V5A3,3,0,0,0,17,2Z"></path></svg>
+			</button>
+		</div>
+		<!-- end sidebar user -->
+		<!-- sidebar nav -->
+		@await Html.PartialAsync("_SideBarAdmin")
+		<!-- end sidebar nav -->
+		<!-- sidebar copyright -->
+		<div class="sidebar__copyright">© FlixGo, 2018—2023. <br>Create by <a href="https://themeforest.net/user/dmitryvolkov/portfolio" target="_blank" rel="noopener">Dmitry Volkov</a>.</div>
+		<!-- end sidebar copyright -->
+	</div>
+	<!-- end sidebar -->
+	<!-- main content -->
+	<main class="main">
+		<div class="container-fluid">
+			<div class="row">
+				<!-- main title -->
+				<div class="col-12">
+					<div class="main__title">
+						<h2>Dashboard</h2>
+
+						<a href="https://flixgo.volkovdesign.com/admin/add-item.html" class="main__title-link"><span>add item</span></a>
+					</div>
+				</div>
+				<!-- end main title -->
+			</div>
+
+			<div class="row">
+				<!-- stats -->
+				<div class="col-12 col-sm-6 col-xl-3">
+					<div class="stats">
+						<span>Unique views this month</span>
+						<p>5 678</p>
+						<img src="~/AdminTemplate_files/graph-bar.svg" alt="">
+					</div>
+				</div>
+				<!-- end stats -->
+				<!-- stats -->
+				<div class="col-12 col-sm-6 col-xl-3">
+					<div class="stats">
+						<span>Items added this month</span>
+						<p>172</p>
+						<img src="~/AdminTemplate_files/film.svg" alt="">
+					</div>
+				</div>
+				<!-- end stats -->
+				<!-- stats -->
+				<div class="col-12 col-sm-6 col-xl-3">
+					<div class="stats">
+						<span>New comments</span>
+						<p>2 573</p>
+						<img src="~/AdminTemplate_files/comments.svg" alt="">
+					</div>
+				</div>
+				<!-- end stats -->
+				<!-- stats -->
+				<div class="col-12 col-sm-6 col-xl-3">
+					<div class="stats">
+						<span>New reviews</span>
+						<p>1 021</p>
+						<img src="~/AdminTemplate_files/star-half-alt.svg" alt="">
+					</div>
+				</div>
+				<!-- end stats -->
+				<!-- dashbox -->
+				<div class="col-12 col-xl-6">
+					<div class="dashbox">
+						<div class="dashbox__title">
+							<h3><img src="~/AdminTemplate_files/award.svg" alt=""> Top items</h3>
+
+							<div class="dashbox__wrap">
+								<a class="dashbox__refresh" href="https://flixgo.volkovdesign.com/admin/index.html#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"></path></svg></a>
+								<a class="dashbox__more" href="https://flixgo.volkovdesign.com/admin/catalog.html">View All</a>
+							</div>
+						</div>
+
+						<div class="dashbox__table-wrap dashbox__table-wrap--1" data-scrollbar="true" tabindex="-1" style="overflow: hidden; outline: none;">
+							<div class="scroll-content">
+								<table class="dashbox__table">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>TITLE</th>
+											<th>CATEGORY</th>
+											<th>RATING</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">321</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">The Lost City</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Movie</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">9.2</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">54</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">Undercurrents</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Anime</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">9.1</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">670</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">Tales from the Underworld</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">TV Show</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">9.0</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">241</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">The Unseen World</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">TV Show</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">8.9</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">22</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">Redemption Road</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Movie</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">8.9</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div><div class="scrollbar-track scrollbar-track-x show" style="display: none;"><div class="scrollbar-thumb scrollbar-thumb-x" style="width: 575px; transform: translate3d(0px, 0px, 0px);"></div></div><div class="scrollbar-track scrollbar-track-y show" style="display: none;"><div class="scrollbar-thumb scrollbar-thumb-y" style="height: 298px; transform: translate3d(0px, 0px, 0px);"></div></div>
+						</div>
+					</div>
+				</div>
+				<!-- end dashbox -->
+				<!-- dashbox -->
+				<div class="col-12 col-xl-6">
+					<div class="dashbox">
+						<div class="dashbox__title">
+							<h3><img src="./AdminTemplate_files/film.svg" alt=""> Latest items</h3>
+
+							<div class="dashbox__wrap">
+								<a class="dashbox__refresh" href="https://flixgo.volkovdesign.com/admin/index.html#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"></path></svg></a>
+								<a class="dashbox__more" href="https://flixgo.volkovdesign.com/admin/reviews.html">View All</a>
+							</div>
+						</div>
+
+						<div class="dashbox__table-wrap dashbox__table-wrap--2" data-scrollbar="true" tabindex="-1" style="overflow: hidden; outline: none;">
+							<div class="scroll-content">
+								<table class="dashbox__table">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>ITEM</th>
+											<th>CATEGORY</th>
+											<th>RATING</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">749</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">I Dream in Another Language</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">TV Series</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">7.7</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">750</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">Benched</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Movie</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">6.4</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">751</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">Whitney</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">TV Show</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">8.1</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">752</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">Blindspotting</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Anime</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">9.1</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">753</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">I Dream in Another Language</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Movie</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">6.5</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div><div class="scrollbar-track scrollbar-track-x show" style="display: none;"><div class="scrollbar-thumb scrollbar-thumb-x" style="width: 575px; transform: translate3d(0px, 0px, 0px);"></div></div><div class="scrollbar-track scrollbar-track-y show" style="display: none;"><div class="scrollbar-thumb scrollbar-thumb-y" style="height: 298px; transform: translate3d(0px, 0px, 0px);"></div></div>
+						</div>
+					</div>
+				</div>
+				<!-- end dashbox -->
+				<!-- dashbox -->
+				<div class="col-12 col-xl-6">
+					<div class="dashbox">
+						<div class="dashbox__title">
+							<h3><img src="~/AdminTemplate_files/user-circle.svg" alt=""> Latest users</h3>
+
+							<div class="dashbox__wrap">
+								<a class="dashbox__refresh" href="https://flixgo.volkovdesign.com/admin/index.html#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"></path></svg></a>
+								<a class="dashbox__more" href="https://flixgo.volkovdesign.com/admin/reviews.html">View All</a>
+							</div>
+						</div>
+
+						<div class="dashbox__table-wrap dashbox__table-wrap--3" data-scrollbar="true" tabindex="-1" style="overflow: hidden; outline: none;">
+							<div class="scroll-content">
+								<table class="dashbox__table">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>FULL NAME</th>
+											<th>EMAIL</th>
+											<th>USERNAME</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">1023</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Matt Jones</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">email@email.com</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Username</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">1024</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Tess Harper</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">email@email.com</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Username</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">1025</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Brian Cranston</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">email@email.com</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Username</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">1026</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Rosa Lee</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">email@email.com</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Username</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">1027</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Gene Graham</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">email@email.com</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Username</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div><div class="scrollbar-track scrollbar-track-x show" style="display: none;"><div class="scrollbar-thumb scrollbar-thumb-x" style="width: 575px; transform: translate3d(0px, 0px, 0px);"></div></div><div class="scrollbar-track scrollbar-track-y show" style="display: none;"><div class="scrollbar-thumb scrollbar-thumb-y" style="height: 298px; transform: translate3d(0px, 0px, 0px);"></div></div>
+						</div>
+					</div>
+				</div>
+				<!-- end dashbox -->
+				<!-- dashbox -->
+				<div class="col-12 col-xl-6">
+					<div class="dashbox">
+						<div class="dashbox__title">
+							<h3><img src="~/AdminTemplate_files/star-half-alt.svg" alt=""> Latest reviews</h3>
+
+							<div class="dashbox__wrap">
+								<a class="dashbox__refresh" href="https://flixgo.volkovdesign.com/admin/index.html#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21,11a1,1,0,0,0-1,1,8.05,8.05,0,1,1-2.22-5.5h-2.4a1,1,0,0,0,0,2h4.53a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4.77A10,10,0,1,0,22,12,1,1,0,0,0,21,11Z"></path></svg></a>
+								<a class="dashbox__more" href="https://flixgo.volkovdesign.com/admin/reviews.html">View All</a>
+							</div>
+						</div>
+
+						<div class="dashbox__table-wrap dashbox__table-wrap--4" data-scrollbar="true" tabindex="-1" style="overflow: hidden; outline: none;">
+							<div class="scroll-content">
+								<table class="dashbox__table">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>ITEM</th>
+											<th>AUTHOR</th>
+											<th>RATING</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">126</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">I Dream in Another Language</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Jackson Brown</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">7.2</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">125</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">Benched</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Quang</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">6.3</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">124</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">Whitney</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Brian Cranston</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">8.4</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">123</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">Blindspotting</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Ketut</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">9.0</div>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<div class="dashbox__table-text">122</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="https://flixgo.volkovdesign.com/admin/index.html#">I Dream in Another Language</a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text">Eliza Josceline</div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate">7.7</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div><div class="scrollbar-track scrollbar-track-x show" style="display: none;"><div class="scrollbar-thumb scrollbar-thumb-x" style="width: 575px; transform: translate3d(0px, 0px, 0px);"></div></div><div class="scrollbar-track scrollbar-track-y show" style="display: none;"><div class="scrollbar-thumb scrollbar-thumb-y" style="height: 298px; transform: translate3d(0px, 0px, 0px);"></div></div>
+						</div>
+					</div>
+				</div>
+				<!-- end dashbox -->
+			</div>
+		</div>
+	</main>
+	<!-- end main content -->
+	<!-- JS -->
+	<script src="~/AdminTemplate_files/bootstrap.bundle.min.js.download"></script>
+	<script src="~/AdminTemplate_files/smooth-scrollbar.js.download"></script>
+	<script src="~/AdminTemplate_files/slimselect.min.js.download"></script>
+	<script src="~/AdminTemplate_files/admin.js.download"></script>
+
+</body>
+</html>
+
+}

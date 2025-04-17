@@ -1,0 +1,103 @@
+﻿<!-- sidebar nav -->
+<ul class="sidebar__nav">
+	<li class="sidebar__nav-item">
+		<a href="/Admin/Index" class="sidebar__nav-link">
+			<!-- SVG icon -->
+			Dashboard
+		</a>
+	</li>
+	<li class="sidebar__nav-item">
+		<a href="/Admin/Catalog" class="sidebar__nav-link sidebar__nav-link">
+			<!-- SVG icon -->
+			Catalog
+		</a>
+	</li>
+	<li class="sidebar__nav-item">
+		<a href="/Admin/ManageUsers" class="sidebar__nav-link">
+			<!-- SVG icon -->
+			Users
+		</a>
+	</li>
+	<li class="sidebar__nav-item">
+		<a href="/Admin/Comments" class="sidebar__nav-link">
+			<!-- SVG icon -->
+			Comments
+		</a>
+	</li>
+	<li class="sidebar__nav-item">
+		<a href="/Admin/Reviews" class="sidebar__nav-link">
+			<!-- SVG icon -->
+			Reviews
+		</a>
+	</li>
+
+	<!-- dropdown -->
+	<li class="sidebar__nav-item">
+		<a class="sidebar__nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+			<!-- SVG icon -->
+			Pages
+		</a>
+		<ul class="dropdown-menu sidebar__dropdown-menu scrollbar-dropdown">
+			<li><a href="https://flixgo.volkovdesign.com/admin/add-item.html">Add item</a></li>
+			<li><a href="https://flixgo.volkovdesign.com/admin/edit-user.html">Edit user</a></li>
+			<li><a href="https://flixgo.volkovdesign.com/admin/signin.html">Sign In</a></li>
+			<li><a href="https://flixgo.volkovdesign.com/admin/signup.html">Sign Up</a></li>
+			<li><a href="https://flixgo.volkovdesign.com/admin/forgot.html">Forgot password</a></li>
+			<li><a href="https://flixgo.volkovdesign.com/admin/404.html">404 Page</a></li>
+		</ul>
+	</li>
+	<!-- end dropdown -->
+</ul>
+<style id="smooth-scrollbar-style">
+	[data-scrollbar] {
+	  display: block;
+	  position: relative;
+	}
+
+	.scroll-content {
+	  -webkit-transform: translate3d(0, 0, 0);
+			  transform: translate3d(0, 0, 0);
+	}
+
+	.scrollbar-track {
+	  position: absolute;
+	  opacity: 0;
+	  z-index: 1;
+	  background: rgba(222, 222, 222, .75);
+	  -webkit-user-select: none;
+		 -moz-user-select: none;
+		  -ms-user-select: none;
+			  user-select: none;
+	  -webkit-transition: opacity 0.5s 0.5s ease-out;
+			  transition: opacity 0.5s 0.5s ease-out;
+	}
+	.scrollbar-track.show,
+	.scrollbar-track:hover {
+	  opacity: 1;
+	  -webkit-transition-delay: 0s;
+			  transition-delay: 0s;
+	}
+
+	.scrollbar-track-x {
+	  bottom: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 8px;
+	}
+	.scrollbar-track-y {
+	  top: 0;
+	  right: 0;
+	  width: 8px;
+	  height: 100%;
+	}
+	.scrollbar-thumb {
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  width: 8px;
+	  height: 8px;
+	  background: rgba(0, 0, 0, .5);
+	  border-radius: 4px;
+	}
+</style>
+<script src="~/AdminTemplate_files/smooth-scrollbar.js.download"></script>
