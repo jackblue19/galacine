@@ -12,3 +12,7 @@
 
 # Ignore file system indexes
 **/*.vsix
+
+# Ignore appsettings.json and environment-specific settings at any level
+**/appsettings.json
+**/appsettings.*.json
