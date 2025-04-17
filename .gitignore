@@ -1,0 +1,14 @@
+# Ignore Visual Studio temporary files
+**/.vs/
+**/.vscode/
+**/*.user
+**/*.userosscache
+**/*.suo
+**/*.userprefs
+
+# Ignore build output
+**/bin/
+**/obj/
+
+# Ignore file system indexes
+**/*.vsix
