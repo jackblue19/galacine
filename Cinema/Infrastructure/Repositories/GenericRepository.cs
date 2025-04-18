@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Interfaces.Repositories;
-using Infrastructure.Data;
+using Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
