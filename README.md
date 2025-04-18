@@ -4,65 +4,71 @@ Cinema management
 # Solution Project Structure *(Rcm by GPT)*
 
     CinemaSystem.sln
-    ├── CinemaSystem.Web/                    # Razor Pages UI (tầng giao diện)
+    ├── CinemaSystem.Web/                # UI Layer - Razor Pages
     │   ├── Pages/
     │   │   ├── Movies/
     │   │   │   ├── Index.cshtml
+    │   │   │   ├── Index.cshtml.cs
     │   │   │   ├── Create.cshtml
-    │   │   │   └── Edit.cshtml
-    │   │   ├── Schedules/
-    │   │   ├── Bills/
-    │   │   ├── Tickets/
-    │   │   ├── Shared/
-    │   │   │   └── _Layout.cshtml
-    │   │   └── Index.cshtml
-    │   ├── wwwroot/
-    │   ├── Program.cs
-    │   ├── Startup.cs
+    │   │   │   ├── Create.cshtml.cs
+    │   │   │   ├── Edit.cshtml
+    │   │   │   ├── Edit.cshtml.cs
+    │   ├── Shared/                      # Partial views, layout, error pages
+    │   │   ├── _Layout.cshtml
+    │   │   └── _ValidationScriptsPartial.cshtml
+    │   ├── wwwroot/                     # Static files (css/js/img)
+    │   │   ├── css/
+    │   │   ├── js/
+    │   ├── Program.cs                  # DI, Middleware config
+    │   ├── Startup.cs (nếu dùng)      # Cấu hình thêm cho web
     │   └── appsettings.json
-    │
-    ├── CinemaSystem.Application/           # Business logic layer (service, DTO, interface)
-    │   ├── Interfaces/
-    │   │   ├── Services/
-    │   │   │   ├── IMovieService.cs
-    │   │   │   └── IScheduleService.cs
-    │   │   └── Repositories/
-    │   │       ├── IMovieRepository.cs
-    │   │       ├── IGenericRepository.cs
-    │   │       └── ...
-    │   ├── Services/
-    │   │   ├── MovieService.cs
-    │   │   └── ...
-    │   ├── DTOs/
-    │   │   ├── MovieDto.cs
-    │   │   └── ScheduleDto.cs
-    │   └── Validators/
-    │       └── MovieValidator.cs
-    │
-    ├── CinemaSystem.Infrastructure/        # Data access layer (EF Core + Repositories)
-    │   ├── Data/
-    │   │   ├── CinemaDbContext.cs
-    │   │   └── DbInitializer.cs
-    │   ├── Models/                         # Entities từ Scaffold-DbContext
+
+    ├── CinemaSystem.Data/              # DB Layer - scaffolded entities + DbContext
+    │   ├── Entities/
     │   │   ├── Movie.cs
     │   │   ├── User.cs
-    │   │   ├── Category.cs
-    │   │   └── ...
-    │   ├── Repositories/                  # Repository implementations
-    │   │   ├── MovieRepository.cs
-    │   │   ├── GenericRepository.cs
-    │   │   └── ...
-    │   └── Migrations/                    # Nếu dùng Code First sau này
-    │
-    ├── CinemaSystem.Tests/                 # Unit Test với xUnit
+    │   │   ├── Schedule.cs
+    │   │   └── ...                    # Các bảng scaffold khác
+    │   ├── CinemaDbContext.cs
+    │   ├── DbInitializer.cs           # Tùy chọn: seed data mẫu
+    │   ├── Mappings/                  # Tùy chọn: Fluent API override cho table khó
+    │   └── Migrations/                # EF Core migrations
+
+    ├── CinemaSystem.Application/       # Business Logic Layer
+    │   ├── DTOs/
+    │   │   ├── MovieDto.cs
+    │   │   └── CreateMovieRequest.cs
+    │   ├── Interfaces/
+    │   │   ├── Services/
+    │   │   │   └── IMovieService.cs
+    │   │   └── Repositories/
+    │   │       └── IMovieRepository.cs
+    │   ├── Services/
+    │   │   └── MovieService.cs        # Dùng DI inject repository, xử lý nghiệp vụ
+    │   ├── Validators/
+    │   │   └── MovieValidator.cs      # FluentValidation cho MovieDto
+    │   └── Mapping/                   # AutoMapper profiles
+    │       └── AutoMapperProfile.cs
+
+    ├── CinemaSystem.Infrastructure/    # DB Repository Implementations
+    │   ├── Repositories/
+    │   │   ├── MovieRepository.cs     # Implements IMovieRepository
+    │   │   └── GenericRepository.cs
+    │   └── Helpers/
+    │       └── PagingHelper.cs        # Tùy chọn: hỗ trợ phân trang, filter
+
+    ├── CinemaSystem.Tests/             # Unit & Integration Tests
     │   ├── ApplicationTests/
-    │   │   ├── MovieServiceTests.cs
-    │   │   └── ...
+    │   │   └── MovieServiceTests.cs
     │   ├── InfrastructureTests/
     │   │   └── MovieRepositoryTests.cs
+    │   ├── WebTests/
+    │   │   └── PageModelTests.cs
     │   └── TestHelpers/
     │       └── DbContextMocker.cs
-    │
-    └── CinemaSystem.Build/                 # CI/CD, DevOps config
-        └── github-actions.yml / azure-pipelines.yml
+
+    ├── CinemaSystem.Build/             # CI/CD, Docker, Pipeline
+    │   ├── docker-compose.yml
+    │   ├── github-actions.yml
+    │   └── launchSettings.json
 

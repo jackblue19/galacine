@@ -33,7 +33,14 @@
   <ItemGroup>
     <Folder Include="ApplicationTests\" />
     <Folder Include="InfrastructureTests\" />
+    <Folder Include="WebTests\" />
     <Folder Include="TestHelpers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Domain\Data.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

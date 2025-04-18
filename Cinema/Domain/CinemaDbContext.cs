@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Infrastructure.Models;
+using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Data;
+namespace Data;
 
 public partial class CinemaDbContext : DbContext
 {
