@@ -66,14 +66,15 @@ Cinema management
     └── CinemaSystem.Build/                 # CI/CD, DevOps config
         └── github-actions.yml / azure-pipelines.yml
 
-# Web cần dùng Application và Infrastructure
-dotnet add CinemaSystem.Web/CinemaSystem.Web.csproj reference CinemaSystem.Application/CinemaSystem.Application.csproj
-dotnet add CinemaSystem.Web/CinemaSystem.Web.csproj reference CinemaSystem.Infrastructure/CinemaSystem.Infrastructure.csproj
+### Web cần dùng Application và Infrastructure
 
-# Infrastructure triển khai interface từ Application
-dotnet add CinemaSystem.Infrastructure/CinemaSystem.Infrastructure.csproj reference CinemaSystem.Application/CinemaSystem.Application.csproj
+* dotnet add CinemaSystem.Web/CinemaSystem.Web.csproj reference CinemaSystem.Application/CinemaSystem.Application.csproj
+* dotnet add CinemaSystem.Web/CinemaSystem.Web.csproj reference CinemaSystem.Infrastructure/CinemaSystem.Infrastructure.csproj
 
-# Test project cần dùng Application + Infrastructure
-dotnet add CinemaSystem.Tests/CinemaSystem.Tests.csproj reference CinemaSystem.Application/CinemaSystem.Application.csproj
-dotnet add CinemaSystem.Tests/CinemaSystem.Tests.csproj reference CinemaSystem.Infrastructure/CinemaSystem.Infrastructure.csproj
+### Infrastructure triển khai interface từ Application
+* dotnet add CinemaSystem.Infrastructure/CinemaSystem.Infrastructure.csproj reference CinemaSystem.Application/CinemaSystem.Application.csproj
+
+### Test project cần dùng Application + Infrastructure
+* dotnet add CinemaSystem.Tests/CinemaSystem.Tests.csproj reference CinemaSystem.Application/CinemaSystem.Application.csproj
+* dotnet add CinemaSystem.Tests/CinemaSystem.Tests.csproj reference CinemaSystem.Infrastructure/CinemaSystem.Infrastructure.csproj
 
