@@ -67,8 +67,6 @@ CREATE TABLE Movie (
     MovieId INT IDENTITY(1,1) PRIMARY KEY,
     MovieName NVARCHAR(255) NOT NULL,
     MovieDesc NVARCHAR(MAX),
-    SuggestedPrice DECIMAL(10,2),
-    OriginalPrice DECIMAL(10,2),
     MovieImg NVARCHAR(255),
     MovieStatus NVARCHAR(50) NOT NULL DEFAULT 'Archived' CHECK (MovieStatus IN ('Active', 'Inactive', 'Archived')),
     Trailer NVARCHAR(255),
@@ -76,9 +74,9 @@ CREATE TABLE Movie (
     Nation NVARCHAR(100),
     IsSub BIT DEFAULT 0,
     Duration INT NOT NULL,
-    CategoryId INT NOT NULL,
     ReleaseDate DATE,
     Language NVARCHAR(50),
+    CategoryId INT NOT NULL,
     FOREIGN KEY (CategoryId) REFERENCES Category(CategoryId)
 );
 GO
@@ -117,6 +115,15 @@ CREATE TABLE Seat (
     SeatType NVARCHAR(50) DEFAULT 'Single' CHECK (SeatType IN ('Single', 'Couple', 'VIP')),
     SeatStatus NVARCHAR(50) DEFAULT 'Available' CHECK (SeatStatus IN ('Available', 'Maintenance', 'Blocked')),
     FOREIGN KEY (RoomId) REFERENCES Room(RoomId)
+);
+GO
+
+CREATE TABLE MovieBasePrice (
+    MovieId INT NOT NULL,
+    SeatType NVARCHAR(50) NOT NULL CHECK (SeatType IN ('Single', 'Couple', 'VIP')),
+    BasePrice DECIMAL(10,2) NOT NULL,
+    PRIMARY KEY (MovieId, SeatType),
+    FOREIGN KEY (MovieId) REFERENCES Movie(MovieId)
 );
 GO
 
@@ -345,9 +352,9 @@ INSERT INTO Genre (GenreDesc) VALUES
 
 
 
--- USE master;
--- GO
+USE master;
+GO
 
--- -- Force disconnect all users
--- ALTER DATABASE CinemaSystem SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
--- DROP DATABASE CinemaSystem;
+-- Force disconnect all users
+ALTER DATABASE CinemaSystem SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+DROP DATABASE CinemaSystem;
