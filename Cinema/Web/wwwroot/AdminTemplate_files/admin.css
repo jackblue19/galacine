@@ -805,7 +805,7 @@ body::-webkit-scrollbar-thumb {
   top: 0;
   bottom: 0;
   width: 16px;
-  background: url("../img/star.svg") no-repeat center;
+  background: url(".~/img/star.svg") no-repeat center;
   background-size: 100% auto;
 }
 .catalog__text--red {
@@ -1116,7 +1116,7 @@ body::-webkit-scrollbar-thumb {
   top: 0;
   bottom: 0;
   width: 16px;
-  background: url("../img/star.svg") no-repeat center;
+  background: url(".~/img/star.svg") no-repeat center;
   background-size: 100% auto;
 }
 .dashbox__table-text--red {
@@ -1862,7 +1862,7 @@ body::-webkit-scrollbar-thumb {
   border-color: #ff55a5;
 }
 .sign__select {
-  background: url("../img/angle-down.svg") no-repeat center right 20px #2b2b31;
+  background: url(".~/img/angle-down.svg") no-repeat center right 20px #2b2b31;
   background-size: 20px auto;
   border: 1px solid transparent;
   border-radius: 8px;
@@ -2074,7 +2074,7 @@ body::-webkit-scrollbar-thumb {
   width: 20px;
   height: 20px;
   transition: 0.5s;
-  background: url("../img/check.svg") no-repeat center;
+  background: url(".~/img/check.svg") no-repeat center;
   background-size: 20px auto;
   border-radius: 2px;
 }
@@ -2261,7 +2261,7 @@ body::-webkit-scrollbar-thumb {
   top: 0;
   height: 50px;
   width: 20px;
-  background: url("../img/images.svg") no-repeat center;
+  background: url(".~/img/images.svg") no-repeat center;
   background-size: 20px auto;
 }
 .sign__gallery label:hover {
@@ -2313,7 +2313,7 @@ body::-webkit-scrollbar-thumb {
   top: 0;
   height: 50px;
   width: 20px;
-  background: url("../img/clapper-board.svg") no-repeat center;
+  background: url(".~/img/clapper-board.svg") no-repeat center;
   blackground-size: 20px auto;
 }
 .sign__video label:hover {
