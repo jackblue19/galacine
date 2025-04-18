@@ -3,10 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IMovieRepository
+    public interface IMovieRepository : IGenericRepository<Movie>
     {
+        Task<IEnumerable<Movie>> GetByCategoryAsync(int categoryId);
+        Task<Movie?> GetWithDetailsAsync(int movieId);
+        Task<IEnumerable<Movie>> SearchByNameAsync(string? name);
+        Task<IEnumerable<Movie>> GetAllTrailersAsync();
+        Task<IEnumerable<Genre>> GetGenresAsync(int movieId);
+
     }
 }
