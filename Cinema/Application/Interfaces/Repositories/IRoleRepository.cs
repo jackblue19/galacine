@@ -15,5 +15,8 @@ namespace Application.Interfaces.Repositories
         Task<IEnumerable<User>> GetByNameAsync(string? name);
         Task<IEnumerable<User>> GetByPhoneAsync(string? phone);
         Task<Role?> GetByDescAsync(string desc);
+        // Kiểm tra lịch chiếu chồng chéo trong phòng
+        Task<bool> HasOverlapAsync(int roomId, DateTime start, DateTime end);
+
     }
 }

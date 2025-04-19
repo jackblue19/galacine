@@ -10,6 +10,7 @@ namespace Application.Interfaces.Repositories
     public interface IInventoryRepository : IGenericRepository<Inventory>
     {
         Task<Inventory?> GetByItemAsync(int itemId);
+        // Giảm tồn kho khi bán/addon
         Task<bool> DecreaseStockAsync(int itemId, int quantity);
     }
 }

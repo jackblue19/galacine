@@ -10,5 +10,11 @@ namespace Application.Interfaces.Repositories
     public interface ISeatRepository : IGenericRepository<Seat>
     {
         Task<IEnumerable<Seat>> GetByRoomAsync(int roomId);
+        // Trạng thái ghế theo lịch chiếu (cho Ajax/SignalR)
+        //Task<IEnumerable<SeatStatusDto>> GetStatusByScheduleAsync(int scheduleId);
+
+        // Lấy danh sách ghế theo schedule
+        Task<IEnumerable<Seat>> GetByScheduleAsync(int scheduleId);
+
     }
 }
