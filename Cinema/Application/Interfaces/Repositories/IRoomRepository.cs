@@ -12,5 +12,8 @@ namespace Application.Interfaces.Repositories
         Task<IEnumerable<Room>> GetWithSeatsAsync();
         Task<IEnumerable<Room>> SearchByNameAsync(string? roomName);
         Task<bool> IsRoomFull(int roomId, DateTime date);
+        Task<Room?> GetByIdWithSeatsAsync(int roomId);
+        Task<IEnumerable<Seat>> GetAvailableByScheduleAsync(int scheduleId);
+
     }
 }

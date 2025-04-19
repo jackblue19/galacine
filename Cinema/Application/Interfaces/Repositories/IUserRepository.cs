@@ -14,5 +14,6 @@ namespace Application.Interfaces.Repositories
         Task<IEnumerable<User>> GetByRoleAsync(string role);
         Task<IEnumerable<User>> GetByNameAsync(string? name);
         Task<IEnumerable<User>> GetByPhoneAsync(string? phone);
+        Task<User?> GetByGoogleIdAsync(string googleId);
     }
 }

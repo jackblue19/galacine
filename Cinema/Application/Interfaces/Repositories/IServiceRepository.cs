@@ -7,9 +7,8 @@ using Data.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IGenreRepository : IGenericRepository<Genre>
+    public interface IServiceRepository : IGenericRepository<Service>
     {
-        Task<Genre?> GetByDescriptionAsync(string desc);
-        Task<IEnumerable<Movie>> GetMoviesAsync(int genreId);
+        Task<IEnumerable<Service>> GetPendingApprovalAsync();
     }
 }

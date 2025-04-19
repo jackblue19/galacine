@@ -7,9 +7,8 @@ using Data.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IGenreRepository : IGenericRepository<Genre>
+    public interface IScheduleSeatTypePriceRepository : IGenericRepository<ScheduleSeatTypePrice>
     {
-        Task<Genre?> GetByDescriptionAsync(string desc);
-        Task<IEnumerable<Movie>> GetMoviesAsync(int genreId);
+        Task<IEnumerable<ScheduleSeatTypePrice>> GetByScheduleAsync(int scheduleId);
     }
 }

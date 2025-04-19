@@ -7,9 +7,9 @@ using Data.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IGenreRepository : IGenericRepository<Genre>
+    public interface IInventoryRepository : IGenericRepository<Inventory>
     {
-        Task<Genre?> GetByDescriptionAsync(string desc);
-        Task<IEnumerable<Movie>> GetMoviesAsync(int genreId);
+        Task<Inventory?> GetByItemAsync(int itemId);
+        Task<bool> DecreaseStockAsync(int itemId, int quantity);
     }
 }
