@@ -1,12 +1,12 @@
 # Galacine
 Cinema management
 
-# Solution Project Structure *(Rcm by GPT)*
+# Solution Project Structure *(Ref: GPT)*
 
     CinemaSystem.sln
     ├── CinemaSystem.Web/                # UI Layer - Razor Pages
     │   ├── Pages/
-    │   │   ├── Movies/
+    │   │   ├── MoviePages/
     │   │   │   ├── Index.cshtml
     │   │   │   ├── Index.cshtml.cs
     │   │   │   ├── Create.cshtml
@@ -20,7 +20,6 @@ Cinema management
     │   │   ├── css/
     │   │   ├── js/
     │   ├── Program.cs                  # DI, Middleware config
-    │   ├── Startup.cs (nếu dùng)      # Cấu hình thêm cho web
     │   └── appsettings.json
 
     ├── CinemaSystem.Data/              # DB Layer - scaffolded entities + DbContext
