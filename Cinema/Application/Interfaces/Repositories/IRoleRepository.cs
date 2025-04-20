@@ -9,14 +9,6 @@ namespace Application.Interfaces.Repositories
 {
     public interface IRoleRepository : IGenericRepository<Role>
     {
-        Task<User?> GetByUsnAsync(string? usn);
-        Task<User?> GetByEmailAsync(string? email);
-        Task<IEnumerable<User>> GetByRoleAsync(string role);
-        Task<IEnumerable<User>> GetByNameAsync(string? name);
-        Task<IEnumerable<User>> GetByPhoneAsync(string? phone);
         Task<Role?> GetByDescAsync(string desc);
-        // Kiểm tra lịch chiếu chồng chéo trong phòng
-        Task<bool> HasOverlapAsync(int roomId, DateTime start, DateTime end);
-
     }
 }

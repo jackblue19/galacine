@@ -33,6 +33,7 @@ public partial class CinemaDbContext : DbContext
     public virtual DbSet<MovieBasePrice> MovieBasePrices { get; set; }
 
     public virtual DbSet<MovieDetail> MovieDetails { get; set; }
+    public virtual DbSet<MovieGenre> MovieGenres { get; set; }
 
     public virtual DbSet<Notification> Notifications { get; set; }
 
@@ -217,6 +218,24 @@ public partial class CinemaDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__MovieBase__Movie__5CD6CB2B");
         });
+
+        modelBuilder.Entity<MovieGenre>(entity =>
+        {
+            entity.HasKey(e => new { e.MovieId, e.GenreId });
+
+            entity.ToTable("MovieGenre");
+
+            entity.HasOne(mg => mg.Movie)
+                  .WithMany(m => m.MovieGenres)
+                  .HasForeignKey(mg => mg.MovieId)
+                  .OnDelete(DeleteBehavior.ClientSetNull);
+
+            entity.HasOne(mg => mg.Genre)
+                  .WithMany(g => g.MovieGenres)
+                  .HasForeignKey(mg => mg.GenreId)
+                  .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
 
         modelBuilder.Entity<MovieDetail>(entity =>
         {

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Interfaces.Repositories;
+using Application.Interfaces;
 using Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories
+namespace Infrastructure
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
@@ -20,7 +20,9 @@ namespace Infrastructure.Repositories
             _dbContext = context;
             _dbSet = _dbContext.Set<T>();
         }
+
         #region CUD Operations
+
         public virtual async Task<T> AddAsync(T entity)
         {
             //await _dbContext.Set<T>().AddAsync(entity);
