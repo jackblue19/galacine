@@ -10,4 +10,6 @@ public partial class Genre
     public string GenreDesc { get; set; } = null!;
 
     public virtual ICollection<Movie> Movies { get; set; } = new List<Movie>();
+    public ICollection<MovieGenre> MovieGenres { get; set; } = new List<MovieGenre>();
+
 }

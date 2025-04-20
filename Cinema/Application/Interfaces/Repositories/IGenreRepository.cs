@@ -11,5 +11,6 @@ namespace Application.Interfaces.Repositories
     {
         Task<Genre?> GetByDescriptionAsync(string desc);
         Task<IEnumerable<Movie>> GetMoviesAsync(int genreId);
+        Task<IEnumerable<Movie>> GetMoviesByGenresAsync(IEnumerable<int> genreIds);
     }
 }
