@@ -49,10 +49,18 @@ namespace Infrastructure.Repositories
                                                        .Contains(role.ToLower()))
                            .ToListAsync();
         public async Task<User?> GetByUsernameAsync(string username)
+
             => await _dbSet.FirstOrDefaultAsync(u => u.Username == username.ToLower());
 
         public async Task<User?> GetWithRoleAsync(int userId)
             => await _dbSet.Include(u => u.Role)
                            .FirstOrDefaultAsync(u => u.UserId == userId);
+
+        public async Task<bool> IsEmailExist(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return false;
+            var lowerEmail = email.ToLower();
+            return await _dbSet.AnyAsync(u => u.Email.ToLower() == lowerEmail);
+        }
     }
 }

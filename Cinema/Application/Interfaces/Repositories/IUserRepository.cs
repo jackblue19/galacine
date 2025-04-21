@@ -16,5 +16,6 @@ namespace Application.Interfaces.Repositories
         Task<IEnumerable<User>> GetByPhoneAsync(string? phone);
         Task<User?> GetByGoogleIdAsync(string googleId);
         Task<User?> GetWithRoleAsync(int userId);
+        Task<bool> IsEmailExist(string email);
     }
 }

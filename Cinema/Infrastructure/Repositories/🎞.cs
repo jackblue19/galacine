@@ -41,6 +41,7 @@ namespace Infrastructure.Repositories
                 .Where(mg => filter.GenreIds.Contains(mg.GenreId))
                 .Include(mg => mg.Movie)
                 .Select(mg => mg.Movie)
+
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(filter.Language))
