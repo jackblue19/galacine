@@ -31,11 +31,11 @@ builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieDetailRepository, MovieDetailRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-
+builder.Services.AddScoped<IScheduleRepository, SchudelesRepository>();
 // Add Scoped - service
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
-
+builder.Services.AddScoped<ISchedulesService, SchedulesService>();
 
 // Cookies - Sessions
 builder.Services.AddDistributedMemoryCache();

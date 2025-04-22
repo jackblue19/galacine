@@ -1,0 +1,54 @@
+﻿@page
+@model Web.Pages.Admin.Schedules.EditModel
+
+<h2>Edit lịch chiếu</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="Schedule.ScheduleId" />
+    <div class="form-group">
+        <label asp-for="Schedule.StartDatetime"></label>
+        <input asp-for="Schedule.StartDatetime" class="form-control" />
+        <span asp-validation-for="Schedule.StartDatetime" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+       162        <label asp-for="Schedule.EndDatetime"></label>
+        <input asp-for="Schedule.EndDatetime" class="form-control" />
+        <span asp-validation-for="Schedule.EndDatetime" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Is3DValue"></label>
+        <input asp-for="Is3DValue" type="checkbox" />
+        <span asp-validation-for="Is3DValue" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsSubtitleValue"></label>
+        <input asp-for="IsSubtitleValue" type="checkbox" />
+        <span asp-validation-for="IsSubtitleValue" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Schedule.MovieId" class="control-label">Phim</label>
+        <select asp-for="Schedule.MovieId" class="form-control"
+                asp-items="@(new SelectList(Model.Movies, "MovieId", "MovieName"))">
+            <option value="">-- Chọn phim --</option>
+        </select>
+        <span asp-validation-for="Schedule.MovieId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Schedule.RoomId" class="control-label">Phòng</label>
+        <select asp-for="Schedule.RoomId" class="form-control"
+                asp-items="@(new SelectList(Model.Rooms, "RoomId", "RoomName"))">
+            <option value="">-- Chọn phòng --</option>
+        </select>
+        <span asp-validation-for="Schedule.RoomId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu</button>
+    <a asp-page="./Index" class="btn btn-secondary">Hủy</a>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}
