@@ -8,35 +8,48 @@
 <link rel="stylesheet" href="/css/login.css" />
 
 <div class="cinema-container">
-    <div class="cinema-left">
-        <div class="cinema-slider">
+	<div class="cinema-left">
+		@*<div class="cinema-slider">
             <img src="https://i.ebayimg.com/images/g/zRAAAOSwvaJgJSg1/s-l1600.webp" alt="Trailer Poster" />
             <div class="cinema-caption">
                 <h2>🎬 THE BATMAN</h2>
                 <p>Khởi chiếu toàn quốc từ 15.05.2025</p>
             </div>
-        </div>
-    </div>
+        </div>*@
+		<div class="cinema-slider">
+			<img src="https://i.ebayimg.com/images/g/zRAAAOSwvaJgJSg1/s-l1600.webp" class="slide" />
+			@* <img src="https://external-preview.redd.it/wVUMg3Mf9UVCAFOiNktL9yCmVZSzlSJdPpUsQSm3j5Q.jpg?width=640&crop=smart&auto=webp&s=3a9f30a7da170344e2870a5cb8489bb371e74e04" class="slide hidden" /> *@
+			@* <img src="https://preview.redd.it/superman-poster-hi-res-from-wb-v0-gx358ic7397e1.jpeg?auto=webp&s=d32f3e4d828ccbcc3c793b41d46547b6c715fd37" class="slide hidden" /> *@
 
-    <div class="cinema-right">
-        <div class="login-box">
-            <h2>🍿 Đăng nhập hệ thống rạp phim</h2>
-            <form method="post">
-                <div class="form-group">
-                    <label>Tên đăng nhập</label>
-                    <input asp-for="Username" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Mật khẩu</label>
-                    <input asp-for="Password" type="password" class="form-control" />
-                </div>
-                <button type="submit" class="btn-login">🎟 Vào rạp</button>
+			<div class="cinema-caption">
+				<h2>🎬 BỘ PHIM ĐANG HOT</h2>
+				<p>Đặt vé ngay hôm nay để nhận combo bắp nước!</p>
+			</div>
+		</div>
 
-                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-                {
-                    <div class="error">@Model.ErrorMessage</div>
-                }
-            </form>
-        </div>
-    </div>
+	</div>
+
+	<div class="cinema-right">
+		<div class="login-box">
+			<h2>🍿 Chào mừng đến Galacine</h2>
+			<form method="post">
+				<div class="form-group">
+					<label>Tên đăng nhập</label>
+					<input asp-for="Username" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label>Mật khẩu</label>
+					<input asp-for="Password" type="password" class="form-control" />
+				</div>
+				<button type="submit" class="btn-login">🎟 Vào rạp</button>
+
+				@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+				{
+					<div class="error">@Model.ErrorMessage</div>
+				}
+			</form>
+		</div>
+	</div>
 </div>
+
+<script src="/js/slider.js" defer></script>
