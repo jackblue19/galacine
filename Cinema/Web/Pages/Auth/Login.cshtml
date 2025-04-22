@@ -1,24 +1,42 @@
 ﻿@page "/auth/login"
 @model Web.Pages.Auth.LoginModel
 @{
-    ViewData["Title"] = "Đăng nhập";
+	ViewData["Title"] = "Đăng nhập";
+	Layout = null;
 }
 
-<h2>🔐 Đăng nhập</h2>
+<link rel="stylesheet" href="/css/login.css" />
 
-<form method="post">
-    <div class="mb-3">
-        <label asp-for="Username" class="form-label">Tên đăng nhập</label>
-        <input asp-for="Username" class="form-control" />
+<div class="cinema-container">
+    <div class="cinema-left">
+        <div class="cinema-slider">
+            <img src="https://i.ebayimg.com/images/g/zRAAAOSwvaJgJSg1/s-l1600.webp" alt="Trailer Poster" />
+            <div class="cinema-caption">
+                <h2>🎬 THE BATMAN</h2>
+                <p>Khởi chiếu toàn quốc từ 15.05.2025</p>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label asp-for="Password" class="form-label">Mật khẩu</label>
-        <input asp-for="Password" type="password" class="form-control" />
-    </div>
-    <button class="btn btn-primary" type="submit">Đăng nhập</button>
 
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-    {
-        <div class="alert alert-danger mt-2">@Model.ErrorMessage</div>
-    }
-</form>
+    <div class="cinema-right">
+        <div class="login-box">
+            <h2>🍿 Đăng nhập hệ thống rạp phim</h2>
+            <form method="post">
+                <div class="form-group">
+                    <label>Tên đăng nhập</label>
+                    <input asp-for="Username" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu</label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                </div>
+                <button type="submit" class="btn-login">🎟 Vào rạp</button>
+
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="error">@Model.ErrorMessage</div>
+                }
+            </form>
+        </div>
+    </div>
+</div>
