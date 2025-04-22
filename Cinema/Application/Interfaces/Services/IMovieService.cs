@@ -12,5 +12,10 @@ namespace Application.Interfaces.Services
         Task<Movie> CreateAsync(Movie movie, MovieDetail detail, IEnumerable<int> genreIds);
         Task<Movie> ModifyAsync(Movie movie, MovieDetail detail, IEnumerable<int> genreIds);
         //Task<IEnumerable<Movie>> GetByGenresAsync(GenreFilterDto filter);
+        Task<Movie?> GetWithDetailsAsync(int movieId);
+        Task<IEnumerable<Movie>> SearchByNameAsync(string? name);
+        Task<IEnumerable<Movie>> GetByCategoryAsync(int categoryId);
+        Task<IEnumerable<Movie>> GetAllTrailersAsync();
+        Task<IEnumerable<Genre>> GetGenresAsync(int movieId);
     }
 }
