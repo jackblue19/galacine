@@ -7,7 +7,7 @@ using Data.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository : IGenericRepository<User>
     {
         Task<User?> GetByEmailAsync(string? email);
         Task<User?> GetByUsernameAsync(string username);
@@ -17,5 +17,6 @@ namespace Application.Interfaces.Repositories
         Task<User?> GetByGoogleIdAsync(string googleId);
         Task<User?> GetWithRoleAsync(int userId);
         Task<bool> IsEmailExist(string email);
+        Task<bool> IsUsernameExist(string usn);
     }
 }

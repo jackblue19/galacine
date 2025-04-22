@@ -39,7 +39,7 @@ public partial class Movie
 
     public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
 
-    public virtual ICollection<Genre> Genres { get; set; } = new List<Genre>();
+    //public virtual ICollection<Genre> Genres { get; set; } = new List<Genre>();
     public ICollection<MovieGenre> MovieGenres { get; set; } = new List<MovieGenre>();
 
 }

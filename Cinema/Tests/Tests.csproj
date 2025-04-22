@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ApplicationTests\" />
     <Folder Include="InfrastructureTests\" />
     <Folder Include="WebTests\" />
     <Folder Include="TestHelpers\" />

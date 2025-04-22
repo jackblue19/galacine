@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application.Interfaces;
 
-namespace Application.Services;
+namespace Application;
 
 public class GenericService<T> : IGenericService<T> where T : class
 {

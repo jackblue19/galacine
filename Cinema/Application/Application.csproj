@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Mapping\" />
     <Folder Include="DTOs\" />
-    <Folder Include="Services\" />
     <Folder Include="Validators\" />
   </ItemGroup>
 

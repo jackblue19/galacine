@@ -186,22 +186,22 @@ public partial class CinemaDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Movie__CategoryI__4BAC3F29");
 
-            entity.HasMany(d => d.Genres).WithMany(p => p.Movies)
-                .UsingEntity<Dictionary<string, object>>(
-                    "MovieGenre",
-                    r => r.HasOne<Genre>().WithMany()
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__MovieGenr__Genre__4F7CD00D"),
-                    l => l.HasOne<Movie>().WithMany()
-                        .HasForeignKey("MovieId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__MovieGenr__Movie__4E88ABD4"),
-                    j =>
-                    {
-                        j.HasKey("MovieId", "GenreId").HasName("PK__MovieGen__BBEAC44D81C6A8C7");
-                        j.ToTable("MovieGenre");
-                    });
+            //entity.HasMany(d => d.Genres).WithMany(p => p.Movies)
+            //    .UsingEntity<Dictionary<string, object>>(
+            //        "MovieGenre",
+            //        r => r.HasOne<Genre>().WithMany()
+            //            .HasForeignKey("GenreId")
+            //            .OnDelete(DeleteBehavior.ClientSetNull)
+            //            .HasConstraintName("FK__MovieGenr__Genre__4F7CD00D"),
+            //        l => l.HasOne<Movie>().WithMany()
+            //            .HasForeignKey("MovieId")
+            //            .OnDelete(DeleteBehavior.ClientSetNull)
+            //            .HasConstraintName("FK__MovieGenr__Movie__4E88ABD4"),
+            //        j =>
+            //        {
+            //            j.HasKey("MovieId", "GenreId").HasName("PK__MovieGen__BBEAC44D81C6A8C7");
+            //            j.ToTable("MovieGenre");
+            //        });
         });
 
         modelBuilder.Entity<MovieBasePrice>(entity =>
