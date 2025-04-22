@@ -1,4 +1,11 @@
+using Application;
+using Application.Interfaces;
+using Application.Interfaces.Repositories;
+using Application.Interfaces.Services;
+using Application.Services;
 using Data;
+using Infrastructure;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +17,25 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<CinemaDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
 
-// Add Scoped
+
+// Register generic repositories
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+// Register generic services
+builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+
+// Add Scoped - repo
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<IMovieRepository, MovieRepository>();
+builder.Services.AddScoped<IMovieDetailRepository, MovieDetailRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
+// Add Scoped - service
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 
 // Cookies - Sessions
 builder.Services.AddDistributedMemoryCache();

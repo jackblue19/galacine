@@ -62,5 +62,12 @@ namespace Infrastructure.Repositories
             var lowerEmail = email.ToLower();
             return await _dbSet.AnyAsync(u => u.Email.ToLower() == lowerEmail);
         }
+
+        public async Task<bool> IsUsernameExist(string usn)
+        {
+            if (string.IsNullOrWhiteSpace(usn)) return false;
+            var lowerUsername = usn.ToLower();
+            return await _dbSet.AnyAsync(_ => _.Username == lowerUsername);
+        }
     }
 }
