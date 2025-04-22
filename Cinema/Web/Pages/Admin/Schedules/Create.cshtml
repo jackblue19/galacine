@@ -1,0 +1,155 @@
+﻿@page
+@model Web.Pages.Admin.Schedules.CreateModel
+<h2>Thêm lịch chiếu</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+}
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Schedule.MovieId" class="control-label">Phim</label>
+        <select asp-for="Schedule.MovieId" class="form-control" asp-items="@(new SelectList(Model.Movies, "MovieId", "MovieName"))" onchange="updateFormState()">
+            <option value="">-- Chọn phim --</option>
+        </select>
+        <span asp-validation-for="Schedule.MovieId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Schedule.RoomId" class="control-label">Phòng</label>
+        <select asp-for="Schedule.RoomId" class="form-control" asp-items="@(new SelectList(Model.Rooms, "RoomId", "RoomName"))" onchange="updateFormState()">
+            <option value="">-- Chọn phòng --</option>
+        </select>
+        <span asp-validation-for="Schedule.RoomId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" id="startDatetimeGroup" style="display: none;">
+        <label asp-for="Schedule.StartDatetime"></label>
+        <input asp-for="Schedule.StartDatetime" class="form-control" type="datetime-local" />
+        <span asp-validation-for="Schedule.StartDatetime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group" id="endDatetimeGroup" style="display: none;">
+        <label asp-for="Schedule.EndDatetime"></label>
+        <input asp-for="Schedule.EndDatetime" class="form-control" type="datetime-local" />
+        <span asp-validation-for="Schedule.EndDatetime" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="submitButton" disabled>Thêm</button>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let occupiedRanges = []; // Lưu các khoảng thời gian đã có lịch chiếu
+
+        function updateFormState() {
+            const movieId = document.querySelector('select[name="Schedule.MovieId"]').value;
+            const roomId = document.querySelector('select[name="Schedule.RoomId"]').value;
+            const startInput = document.querySelector('input[name="Schedule.StartDatetime"]');
+            const endInput = document.querySelector('input[name="Schedule.EndDatetime"]');
+            const startGroup = document.querySelector('#startDatetimeGroup');
+            const endGroup = document.querySelector('#endDatetimeGroup');
+            const submitButton = document.querySelector('#submitButton');
+
+            // Chỉ hiển thị các trường thời gian khi đã chọn cả MovieId và RoomId
+            if (movieId && roomId) {
+                startGroup.style.display = 'block';
+                endGroup.style.display = 'block';
+                submitButton.disabled = false;
+
+                // Thiết lập thời gian tối thiểu là hiện tại
+                const now = new Date();
+                const minDateTime = now.toISOString().slice(0, 16); // Định dạng yyyy-MM-ddThh:mm
+                startInput.setAttribute('min', minDateTime);
+                endInput.setAttribute('min', minDateTime);
+
+                // Lấy danh sách lịch chiếu hiện có
+                fetchSchedules(movieId, roomId, startInput, endInput);
+            } else {
+                startGroup.style.display = 'none';
+                endGroup.style.display = 'none';
+                submitButton.disabled = true;
+                startInput.value = '';
+                endInput.value = '';
+                occupiedRanges = [];
+            }
+        }
+
+        function fetchSchedules(movieId, roomId, startInput, endInput) {
+            $.ajax({
+                url: `/api/Schedules/byMovieAndRoom?movieId=${movieId}&roomId=${roomId}`,
+                method: 'GET',
+                success: function (schedules) {
+                    occupiedRanges = schedules.map(schedule => ({
+                        start: new Date(schedule.startDatetime),
+                        end: new Date(schedule.endDatetime)
+                    }));
+
+                    // Thêm sự kiện kiểm tra thời gian khi người dùng thay đổi giá trị
+                    startInput.addEventListener('change', checkOverlap);
+                    endInput.addEventListener('change', checkOverlap);
+                },
+                error: function () {
+                    console.error('Lỗi khi lấy danh sách lịch chiếu.');
+                }
+            });
+        }
+
+        function checkOverlap() {
+            const startInput = document.querySelector('input[name="Schedule.StartDatetime"]');
+            const endInput = document.querySelector('input[name="Schedule.EndDatetime"]');
+            const selectedStart = new Date(startInput.value);
+            const selectedEnd = new Date(endInput.value);
+
+            // Kiểm tra thời gian nhỏ hơn hiện tại (trường hợp người dùng sửa thủ công)
+            const now = new Date();
+            if (selectedStart < now) {
+                alert('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại.');
+                startInput.value = '';
+                return;
+            }
+            if (selectedEnd < now) {
+                alert('Thời gian kết thúc không được nhỏ hơn thời gian hiện tại.');
+                endInput.value = '';
+                return;
+            }
+
+            // Kiểm tra xem thời gian chọn có nằm trong khoảng thời gian đã có lịch chiếu không
+            for (const range of occupiedRanges) {
+                const rangeStart = range.start;
+                const rangeEnd = range.end;
+
+                // Kiểm tra thời gian bắt đầu
+                if (startInput.value && selectedStart >= rangeStart && selectedStart <= rangeEnd) {
+                    alert(`Thời gian bắt đầu nằm trong khoảng lịch chiếu đã có (${formatDate(rangeStart)} - ${formatDate(rangeEnd)}). Vui lòng chọn thời gian khác.`);
+                    startInput.value = '';
+                    return;
+                }
+
+                // Kiểm tra thời gian kết thúc
+                if (endInput.value && selectedEnd >= rangeStart && selectedEnd <= rangeEnd) {
+                    alert(`Thời gian kết thúc nằm trong khoảng lịch chiếu đã có (${formatDate(rangeStart)} - ${formatDate(rangeEnd)}). Vui lòng chọn thời gian khác.`);
+                    endInput.value = '';
+                    return;
+                }
+
+                // Kiểm tra nếu khoảng thời gian chọn bao phủ một khoảng thời gian đã có lịch
+                if (startInput.value && endInput.value && selectedStart <= rangeStart && selectedEnd >= rangeEnd) {
+                    alert(`Khoảng thời gian bạn chọn bao phủ lịch chiếu đã có (${formatDate(rangeStart)} - ${formatDate(rangeEnd)}). Vui lòng chọn thời gian khác.`);
+                    startInput.value = '';
+                    endInput.value = '';
+                    return;
+                }
+            }
+        }
+
+        function formatDate(date) {
+            return date.toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Gọi hàm updateFormState khi trang được tải để đảm bảo trạng thái ban đầu
+        document.addEventListener('DOMContentLoaded', updateFormState);
+    </script>
+}
