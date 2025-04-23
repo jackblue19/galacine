@@ -1,0 +1,33 @@
+﻿@page
+@model Web.Pages.Admin.ReportModel
+@{
+    ViewData["Title"] = "Báo cáo hệ thống";
+}
+
+<h2 class="text-2xl font-bold mb-4">📊 Báo cáo hệ thống</h2>
+
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <div class="p-4 bg-blue-100 rounded-lg shadow">
+        <strong>Tổng người dùng:</strong> @Model.TotalUsers
+    </div>
+    <div class="p-4 bg-green-100 rounded-lg shadow">
+        <strong>Tổng hóa đơn:</strong> @Model.TotalBills
+    </div>
+    <div class="p-4 bg-yellow-100 rounded-lg shadow">
+        <strong>Phim đang chiếu:</strong> @Model.ActiveMovies
+    </div>
+    <div class="p-4 bg-purple-100 rounded-lg shadow">
+        <strong>Phòng chiếu:</strong> @Model.TotalRooms
+    </div>
+    <div class="p-4 bg-red-100 rounded-lg shadow">
+        <strong>Dịch vụ:</strong> @Model.TotalServices
+    </div>
+</div>
+
+<h3 class="text-xl font-semibold mt-6 mb-2">🎟️ Vé theo loại</h3>
+<ul class="list-disc list-inside">
+    @foreach (var item in Model.TicketTypeStats)
+    {
+        <li>@item.Key: @item.Value vé</li>
+    }
+</ul>

@@ -36,7 +36,8 @@ builder.Services.AddScoped<IScheduleRepository, SchudelesRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISchedulesService, SchedulesService>();
-
+builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<ReportService>();
 // Cookies - Sessions
 builder.Services.AddDistributedMemoryCache();
 

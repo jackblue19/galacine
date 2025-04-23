@@ -1,0 +1,88 @@
+﻿@page
+@model Web.Pages.Admin.DashboardModel
+@{
+    Layout = "_Layout";
+}
+
+<h1>Dashboard</h1>
+
+<div class="row">
+    <!-- Total Revenue -->
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Total Revenue</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.TotalRevenue.ToString("C")</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Tickets Sold -->
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Total Tickets Sold</div>
+            <div class="card-body">
+                <h5 class="card-title">@Model.TotalTicketsSold</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Revenue By Day Chart -->
+<h2>Revenue by Day</h2>
+<canvas id="revenueByDayChart" width="400" height="200"></canvas>
+
+<!-- Revenue By Movie Chart -->
+<h2>Revenue by Movie</h2>
+<canvas id="revenueByMovieChart" width="400" height="200"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Chart for Revenue by Day
+        var ctxDay = document.getElementById('revenueByDayChart').getContext('2d');
+        var revenueByDayChart = new Chart(ctxDay, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RevenueByDay.Keys)),
+                datasets: [{
+                    label: 'Revenue by Day',
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RevenueByDay.Values)),
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Chart for Revenue by Movie
+        var ctxMovie = document.getElementById('revenueByMovieChart').getContext('2d');
+        var revenueByMovieChart = new Chart(ctxMovie, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RevenueByMovie.Keys)),
+                datasets: [{
+                    label: 'Revenue by Movie',
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.RevenueByMovie.Values)),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}
