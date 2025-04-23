@@ -33,6 +33,7 @@ namespace Application.Services
         {
             return await _context.Movies
                 .Where(m => m.MovieStatus == "Active")  // Corrected comparison with ==
+                .Where(m => m.MovieStatus == "Active")  
                 .CountAsync();
         }
 
@@ -59,6 +60,7 @@ namespace Application.Services
                     Count = g.Count()
                 })
                 .ToDictionaryAsync(x => x.Type, x => x.Count);  // Ensure Type is string, Count is int
+                .ToDictionaryAsync(x => x.Type, x => x.Count);  
         }
     }
 }

@@ -1,12 +1,14 @@
 ﻿// Pages/Admin/Dashboard.cshtml.cs
 
 using Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Web.Pages.Admin
 {
+    //[Authorize(Roles = "admin,manager,staff")]
     public class DashboardModel : PageModel
     {
         private readonly DashboardService _dashboardService;

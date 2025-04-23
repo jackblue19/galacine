@@ -5,29 +5,64 @@
 }
 
 <h2 class="text-2xl font-bold mb-4">📊 Báo cáo hệ thống</h2>
+<style>
+    .report-card {
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+        .report-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+</style>
 
 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
     <div class="p-4 bg-blue-100 rounded-lg shadow">
         <strong>Tổng người dùng:</strong> @Model.TotalUsers
+<h2 class="text-3xl font-bold mb-6 text-gray-800">📊 Báo cáo hệ thống</h2>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div class="p-5 bg-blue-100 rounded-xl report-card">
+        <div class="text-lg font-semibold text-blue-900">👥 Tổng người dùng</div>
+        <div class="text-2xl font-bold">@Model.TotalUsers</div>
     </div>
     <div class="p-4 bg-green-100 rounded-lg shadow">
         <strong>Tổng hóa đơn:</strong> @Model.TotalBills
+
+    <div class="p-5 bg-green-100 rounded-xl report-card">
+        <div class="text-lg font-semibold text-green-900">🧾 Tổng hóa đơn</div>
+        <div class="text-2xl font-bold">@Model.TotalBills</div>
     </div>
     <div class="p-4 bg-yellow-100 rounded-lg shadow">
         <strong>Phim đang chiếu:</strong> @Model.ActiveMovies
+
+    <div class="p-5 bg-yellow-100 rounded-xl report-card">
+        <div class="text-lg font-semibold text-yellow-900">🎬 Phim đang chiếu</div>
+        <div class="text-2xl font-bold">@Model.ActiveMovies</div>
     </div>
     <div class="p-4 bg-purple-100 rounded-lg shadow">
         <strong>Phòng chiếu:</strong> @Model.TotalRooms
+
+    <div class="p-5 bg-purple-100 rounded-xl report-card">
+        <div class="text-lg font-semibold text-purple-900">🏢 Phòng chiếu</div>
+        <div class="text-2xl font-bold">@Model.TotalRooms</div>
     </div>
     <div class="p-4 bg-red-100 rounded-lg shadow">
         <strong>Dịch vụ:</strong> @Model.TotalServices
+
+    <div class="p-5 bg-red-100 rounded-xl report-card">
+        <div class="text-lg font-semibold text-red-900">🍿 Dịch vụ</div>
+        <div class="text-2xl font-bold">@Model.TotalServices</div>
     </div>
 </div>
 
 <h3 class="text-xl font-semibold mt-6 mb-2">🎟️ Vé theo loại</h3>
 <ul class="list-disc list-inside">
+<h3 class="text-2xl font-semibold mt-10 mb-4 text-gray-700">🎟️ Vé theo loại</h3>
+<ul class="list-disc list-inside text-lg text-gray-800">
     @foreach (var item in Model.TicketTypeStats)
     {
         <li>@item.Key: @item.Value vé</li>
+        <li><span class="font-medium">@item.Key</span>: @item.Value vé</li>
     }
 </ul>

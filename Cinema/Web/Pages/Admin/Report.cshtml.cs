@@ -1,9 +1,12 @@
 using Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Web.Pages.Admin
+
 {
+    //[Authorize(Roles = "admin,manager,staff")]
     public class ReportModel : PageModel
     {
         private readonly ReportService _reportService;
