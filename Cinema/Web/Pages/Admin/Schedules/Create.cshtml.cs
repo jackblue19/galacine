@@ -26,6 +26,11 @@ namespace Web.Pages.Admin.Schedules
         public Schedule Schedule { get; set; }
         public List<Movie> Movies { get; set; } = new();
         public List<Room> Rooms { get; set; } = new();
+        [BindProperty]
+        public string Is3DSelection { get; set; } // Thuộc tính trung gian cho dropdown Is3D
+
+        [BindProperty]
+        public string IsSubtitleSelection { get; set; } 
         public async Task<IActionResult> OnGetAsync()
         {
             Movies = (await _movieRepo.GetAllAsync()).ToList();
@@ -37,7 +42,19 @@ namespace Web.Pages.Admin.Schedules
         {
             Movies = (await _movieRepo.GetAllAsync()).ToList();
             Rooms = (await _roomRepo.GetAllAsync()).ToList();
+            Schedule.Is3D = Is3DSelection switch
+            {
+                "true" => true,
+                "false" => false,
+                _ => null // "" hoặc bất kỳ giá trị nào khác sẽ là null
+            };
 
+            Schedule.IsSubtitle = IsSubtitleSelection switch
+            {
+                "true" => true,
+                "false" => false,
+                _ => null
+            };
 
             // Kiểm tra thời gian kết thúc phải lớn hơn thời gian bắt đầu
             if (Schedule.EndDatetime <= Schedule.StartDatetime)
@@ -56,10 +73,19 @@ namespace Web.Pages.Admin.Schedules
             {
                 ModelState.AddModelError("", "Lịch chiếu bị trùng với một lịch chiếu khác có cùng phim và phòng trong khoảng thời gian này.");
             }
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
+            ModelState.Remove("Schedule.Movie");
+            ModelState.Remove("Schedule.Room");
+            if (!ModelState.IsValid)
+            {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Key: {state.Key}, Error: {error.ErrorMessage}");
+                    }
+                }
+                return Page();
+            }
             await _schedulesService.AddAsync(Schedule);
             return RedirectToPage("./Index");
         }
