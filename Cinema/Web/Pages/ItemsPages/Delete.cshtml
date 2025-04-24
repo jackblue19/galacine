@@ -1,0 +1,17 @@
+﻿@page "{id:int}"
+@model Web.Pages.Items.DeleteModel
+@{
+    ViewData["Title"] = "Delete Item";
+}
+
+<h2>Delete Item</h2>
+
+<div>
+    <p>Are you sure you want to delete: <strong>@Model.Item.ItemDesc</strong>?</p>
+</div>
+
+<form method="post">
+    <input type="hidden" asp-for="Item.ItemId" />
+    <button type="submit">Delete</button>
+    <a asp-page="Index">Cancel</a>
+</form>

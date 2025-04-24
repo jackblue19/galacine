@@ -1,0 +1,58 @@
+﻿@page
+@model Web.Pages.Vouchers.CreateModel
+@{
+    ViewData["Title"] = "Create Voucher";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema Booking System</title>
+    <link rel="stylesheet" href="~/css/Voucher.css">
+</head>
+<h2>Create Voucher</h2>
+
+<form method="post">
+    <div>
+        <label asp-for="Voucher.Code">Code:</label>
+        <input asp-for="Voucher.Code" />
+        <span asp-validation-for="Voucher.Code" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Voucher.VoucherDesc">Description:</label>
+        <input asp-for="Voucher.VoucherDesc" />
+        <span asp-validation-for="Voucher.VoucherDesc" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Voucher.DiscountPercent">Discount %:</label>
+        <input asp-for="Voucher.DiscountPercent" type="number" step="0.01" />
+        <span asp-validation-for="Voucher.DiscountPercent" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Voucher.MinPurchaseAmount">Min Purchase:</label>
+        <input asp-for="Voucher.MinPurchaseAmount" type="number" step="0.01" />
+        <span asp-validation-for="Voucher.MinPurchaseAmount" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Voucher.ExpiredDate">Expiry Date:</label>
+        <input asp-for="Voucher.ExpiredDate" type="date" />
+        <span asp-validation-for="Voucher.ExpiredDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-check">
+        <input class="form-check-input" asp-for="Voucher.IsActive" type="checkbox" />
+        <label class="form-check-label" asp-for="Voucher.IsActive">Is Active</label>
+        <span asp-validation-for="Voucher.IsActive" class="text-danger"></span>
+    </div>
+
+    <br />
+    <button type="submit">Create</button>
+    <a asp-page="Index">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
