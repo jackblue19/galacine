@@ -1,0 +1,62 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>@ViewData["Title"] - Admin</title>
+
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/slimselect.css" />
+    <link rel="stylesheet" href="~/css/admin.css" />
+    <link rel="icon" type="image/png" href="~/AdminTemplate/img/favicon-32x32.png" />
+</head>
+<body>
+    <header class="header">
+        <div class="header__content">
+            <a href="/admin/index" class="header__logo">
+                <img src="~/AdminTemplate/img/logo.svg" alt="Admin" />
+            </a>
+            <button class="header__btn"><span></span><span></span><span></span></button>
+        </div>
+    </header>
+
+    <div class="sidebar">
+        <a href="/admin/index" class="sidebar__logo">
+            <img src="~/AdminTemplate/img/logo.svg" alt="Admin" />
+        </a>
+
+        <div class="sidebar__user">
+            <div class="sidebar__user-img"><img src="~/AdminTemplate/img/user.svg" alt="" /></div>
+            <div class="sidebar__user-title">
+                <span>Admin</span>
+                <p>@User.Identity?.Name</p>
+            </div>
+            <button class="sidebar__user-btn" type="button">
+                <!-- icon here -->
+            </button>
+        </div>
+
+        @await Html.PartialAsync("_SideBarAdmin")
+
+        <div class="sidebar__copyright">
+            © CinemaSystem 2025 – FlixGo Theme. <br />
+            Template by Dmitry Volkov
+        </div>
+    </div>
+
+    <main class="main">
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+    </main>
+
+    <script src="~/AdminTemplate/js/bootstrap.bundle.min.js"></script>
+    <script src="~/AdminTemplate/js/smooth-scrollbar.js"></script>
+    <script src="~/AdminTemplate/js/slimselect.min.js"></script>
+    <script src="~/AdminTemplate/js/admin.js"></script>
+</body>
+</html>

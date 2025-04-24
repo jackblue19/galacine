@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Data;
 using Data.Entities;
 
-namespace Web.Pages.Manager.UserManager
+namespace Web.Pages.Manager.MovieManager
 {
     public class DeleteModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace Web.Pages.Manager.UserManager
         }
 
         [BindProperty]
-        public User User { get; set; } = default!;
+        public Movie Movie { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,15 +29,15 @@ namespace Web.Pages.Manager.UserManager
                 return NotFound();
             }
 
-            var user = await _context.Users.FirstOrDefaultAsync(m => m.UserId == id);
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieId == id);
 
-            if (user == null)
+            if (movie == null)
             {
                 return NotFound();
             }
             else
             {
-                User = user;
+                Movie = movie;
             }
             return Page();
         }
@@ -49,11 +49,11 @@ namespace Web.Pages.Manager.UserManager
                 return NotFound();
             }
 
-            var user = await _context.Users.FindAsync(id);
-            if (user != null)
+            var movie = await _context.Movies.FindAsync(id);
+            if (movie != null)
             {
-                User = user;
-                _context.Users.Remove(User);
+                Movie = movie;
+                _context.Movies.Remove(Movie);
                 await _context.SaveChangesAsync();
             }
 

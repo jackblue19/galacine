@@ -1,0 +1,46 @@
+﻿.edit-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.edit-section {
+    background: #222;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.15);
+}
+
+    .edit-section h2 {
+        color: #FFD700;
+        margin-bottom: 1rem;
+    }
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    background-color: #333;
+    border: none;
+    border-radius: 6px;
+    color: white;
+}
+
+.btn-save {
+    background-color: #ff5e3a;
+    padding: 10px;
+    border: none;
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+    .btn-save:hover {
+        background-color: #FFD700;
+        color: black;
+    }

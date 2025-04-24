@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Data;
 using Data.Entities;
 
-namespace Web.Pages.Manager.UserManager
+namespace Web.Pages.Manager.MovieManager
 {
     public class DetailsModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace Web.Pages.Manager.UserManager
             _context = context;
         }
 
-        public User User { get; set; } = default!;
+        public Movie Movie { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,14 +28,14 @@ namespace Web.Pages.Manager.UserManager
                 return NotFound();
             }
 
-            var user = await _context.Users.FirstOrDefaultAsync(m => m.UserId == id);
-            if (user == null)
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieId == id);
+            if (movie == null)
             {
                 return NotFound();
             }
             else
             {
-                User = user;
+                Movie = movie;
             }
             return Page();
         }

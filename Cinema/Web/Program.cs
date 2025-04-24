@@ -42,6 +42,10 @@ builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISchedulesService, SchedulesService>();
+builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IMovieGenreService, MovieGenreService>();
 builder.Services.AddScoped<IVoucherService, VoucherService>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
@@ -52,8 +56,8 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/SessionPages/Create";
-        options.AccessDeniedPath = "/SessionPages";
+        options.LoginPath = "/auth/login";
+        options.AccessDeniedPath = "/auth";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     });
 
