@@ -21,6 +21,7 @@
 		<!-- sidebar logo -->
 		<a href="#" class="sidebar__logo">
 			<img src="~/AdminTemplate_files/logo.svg" alt="">
+			@* <img src="~/AdminTemplate_files/cine_logo.svg" alt=""> *@
 		</a>
 		<!-- end sidebar logo -->
 		<!-- sidebar user -->
@@ -52,7 +53,6 @@
 					<div class="main__title">
 						<h2>Current User</h2>
 						@* fixing *@
-						<span class="main__title-stat" hidden>@Model.FilteredUsers.Count() tổng</span>
 						<form method="get" class="main__title-form" hidden>
 							<input name="SearchQuery" value="@Model.SearchQuery" placeholder="Tìm tên, username hoặc email" />
 							<input type="date" name="FromDate" value="@Model.FromDate" />
@@ -77,7 +77,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach (var user in Model.PagedUsers)
+							@foreach (var user in Model.Users)
 							{
 								<tr>
 									<td style="color: white;">@user.UserId</td>
@@ -99,10 +99,10 @@
 									<td style="color: white;">@user.CreatedAt?.ToString("dd/MM/yyyy")</td>
 									<td>
 										<div class="catalog__btns">
-											<a asp-page="Edit" asp-route-id="@user.UserId" class="catalog__btn--edit">🖋</a>
-											<form method="post" asp-page-handler="Delete" asp-route-id="@user.UserId">
+											@* <a asp-page="Edit" asp-route-id="@user.UserId" class="catalog__btn--edit">🖋</a> *@
+											@*<form method="post" asp-page-handler="Delete" asp-route-id="@user.UserId">
 												<button type="submit" class="catalog__btn--delete confirm-delete">🗑</button>
-											</form>
+											</form>*@
 											<button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalStatus_@user.UserId">
 												⚙ Đổi trạng thái
 											</button>
@@ -135,24 +135,6 @@
 							}
 						</tbody>
 					</table>
-				</div>
-
-				<!-- Pagination -->
-				<div class="col-12">
-					<ul class="pagination">
-						@for (int i = 1; i <= Model.TotalPages; i++)
-						{
-							<li class="page-item @(i == Model.Page ? "active" : "")">
-								<a class="page-link"
-								   asp-route-Page="@i"
-								   asp-route-SortBy="@Model.SortBy"
-								   asp-route-SortAsc="@Model.SortAsc"
-								   asp-route-SearchQuery="@Model.SearchQuery"
-								   asp-route-FromDate="@Model.FromDate"
-								   asp-route-ToDate="@Model.ToDate">@i</a>
-							</li>
-						}
-					</ul>
 				</div>
 			</div>
 		</div>
