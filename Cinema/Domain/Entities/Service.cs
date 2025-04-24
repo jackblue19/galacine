@@ -13,7 +13,7 @@ public partial class Service
 
     public int? ApprovedBy { get; set; }
 
-    public bool? IsApproved { get; set; }
+    public bool IsApproved { get; set; }
 
     public string? Note { get; set; }
 

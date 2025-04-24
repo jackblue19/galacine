@@ -10,5 +10,7 @@ namespace Application.Interfaces.Repositories
     public interface IServiceRepository : IGenericRepository<Service>
     {
         Task<IEnumerable<Service>> GetPendingApprovalAsync();
+        Task ApproveAsync(int serviceId);
     }
 }
+
