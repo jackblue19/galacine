@@ -16,7 +16,6 @@ namespace Application.Services
     {
         private readonly IMovieRepository _movieRepo;
         private readonly IMovieDetailRepository _movieDetailRepo;
-        private readonly CinemaDbContext _dbContext;
         public MovieService(IGenericRepository<Movie> repo,
                             IMovieRepository movieService,
                             IMovieDetailRepository movieDetailRepository) : base(repo)
@@ -25,28 +24,9 @@ namespace Application.Services
             _movieDetailRepo = movieDetailRepository;
         }
 
-        public async Task<Movie> CreateAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds)
+        public Task<Movie> CreateAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds)
         {
-            var newMovie = await _movieRepo.AddAsync(movie);
-            var currentId = newMovie.MovieId;
-
-            if (detail != null)
-            {
-                detail.MovieId = currentId;
-                await _movieDetailRepo.AddAsync(detail);
-            }
-            if (genreIds != null)
-            {
-                foreach (var gid in genreIds)
-                {
-                    await _dbContext.Database.ExecuteSqlRawAsync(
-                        $"INSERT INTO MovieGenre(MovieId, GenreId) VALUES({movie.MovieId}, {gid})");
-                }
-            }
-
-            var res = await GetWithDetailsAsync(currentId);
-            if (res == null) return new Movie();
-            return res;
+            throw new NotImplementedException();
         }
 
         public Task<Movie> ModifyAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds)
@@ -68,5 +48,14 @@ namespace Application.Services
 
         public async Task<IEnumerable<Movie>> SearchByNameAsync(string? name)
             => await _movieRepo.SearchByNameAsync(name);
+
+        public async Task<Movie> CreateWithRelationsAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds)
+            => await _movieRepo.CreateWithRelationsAsync(movie, detail, genreIds);
+        public async Task<Movie> UpdateWithRelationsAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds)
+            => await _movieRepo.UpdateWithRelationsAsync(movie, detail, genreIds);
+
+        public async Task<bool> DeleteWithRelationsAsync(int movieId)
+            => await _movieRepo.DeleteWithRelationsAsync(movieId);
+
     }
 }

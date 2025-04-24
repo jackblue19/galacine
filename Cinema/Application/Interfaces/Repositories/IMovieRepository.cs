@@ -14,5 +14,8 @@ namespace Application.Interfaces.Repositories
         Task<IEnumerable<Movie>> SearchByNameAsync(string? name);
         Task<IEnumerable<Movie>> GetAllTrailersAsync();
         Task<IEnumerable<Genre>> GetGenresAsync(int movieId);
+        Task<Movie> CreateWithRelationsAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds);
+        Task<Movie> UpdateWithRelationsAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds);
+        Task<bool> DeleteWithRelationsAsync(int movieId);
     }
 }

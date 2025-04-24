@@ -1,0 +1,54 @@
+﻿@page "{id:int}"
+@model Web.Pages.Manager.MovieManager.EditModel
+
+@{
+    ViewData["Title"] = "🎞️ Cập nhật phim";
+}
+
+<h2>🎬 Cập nhật Phim</h2>
+
+<form method="post" class="space-y-4">
+    <input asp-for="Movie.MovieId" type="hidden" />
+
+    <div>
+        <label asp-for="Movie.MovieName">🎥 Tên phim</label>
+        <input asp-for="Movie.MovieName" class="form-control" />
+    </div>
+
+    <div>
+        <label asp-for="Movie.MovieDesc">📝 Mô tả</label>
+        <textarea asp-for="Movie.MovieDesc" class="form-control"></textarea>
+    </div>
+
+    <div>
+        <label asp-for="Detail.Director">🎬 Đạo diễn</label>
+        <input asp-for="Detail.Director" class="form-control" />
+    </div>
+
+    <div>
+        <label>🎭 Thể loại</label>
+        @foreach (var genre in Model.GenreList)
+        {
+            <div>
+                <input type="checkbox" name="SelectedGenres" value="@genre.Value" checked="@genre.Selected" />
+                <label>@genre.Text</label>
+            </div>
+        }
+    </div>
+
+    <div>
+        <label asp-for="Movie.CategoryId">📂 Danh mục</label>
+        <select asp-for="Movie.CategoryId" class="form-control" asp-items="Model.CategoryList">
+            <option value="">-- Chọn --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn-primary">💾 Lưu thay đổi</button>
+</form>
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,60 @@
+﻿@page "/manager/createnew"
+@model Web.Pages.Manager.MovieManager.CreateModel
+
+@{
+	ViewData["Title"] = "🎬 Thêm phim mới";
+}
+
+<link rel="stylesheet" href="~/css/cinema-theme.css" />
+
+
+<h2 class="text-3xl font-bold mb-4 text-purple-800">🎬 Thêm Phim Mới</h2>
+
+<form method="post" class="space-y-4">
+
+	<div>
+		<label asp-for="Movie.MovieName">Tên phim</label>
+		<input asp-for="Movie.MovieName" class="form-control" />
+	</div>
+
+	<div>
+		<label asp-for="Movie.MovieDesc">Mô tả</label>
+		<textarea asp-for="Movie.MovieDesc" class="form-control"></textarea>
+	</div>
+
+	<div>
+		<label asp-for="Detail.Director">Đạo diễn</label>
+		<input asp-for="Detail.Director" class="form-control" />
+	</div>
+
+	<div>
+		<label>Thể loại</label>
+		@foreach (var genre in Model.GenreList)
+		{
+			<div class="form-check">
+				<input type="checkbox" name="SelectedGenres" value="@genre.Value" class="form-check-input" />
+				<label class="form-check-label">@genre.Text</label>
+			</div>
+		}
+	</div>
+
+	<div>
+		<label asp-for="Movie.CategoryId">Phân loại</label>
+		<select asp-for="Movie.CategoryId" class="form-control" asp-items="Model.CategoryList">
+			<option disabled selected>-- Chọn thể loại chính --</option>
+		</select>
+	</div>
+
+
+	<button type="submit" class="btn btn-success">🎞️ Lưu phim</button>
+</form>
+
+<div>
+	<a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
