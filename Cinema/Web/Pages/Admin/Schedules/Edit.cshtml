@@ -1,54 +1,335 @@
 ﻿@page
 @model Web.Pages.Admin.Schedules.EditModel
+@using Data.Entities
+@{
+    Layout = null;
+}
 
-<h2>Edit lịch chiếu</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<form method="post">
-    <input type="hidden" asp-for="Schedule.ScheduleId" />
-    <div class="form-group">
-        <label asp-for="Schedule.StartDatetime"></label>
-        <input asp-for="Schedule.StartDatetime" class="form-control" />
-        <span asp-validation-for="Schedule.StartDatetime" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-       162        <label asp-for="Schedule.EndDatetime"></label>
-        <input asp-for="Schedule.EndDatetime" class="form-control" />
-        <span asp-validation-for="Schedule.EndDatetime" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Is3DValue"></label>
-        <input asp-for="Is3DValue" type="checkbox" />
-        <span asp-validation-for="Is3DValue" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="IsSubtitleValue"></label>
-        <input asp-for="IsSubtitleValue" type="checkbox" />
-        <span asp-validation-for="IsSubtitleValue" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Schedule.MovieId" class="control-label">Phim</label>
-        <select asp-for="Schedule.MovieId" class="form-control"
-                asp-items="@(new SelectList(Model.Movies, "MovieId", "MovieName"))">
-            <option value="">-- Chọn phim --</option>
-        </select>
-        <span asp-validation-for="Schedule.MovieId" class="text-danger"></span>
-    </div>
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/AdminTemplate_files/bootstrap.min.css">
+    <link rel="stylesheet" href="~/AdminTemplate_files/slimselect.css">
+    <link rel="stylesheet" href="~/AdminTemplate_files/admin.css">
 
-    <div class="form-group">
-        <label asp-for="Schedule.RoomId" class="control-label">Phòng</label>
-        <select asp-for="Schedule.RoomId" class="form-control"
-                asp-items="@(new SelectList(Model.Rooms, "RoomId", "RoomName"))">
-            <option value="">-- Chọn phòng --</option>
-        </select>
-        <span asp-validation-for="Schedule.RoomId" class="text-danger"></span>
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="https://flixgo.volkovdesign.com/admin/icon/favicon-32x32.png" sizes="32x32">
+    <link rel="apple-touch-icon" href="https://flixgo.volkovdesign.com/admin/icon/favicon-32x32.png">
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Dmitry Volkov">
+    <title>FlixGo – Online Movies, TV Shows & Cinema HTML Template</title>
+
+    <style id="smooth-scrollbar-style">
+        [data-scrollbar] {
+            display: block;
+            position: relative;
+        }
+
+        .scroll-content {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+
+        .scrollbar-track {
+            position: absolute;
+            opacity: 0;
+            z-index: 1;
+            background: rgba(222, 222, 222, .75);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-transition: opacity 0.5s 0.5s ease-out;
+            transition: opacity 0.5s 0.5s ease-out;
+        }
+
+            .scrollbar-track.show,
+            .scrollbar-track:hover {
+                opacity: 1;
+                -webkit-transition-delay: 0s;
+                transition-delay: 0s;
+            }
+
+        .scrollbar-track-x {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+        }
+
+        .scrollbar-track-y {
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 100%;
+        }
+
+        .scrollbar-thumb {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 8px;
+            background: rgba(0, 0, 0, .5);
+            border-radius: 4px;
+        }
+
+    
+        .sign__wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100%;
+        }
+
+        .sign__form {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+       
+        .main__title-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+            min-width: 200px; 
+            white-space: nowrap;
+        }
+
+            .main__title-link:hover {
+                background-color: #e9ecef;
+                color: #007bff;
+            }
+
+            .main__title-link svg {
+                margin-right: 8px;
+                width: 16px;
+                height: 16px;
+                fill: currentColor;
+                flex-shrink: 0;
+            }
+
+            .main__title-link span {
+                flex: 1;
+            }
+      
+        .sign__btn--save {
+            position: relative;
+            padding: 10px 20px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+            margin-bottom: 20px; 
+        }
+
+            .sign__btn--save:hover {
+                background-color: #0056b3;
+            }
+
+      
+        .sign__btn--cancel {
+            position: relative;
+            padding: 10px 20px;
+            background-color: #6c757d;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+            .sign__btn--cancel:hover {
+                background-color: #5a6268;
+            }
+
+        .sign__group--buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sign__checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .sign__checkbox {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #007bff;
+            transition: transform 0.2s;
+        }
+
+            .sign__checkbox:hover {
+                transform: scale(1.1);
+            }
+
+        .sign__checkbox-label {
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- header -->
+    <header class="header">
+        <div class="header__content">
+            <a href="#" class="header__logo">
+                <img src="~/AdminTemplate_files/logo.svg" alt="">
+            </a>
+            <button class="header__btn" type="button">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+    <!-- end header -->
+    <!-- sidebar -->
+    <div class="sidebar">
+        <a href="#" class="sidebar__logo">
+            <img src="~/AdminTemplate_files/logo.svg" alt="">
+        </a>
+        <div class="sidebar__user">
+            <div class="sidebar__user-img">
+                <img src="~/AdminTemplate_files/user.svg" alt="">
+            </div>
+            <div class="sidebar__user-title">
+                <span>Admin</span>
+                <p>John Doe</p>
+            </div>
+            <button class="sidebar__user-btn" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,12a1,1,0,0,0,1,1h7.59l-2.3,2.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0l4-4a1,1,0,0,0,.21-.33,1,1,0,0,0,0-.76,1,1,0,0,0-.21-.33l-4-4a1,1,0,1,0-1.42,1.42L12.59,11H5A1,1,0,0,0,4,12ZM17,2H7A3,3,0,0,0,4,5V8A1,1,0,0,0,6,8V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V19a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V16a1,1,0,0,0-2,0v3a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V5A3,3,0,0,0,17,2Z"></path></svg>
+            </button>
+        </div>
+        @await Html.PartialAsync("_SideBarAdmin")
+        <div class="sidebar__copyright">© FlixGo, 2018—2023. <br>Create by <a href="https://themeforest.net/user/dmitryvolkov/portfolio" target="_blank" rel="noopener">Dmitry Volkov</a>.</div>
     </div>
+    <!-- end sidebar -->
+    <!-- main content -->
+    <main class="main">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- main title -->
+                <div class="col-12">
+                    <div class="main__title">
+                        <h2>Update Schedule</h2>
+                        <div class="main__title-wrap">
+                            <a asp-page="./Index" class="main__title-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17,11H9.41l3.3-3.29a1,1,0,1,0-1.42-1.42l-5,5a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l5,5a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L9.41,13H17a1,1,0,0,0,0-2Z"></path></svg>
+                                <span>Back Schedules</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- end main title -->
+                <!-- form -->
+                <div class="col-12">
+                    <div class="sign__wrap">
+                        <div class="sign__form">
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                            }
 
-    <button type="submit" class="btn btn-primary">Lưu</button>
-    <a asp-page="./Index" class="btn btn-secondary">Hủy</a>
-</form>
+                            <form method="post">
+                                <input type="hidden" asp-for="Schedule.ScheduleId" />
 
-@section Scripts {
+                                <div class="sign__group">
+                                    <label asp-for="Schedule.MovieId" class="sign__label">Phim</label>
+                                    <select asp-for="Schedule.MovieId" class="sign__select" asp-items="@(new SelectList(Model.Movies, "MovieId", "MovieName"))">
+                                        <option value="">-- Chọn phim --</option>
+                                    </select>
+                                    <span asp-validation-for="Schedule.MovieId" class="text-danger"></span>
+                                </div>
+
+                                <div class="sign__group">
+                                    <label asp-for="Schedule.RoomId" class="sign__label">Phòng</label>
+                                    <select asp-for="Schedule.RoomId" class="sign__select" asp-items="@(new SelectList(Model.Rooms, "RoomId", "RoomName"))">
+                                        <option value="">-- Chọn phòng --</option>
+                                    </select>
+                                    <span asp-validation-for="Schedule.RoomId" class="text-danger"></span>
+                                </div>
+
+                                <div class="sign__group">
+                                    <label asp-for="Schedule.StartDatetime" class="sign__label"></label>
+                                    <input asp-for="Schedule.StartDatetime" class="sign__input" type="datetime-local" />
+                                    <span asp-validation-for="Schedule.StartDatetime" class="text-danger"></span>
+                                </div>
+
+                                <div class="sign__group">
+                                    <label asp-for="Schedule.EndDatetime" class="sign__label"></label>
+                                    <input asp-for="Schedule.EndDatetime" class="sign__input" type="datetime-local" />
+                                    <span asp-validation-for="Schedule.EndDatetime" class="text-danger"></span>
+                                </div>
+
+                                <div class="sign__group">
+                                    <label asp-for="Is3DValue" class="sign__label">3D</label>
+                                    <select asp-for="Is3DValue" class="sign__select">
+                                        <option value="">Unknown</option>
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                    <span asp-validation-for="Is3DValue" class="text-danger"></span>
+                                </div>
+
+                                <div class="sign__group">
+                                    <label asp-for="IsSubtitleValue" class="sign__label">Caption</label>
+                                    <select asp-for="IsSubtitleValue" class="sign__select">
+                                        <option value="">Unknown</option>
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                    <span asp-validation-for="IsSubtitleValue" class="text-danger"></span>
+                                </div>
+
+                                <div class="sign__group">
+                                    <button type="submit" class="sign__btn sign__btn--save"><span>Save</span></button>
+                                    <a asp-page="./Index" class="sign__btn sign__btn--cancel"><span>Cancel</span></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- end form -->
+            </div>
+        </div>
+    </main>
+    <!-- end main content -->
+    <!-- JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-}
+    <script src="~/AdminTemplate_files/bootstrap.bundle.min.js"></script>
+    <script src="~/AdminTemplate_files/smooth-scrollbar.js"></script>
+    <script src="~/AdminTemplate_files/slimselect.min.js"></script>
+    <script src="~/AdminTemplate_files/admin.js"></script>
+</body>
+</html>
