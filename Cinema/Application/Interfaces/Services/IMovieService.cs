@@ -9,8 +9,8 @@ namespace Application.Interfaces.Services
 {
     public interface IMovieService : IGenericService<Movie>
     {
-        Task<Movie> CreateAsync(Movie movie, MovieDetail detail, IEnumerable<int> genreIds);
-        Task<Movie> ModifyAsync(Movie movie, MovieDetail detail, IEnumerable<int> genreIds);
+        Task<Movie> CreateAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds);
+        Task<Movie> ModifyAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds);
         //Task<IEnumerable<Movie>> GetByGenresAsync(GenreFilterDto filter);
         Task<Movie?> GetWithDetailsAsync(int movieId);
         Task<IEnumerable<Movie>> SearchByNameAsync(string? name);

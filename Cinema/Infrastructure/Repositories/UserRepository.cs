@@ -48,6 +48,7 @@ namespace Infrastructure.Repositories
                            .Where(u => u.Role.RoleDesc.ToLower()
                                                        .Contains(role.ToLower()))
                            .ToListAsync();
+
         public async Task<User?> GetByUsernameAsync(string username)
 
             => await _dbSet.FirstOrDefaultAsync(u => u.Username == username.ToLower());
