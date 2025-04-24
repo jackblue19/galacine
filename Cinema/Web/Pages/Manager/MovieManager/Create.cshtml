@@ -3,52 +3,57 @@
 
 @{
 	ViewData["Title"] = "🎬 Thêm phim mới";
+	Layout = "_LayoutManager";
 }
 
-<link rel="stylesheet" href="~/css/cinema-theme.css" />
+<div class="movie-create-container">
+    <!-- LEFT FORM -->
+    <form method="post" class="movie-form-section">
+        <h2>🎬 Thông Tin Phim</h2>
 
+        <label>Tên phim</label>
+        <input asp-for="Movie.MovieName" class="form-control" />
 
-<h2 class="text-3xl font-bold mb-4 text-purple-800">🎬 Thêm Phim Mới</h2>
+        <label>Mô tả</label>
+        <textarea asp-for="Movie.MovieDesc" class="form-control"></textarea>
 
-<form method="post" class="space-y-4">
+        <label>Đạo diễn</label>
+        <input asp-for="Detail.Director" class="form-control" />
 
-	<div>
-		<label asp-for="Movie.MovieName">Tên phim</label>
-		<input asp-for="Movie.MovieName" class="form-control" />
-	</div>
+        <label>Thể loại</label>
+        <div class="checkbox-group">
+            @foreach (var genre in Model.GenreList)
+            {
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="SelectedGenres" value="@genre.Value" checked="@genre.Selected" />
+                    @genre.Text
+                </label>
+            }
+        </div>
 
-	<div>
-		<label asp-for="Movie.MovieDesc">Mô tả</label>
-		<textarea asp-for="Movie.MovieDesc" class="form-control"></textarea>
-	</div>
+        <label>Phân loại</label>
+        <select asp-for="Movie.CategoryId" class="form-control" asp-items="Model.CategoryList">
+            <option value="">-- Chọn thể loại chính --</option>
+        </select>
 
-	<div>
-		<label asp-for="Detail.Director">Đạo diễn</label>
-		<input asp-for="Detail.Director" class="form-control" />
-	</div>
+        <button type="submit" class="btn-submit">🎞️ Lưu phim</button>
+    </form>
 
-	<div>
-		<label>Thể loại</label>
-		@foreach (var genre in Model.GenreList)
-		{
-			<div class="form-check">
-				<input type="checkbox" name="SelectedGenres" value="@genre.Value" class="form-check-input" />
-				<label class="form-check-label">@genre.Text</label>
-			</div>
-		}
-	</div>
+    <!-- RIGHT PREVIEW -->
+    <div class="movie-preview-section">
+        <h3>📸 Ảnh Preview</h3>
+        <input type="file" class="form-control" />
 
-	<div>
-		<label asp-for="Movie.CategoryId">Phân loại</label>
-		<select asp-for="Movie.CategoryId" class="form-control" asp-items="Model.CategoryList">
-			<option disabled selected>-- Chọn thể loại chính --</option>
-		</select>
-	</div>
+        <h4>🎞️ Trailer</h4>
+        <input type="text" placeholder="Nhập link YouTube" class="form-control" />
 
+        <h4>⭐ Rating</h4>
+        <input asp-for="Movie.Rating" type="number" class="form-control" step="0.1" min="0" max="10" />
 
-	<button type="submit" class="btn btn-success">🎞️ Lưu phim</button>
-</form>
-
+        <h4>🌍 Quốc gia</h4>
+        <input asp-for="Movie.Nation" class="form-control" />
+    </div>
+</div>
 <div>
 	<a asp-page="Index">Back to List</a>
 </div>

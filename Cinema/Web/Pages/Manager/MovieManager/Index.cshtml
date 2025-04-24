@@ -3,40 +3,39 @@
 
 @{
     ViewData["Title"] = "📽️ Danh sách phim";
+    Layout = "_LayoutManager";
 }
 
-<h1>Index</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/movie-index.css" />
+}
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-
-<h2>📽️ Danh Sách Phim</h2>
-
-<table class="table-cinema">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Tên phim</th>
-            <th>Thể loại</th>
-            <th>Thời lượng</th>
-            <th>Thao tác</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var movie in Model.Movies)
-        {
+<div class="index-container">
+    <h1 class="index-title">📽️ Danh sách phim</h1>
+    <table class="table-movie">
+        <thead>
             <tr>
-                <td>@movie.MovieId</td>
-                <td>@movie.MovieName</td>
-                <td>
-                    @* @string.Join(", ", movie.Genres.Select(g => g.GenreDesc)) *@
-                </td>
-                <td>@movie.Duration phút</td>
-                <td>
-                    <a class="btn btn-primary" asp-page="Edit" asp-route-id="@movie.MovieId">✏️ Sửa</a>
-                </td>
+                <th>ID</th>
+                <th>Tên phim</th>
+                <th>Thể loại</th>
+                <th>Thời lượng</th>
+                <th>Thao tác</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var movie in Model.Movies)
+            {
+                <tr>
+                    <td>@movie.MovieId</td>
+                    <td>@movie.MovieName</td>
+                    @* <td>@string.Join(", ", movie.Genres.Select(g => g.GenreDesc))</td> *@
+                    <td>@movie.Duration phút</td>
+                    <td>
+                        <a asp-page="Edit" asp-route-id="@movie.MovieId" class="action-link">✏️ Sửa</a>
+                        <a asp-page="Delete" asp-route-id="@movie.MovieId" class="action-link">🗑️ Xoá</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
