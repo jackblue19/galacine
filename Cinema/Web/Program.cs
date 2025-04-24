@@ -2,6 +2,7 @@ using Application;
 using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
+using Application.Mapping;
 using Application.Services;
 using Data;
 using Infrastructure;
@@ -32,9 +33,11 @@ builder.Services.AddScoped<IMovieRepository, MovieRepository>();
 builder.Services.AddScoped<IMovieDetailRepository, MovieDetailRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IScheduleRepository, SchudelesRepository>();
-//moviegenre repo
+builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();;
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
-
+builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
 // Add Scoped - service
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -43,6 +46,9 @@ builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IMovieGenreService, MovieGenreService>();
+builder.Services.AddScoped<IVoucherService, VoucherService>();
+builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<IServiceService, ServiceService>();
 
 // Cookies - Sessions
 builder.Services.AddDistributedMemoryCache();

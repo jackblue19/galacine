@@ -1,0 +1,59 @@
+﻿@page "{id:int}"
+@model Web.Pages.ItemsPages.EditModel
+
+@{
+    ViewData["Title"] = "Edit Item";
+}
+
+<h2 class="mb-4">Edit Item</h2>
+
+<form method="post" class="card shadow-sm p-4">
+    <div class="mb-3">
+        <label asp-for="Item.ItemDesc" class="form-label">Description</label>
+        <input asp-for="Item.ItemDesc" class="form-control" />
+        <span asp-validation-for="Item.ItemDesc" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Item.SuggestedPrice" class="form-label">Suggested Price</label>
+        <input asp-for="Item.SuggestedPrice" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="Item.SuggestedPrice" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Item.OriginalPrice" class="form-label">Original Price</label>
+        <input asp-for="Item.OriginalPrice" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="Item.OriginalPrice" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Item.Amount" class="form-label">Amount</label>
+        <input asp-for="Item.Amount" class="form-control" type="number" />
+        <span asp-validation-for="Item.Amount" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Item.Type" class="form-label">Type</label>
+        <select asp-for="Item.Type" class="form-select" asp-items="Model.TypeOptions">
+            <option value="">-- Select Type --</option>
+        </select>
+        <span asp-validation-for="Item.Type" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Item.ItemCategory" class="form-label">Category</label>
+        <select asp-for="Item.ItemCategory" class="form-select" asp-items="Model.CategoryOptions">
+            <option value="">-- Select Category --</option>
+        </select>
+        <span asp-validation-for="Item.ItemCategory" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

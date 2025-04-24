@@ -1,0 +1,38 @@
+﻿@page
+@model Web.Pages.Items.IndexModel
+@{
+    ViewData["Title"] = "Items";
+}
+
+<h2>Items</h2>
+
+<a asp-page="Create">Create New</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th>Price</th>
+            <th>Amount</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.ItemDesc</td>
+                <td>@item.ItemCategory</td>
+                <td>@item.Type</td>
+                <td>@item.SuggestedPrice</td>
+                <td>@item.Amount</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@item.ItemId">Edit</a> |
+                    <a asp-page="Delete" asp-route-id="@item.ItemId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

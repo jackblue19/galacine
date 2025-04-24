@@ -1,0 +1,40 @@
+﻿@page
+@model Web.Pages.ServicesPages.ApproveModel
+@{
+    ViewData["Title"] = "Approve Services";
+}
+
+<h2>Approve Services</h2>
+
+@if (!Model.PendingServices.Any())
+{
+    <p>No pending services for approval.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Created By</th>
+                <th>Note</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var service in Model.PendingServices)
+            {
+                <tr>
+                    <td>@service.ServiceDesc</td>
+                    <td>@service.CreatedBy</td>
+                    <td>@service.Note</td>
+                    <td>
+                        <form method="post" asp-page-handler="Approve" asp-route-id="@service.ServiceId">
+                            <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
