@@ -1,0 +1,28 @@
+﻿@page "{id:int}"
+@model Web.Pages.ServicesPages.EditModel
+@{
+    ViewData["Title"] = "Edit Service";
+}
+
+<h2>Edit Service</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="ServiceDto.ServiceDesc" class="form-label"></label>
+        <input asp-for="ServiceDto.ServiceDesc" class="form-control" />
+        <span asp-validation-for="ServiceDto.ServiceDesc" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ServiceDto.Note" class="form-label"></label>
+        <textarea asp-for="ServiceDto.Note" class="form-control"></textarea>
+        <span asp-validation-for="ServiceDto.Note" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
