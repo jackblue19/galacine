@@ -6,13 +6,88 @@
 
 <h2 class="text-2xl font-bold mb-4">📊 Báo cáo hệ thống</h2>
 <style>
+    :root {
+        --color-bg: #1e1e2f;
+        --color-card: #2a2a40;
+        --color-accent: #6366f1;
+        --color-soft: #c084fc;
+        --text-muted: #9ca3af;
+        --border-soft: rgba(255, 255, 255, 0.05);
+    }
+
+    body {
+        background: var(--color-bg);
+        color: #f1f5f9;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 2rem;
+        background: linear-gradient(to right, #a78bfa, #f472b6, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
     .report-card {
         transition: transform 0.2s ease, box-shadow 0.3s ease;
+        background: var(--color-card);
+        border-radius: 1.5rem;
+        padding: 1.5rem;
+        box-shadow: 0 0 0 1px var(--border-soft), 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
     }
 
         .report-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+
+    .report-icon {
+        font-size: 2rem;
+        margin-right: 1rem;
+        background: linear-gradient(to right, #818cf8, #22d3ee);
+        padding: 0.5rem;
+        border-radius: 0.75rem;
+    }
+
+    .highlight-text {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--color-accent);
+    }
+
+    .ticket-section {
+        background: #2e2e42;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .ticket-item {
+        background: #3b3b55;
+        padding: 1rem 1.5rem;
+        border-radius: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s;
+    }
+
+        .ticket-item:hover {
+            background: #4c4c6d;
+        }
+
+        .ticket-item + .ticket-item {
+            margin-top: 0.75rem;
         }
 </style>
 
@@ -20,6 +95,8 @@
     <div class="p-4 bg-blue-100 rounded-lg shadow">
         <strong>Tổng người dùng:</strong> @Model.TotalUsers
 <h2 class="text-3xl font-bold mb-6 text-gray-800">📊 Báo cáo hệ thống</h2>
+<div class="max-w-7xl mx-auto py-10 px-6">
+    <h2 class="section-title">📊 Báo cáo hệ thống</h2>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
     <div class="p-5 bg-blue-100 rounded-xl report-card">
@@ -28,6 +105,17 @@
     </div>
     <div class="p-4 bg-green-100 rounded-lg shadow">
         <strong>Tổng hóa đơn:</strong> @Model.TotalBills
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="report-card">
+            <div class="flex items-center">
+                <div class="report-icon">👥</div>
+                <div>
+                    <div class="text-sm text-gray-400">Người dùng</div>
+                    <div class="highlight-text">@Model.TotalUsers</div>
+                </div>
+            </div>
+        </div>
 
     <div class="p-5 bg-green-100 rounded-xl report-card">
         <div class="text-lg font-semibold text-green-900">🧾 Tổng hóa đơn</div>
@@ -35,6 +123,15 @@
     </div>
     <div class="p-4 bg-yellow-100 rounded-lg shadow">
         <strong>Phim đang chiếu:</strong> @Model.ActiveMovies
+        <div class="report-card">
+            <div class="flex items-center">
+                <div class="report-icon">🧾</div>
+                <div>
+                    <div class="text-sm text-gray-400">Tổng hóa đơn</div>
+                    <div class="highlight-text">@Model.TotalBills</div>
+                </div>
+            </div>
+        </div>
 
     <div class="p-5 bg-yellow-100 rounded-xl report-card">
         <div class="text-lg font-semibold text-yellow-900">🎬 Phim đang chiếu</div>
@@ -42,10 +139,38 @@
     </div>
     <div class="p-4 bg-purple-100 rounded-lg shadow">
         <strong>Phòng chiếu:</strong> @Model.TotalRooms
+        <div class="report-card">
+            <div class="flex items-center">
+                <div class="report-icon">🎬</div>
+                <div>
+                    <div class="text-sm text-gray-400">Phim đang chiếu</div>
+                    <div class="highlight-text">@Model.ActiveMovies</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="report-card">
+            <div class="flex items-center">
+                <div class="report-icon">🏛️</div>
+                <div>
+                    <div class="text-sm text-gray-400">Phòng chiếu</div>
+                    <div class="highlight-text">@Model.TotalRooms</div>
+                </div>
+            </div>
+        </div>
 
     <div class="p-5 bg-purple-100 rounded-xl report-card">
         <div class="text-lg font-semibold text-purple-900">🏢 Phòng chiếu</div>
         <div class="text-2xl font-bold">@Model.TotalRooms</div>
+        <div class="report-card">
+            <div class="flex items-center">
+                <div class="report-icon">🍿</div>
+                <div>
+                    <div class="text-sm text-gray-400">Tổng dịch vụ</div>
+                    <div class="highlight-text">@Model.TotalServices</div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="p-4 bg-red-100 rounded-lg shadow">
         <strong>Dịch vụ:</strong> @Model.TotalServices
@@ -53,6 +178,19 @@
     <div class="p-5 bg-red-100 rounded-xl report-card">
         <div class="text-lg font-semibold text-red-900">🍿 Dịch vụ</div>
         <div class="text-2xl font-bold">@Model.TotalServices</div>
+    <!-- Ticket Type Stats -->
+    <div class="ticket-section">
+        <h3 class="text-xl font-semibold mb-4 text-pink-400">🎟️ Phân loại vé (30 ngày gần nhất)</h3>
+        @foreach (var item in Model.TicketTypeStats)
+        {
+            <div class="ticket-item">
+                <div>
+                    <div class="font-medium">@item.Key</div>
+                    <div class="text-sm text-gray-400">Loại vé</div>
+                </div>
+                <div class="text-purple-300 text-lg font-bold">@item.Value</div>
+            </div>
+        }
     </div>
 </div>
 
