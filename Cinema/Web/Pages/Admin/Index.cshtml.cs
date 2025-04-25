@@ -8,7 +8,6 @@ namespace Web.Pages.Admin
 {
     public class IndexModel : PageModel
     {
-        public void OnGet()
         private readonly DashboardService _dashboardService;
 
         public IndexModel(DashboardService dashboardService)

@@ -34,21 +34,9 @@ namespace Application.Services
                 .CountAsync();
         }
 
-        // Doanh thu theo ngày
-       
-        public async Task<Dictionary<string, decimal>> GetRevenueByDayAsync()
         // tổng số lượng item đã bán
         public async Task<int> GetTotalItemsSoldAsync()
         {
-            return await _context.Bills
-                .Where(b => b.IsPaid.HasValue && b.IsPaid.Value)  
-                .GroupBy(b => b.BillDateTime.HasValue ? b.BillDateTime.Value.Date : DateTime.MinValue)  
-                .Select(g => new
-                {
-                    Day = g.Key.ToString("yyyy-MM-dd"),
-                    Revenue = g.Sum(b => b.TotalCost)
-                })
-                .ToDictionaryAsync(x => x.Day, x => x.Revenue);
             return await _context.TicketAddons
                 .SumAsync(ta => (int?)ta.Quantity) ?? 0;
         }
@@ -65,8 +53,6 @@ namespace Application.Services
                 .CountAsync();
         }
 
-        // Doanh thu theo phim
-        public async Task<Dictionary<string, decimal>> GetRevenueByMovieAsync()
         // Doanh thu theo phim để làm sơ đồ
         public async Task<Dictionary<string, decimal>> GetRevenueByMovie1Async()
         {
