@@ -42,6 +42,14 @@
 					<input asp-for="Password" type="password" class="form-control" />
 				</div>
 				<button type="submit" class="btn-login">🎟 Vào rạp</button>
+				<br />
+				<div class="form-group text-center mt-3">
+					<a class="btn-login btn-google" href="/auth/google-login">
+						<img src="https://developers.google.com/identity/images/g-logo.png" style="height: 20px; margin-right: 8px;" />
+						Đăng nhập bằng Google
+					</a>
+				</div>
+
 
 				@if (!string.IsNullOrEmpty(Model.ErrorMessage))
 				{

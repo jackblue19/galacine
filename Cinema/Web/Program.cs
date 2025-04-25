@@ -1,4 +1,4 @@
-using Application;
+﻿using Application;
 using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
@@ -8,12 +8,15 @@ using Data;
 using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddControllers();
+builder.Services.AddSession();
 
 builder.Services.AddDbContext<CinemaDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
@@ -50,16 +53,29 @@ builder.Services.AddScoped<IVoucherService, VoucherService>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
 
-// Cookies - Sessions
-builder.Services.AddDistributedMemoryCache();
-
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+// ========== Authentication & Google ==========
+builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+    })
     .AddCookie(options =>
     {
         options.LoginPath = "/auth/login";
         options.AccessDeniedPath = "/auth";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    })
+    .AddGoogle(options =>
+    {
+        var googleSection = builder.Configuration.GetSection("Authentication:Google");
+        options.ClientId = googleSection["ClientId"];
+        options.ClientSecret = googleSection["ClientSecret"];
+        options.CallbackPath = "/signin-google"; 
     });
+
+// Cookies - Sessions
+builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
@@ -67,6 +83,12 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.MinimumSameSitePolicy = SameSiteMode.Lax;
+});
+
 builder.Services.AddAuthorization();
 
 
@@ -85,11 +107,13 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCookiePolicy();
+app.UseSession();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseSession();
-
 app.MapRazorPages();
+app.MapControllers();
 
 app.Run();
