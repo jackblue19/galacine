@@ -130,14 +130,14 @@ namespace Application.Services
         // Get total revenue (TotalAmount) within a given date range (or current month if no filter)
         public async Task<decimal> GetTotalRevenueAsync(DateTime? startDate, DateTime? endDate)
         {
-            // Use the current month if no date range is specified
+           
             var start = startDate ?? new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             var end = endDate ?? start.AddMonths(1).AddDays(-1);
             var totalRevenue = await _context.Bills
                 .Where(b => b.BillDateTime >= start && b.BillDateTime <= end && b.BillStatus == "Paid")
-                .SumAsync(b => b.FinalCost); // This will be decimal? (nullable)
+                .SumAsync(b => b.FinalCost); 
 
-            return totalRevenue.GetValueOrDefault(); // Returns 0 if totalRevenue is null
+            return totalRevenue.GetValueOrDefault(); 
 
         }
 
