@@ -78,7 +78,7 @@ namespace Application.Services
             return await _context.Tickets
                 .Include(t => t.Schedule)
                     .ThenInclude(s => s.Movie)
-                .Where(t => t.TicketStatus == "Used" || t.TicketStatus == "Active")  // Fixed string comparison
+                .Where(t => t.TicketStatus == "Used" || t.TicketStatus == "Active")  
                 .GroupBy(t => t.Schedule.Movie.MovieName)
                 .Select(g => new
                 {

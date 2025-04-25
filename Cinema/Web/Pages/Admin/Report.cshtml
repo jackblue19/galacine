@@ -2,6 +2,7 @@
 @model Web.Pages.Admin.ReportModel
 @{
     ViewData["Title"] = "Báo cáo hệ thống";
+    Layout = null;
 }
 
 <style>
@@ -204,17 +205,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="report-card">
-            <div class="flex items-center">
-                <div class="report-icon">🏛️</div>
-                <div>
-                    <div class="text-sm text-gray-400">Total Room</div>
-                    <div class="highlight-text">@Model.TotalRooms</div>
-                </div>
-            </div>
-        </div>
-
         <div class="report-card">
             <div class="flex items-center">
                 <div class="report-icon">🍿</div>
