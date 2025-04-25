@@ -28,10 +28,11 @@ namespace Web.Pages.Admin
         public int TotalRooms { get; set; }
         public int TotalServices { get; set; }
         public Dictionary<string, int> TicketTypeStats { get; set; }
-
+        public decimal TotalRevenue { get; set; }
         public async Task OnGetAsync()
         {
-      
+            TotalRevenue = await _reportService.GetTotalRevenueAsync(StartDate, EndDate);
+
             TotalUsers = await _reportService.GetTotalUsersAsync(StartDate, EndDate);
             TotalBills = await _reportService.GetTotalBillsAsync(StartDate, EndDate);
             ActiveMovies = await _reportService.GetActiveMoviesAsync(StartDate, EndDate);
