@@ -26,9 +26,9 @@ namespace Web.Pages.Admin
 
         public async Task OnGetAsync()
         {
-            TotalTicketsSold = await _dashboardService.GetTotalTicketsSoldAsync();
-            TotalItemsSold = await _dashboardService.GetTotalItemsSoldAsync();
-            TotalCustomers = await _dashboardService.GetTotalCustomersAsync();
+            TotalTicketsSold = await _dashboardService.GetTotalTicketsSoldThisMonthAsync();
+            TotalItemsSold = await _dashboardService.GetTotalItemsSoldThisMonthAsync();
+            TotalCustomers = await _dashboardService.GetTotalCustomersThisMonthAsync();
             RevenueByMonth = await _dashboardService.GetTotalRevenueByMonthAsync();
             TopMovies = await _dashboardService.GetTopMoviesAsync();
             TopServices = await _dashboardService.GetTopServicesAsync();

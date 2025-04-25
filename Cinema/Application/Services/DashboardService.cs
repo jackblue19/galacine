@@ -18,38 +18,57 @@ namespace Application.Services
             _context = context;
         }
 
-        // Tổng doanh thu từ các hóa đơn đã thanh toán
-        public async Task<decimal> GetTotalRevenueAsync()
+        // ✅ Tổng doanh thu từ các hóa đơn đã thanh toán trong tháng này
+        public async Task<decimal> GetTotalRevenueThisMonthAsync()
         {
+            var now = DateTime.Now;
             return await _context.Bills
-                .Where(b => b.IsPaid.HasValue && b.IsPaid.Value)  
-                .SumAsync(b => (decimal?)b.TotalCost) ?? 0;
+                .Where(b => b.IsPaid == true &&
+                            b.BillDateTime.HasValue &&
+                            b.BillDateTime.Value.Month == now.Month &&
+                            b.BillDateTime.Value.Year == now.Year)
+                .SumAsync(b => (decimal?)b.FinalCost) ?? 0;
         }
 
-        // Tổng số vé đã bán
-        public async Task<int> GetTotalTicketsSoldAsync()
+        // ✅ Tổng số vé đã bán trong tháng này
+        public async Task<int> GetTotalTicketsSoldThisMonthAsync()
         {
+            var now = DateTime.Now;
             return await _context.Tickets
-                .Where(t => t.TicketStatus == "Used" || t.TicketStatus == "Active")  
+                .Where(t => (t.TicketStatus == "Used" || t.TicketStatus == "Active") &&
+                            t.TicketDateTime.HasValue &&
+                            t.TicketDateTime.Value.Month == now.Month &&
+                            t.TicketDateTime.Value.Year == now.Year)
                 .CountAsync();
         }
 
-        // tổng số lượng item đã bán
-        public async Task<int> GetTotalItemsSoldAsync()
+        // ✅ Tổng số lượng item đã bán trong tháng này
+        public async Task<int> GetTotalItemsSoldThisMonthAsync()
         {
+            var now = DateTime.Now;
             return await _context.TicketAddons
+                .Where(ta => ta.Ticket != null &&
+                             ta.Ticket.TicketDateTime.HasValue &&
+                             ta.Ticket.TicketDateTime.Value.Month == now.Month &&
+                             ta.Ticket.TicketDateTime.Value.Year == now.Year)
                 .SumAsync(ta => (int?)ta.Quantity) ?? 0;
         }
-        //tổng số lượng người dùng
-        public async Task<int> GetTotalCustomersAsync()
+
+        // ✅ Tổng số lượng người dùng đăng ký trong tháng này
+        public async Task<int> GetTotalCustomersThisMonthAsync()
         {
+            var now = DateTime.Now;
+
             var customerRoleId = await _context.Roles
                 .Where(r => r.RoleDesc.ToLower() == "customer")
                 .Select(r => r.RoleId)
                 .FirstOrDefaultAsync();
 
             return await _context.Users
-                .Where(u => u.RoleId == customerRoleId)
+                .Where(u => u.RoleId == customerRoleId &&
+                            u.CreatedAt.HasValue &&
+                            u.CreatedAt.Value.Month == now.Month &&
+                            u.CreatedAt.Value.Year == now.Year)
                 .CountAsync();
         }
 

@@ -1,12 +1,11 @@
-using Application.Services;
-using Microsoft.AspNetCore.Authorization;
+﻿using Application.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.Threading.Tasks;
 
 namespace Web.Pages.Admin
-
 {
-    //[Authorize(Roles = "admin,manager,staff")]
     public class ReportModel : PageModel
     {
         private readonly ReportService _reportService;
@@ -16,6 +15,14 @@ namespace Web.Pages.Admin
             _reportService = reportService;
         }
 
+        // Các thuộc tính cho bộ lọc ngày tháng
+        [BindProperty(SupportsGet = true)]
+        public DateTime? StartDate { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public DateTime? EndDate { get; set; }
+
+        // Các thông tin báo cáo
         public int TotalUsers { get; set; }
         public int TotalBills { get; set; }
         public int ActiveMovies { get; set; }
@@ -25,12 +32,14 @@ namespace Web.Pages.Admin
 
         public async Task OnGetAsync()
         {
-            TotalUsers = await _reportService.GetTotalUsersAsync();
-            TotalBills = await _reportService.GetTotalBillsAsync();
-            ActiveMovies = await _reportService.GetActiveMoviesAsync();
-            TotalRooms = await _reportService.GetTotalRoomsAsync();
-            TotalServices = await _reportService.GetTotalServicesAsync();
-            TicketTypeStats = await _reportService.GetTicketTypeStatsAsync();
+            // Lấy báo cáo từ dịch vụ
+            TotalUsers = await _reportService.GetTotalUsersAsync(StartDate, EndDate);
+            TotalBills = await _reportService.GetTotalBillsAsync(StartDate, EndDate);
+            ActiveMovies = await _reportService.GetActiveMoviesAsync(StartDate, EndDate);
+            TotalServices = await _reportService.GetTotalServicesAsync(StartDate, EndDate);
+            TicketTypeStats = await _reportService.GetTicketTypeStatsAsync(StartDate, EndDate);
         }
+
     }
 }
+
