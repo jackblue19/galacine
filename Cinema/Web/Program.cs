@@ -18,18 +18,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 builder.Services.AddSession();
-builder.Services.AddControllers();
-builder.Services.AddSession();
 
 builder.Services.AddDbContext<CinemaDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
-
 
 // Register generic repositories
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 // Register generic services
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+
+// Register auto-mapper
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 // Add Scoped - repo
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -44,9 +44,9 @@ builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IPriceRepository, PriceRepository>();
-builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
-
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
+
+
 // Add Scoped - service
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
@@ -61,7 +61,9 @@ builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<ISeatService, SeatService>();
 builder.Services.AddScoped<IPriceService, PriceService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
-// ========== Authentication & Google ==========
+
+
+// ========== Authentication & Google & Cookies & Session ==========
 builder.Services
     .AddAuthentication(options =>
     {
@@ -82,20 +84,6 @@ builder.Services
         options.CallbackPath = "/signin-google"; 
     });
 
-// Cookies - Sessions
-builder.Services.AddDistributedMemoryCache();
-    })
-    .AddGoogle(options =>
-    {
-        var googleSection = builder.Configuration.GetSection("Authentication:Google");
-        options.ClientId = googleSection["ClientId"];
-        options.ClientSecret = googleSection["ClientSecret"];
-        options.CallbackPath = "/signin-google"; 
-    });
-
-// Cookies - Sessions
-builder.Services.AddDistributedMemoryCache();
-
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(15);
@@ -103,11 +91,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.Configure<CookiePolicyOptions>(options =>
-{
-    options.MinimumSameSitePolicy = SameSiteMode.Lax;
-});
-
+builder.Services.AddDistributedMemoryCache();
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
