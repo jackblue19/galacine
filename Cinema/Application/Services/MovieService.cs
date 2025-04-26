@@ -56,6 +56,15 @@ namespace Application.Services
 
         public async Task<bool> DeleteWithRelationsAsync(int movieId)
             => await _movieRepo.DeleteWithRelationsAsync(movieId);
+        private readonly IMovieRepository _movieRepository;
+        public async Task<IList<Movie>> GetNowShowingMovies()
+        {
+            return await _movieRepo.GetActiveMoviesByCategory("Now Showing");
+        }
 
+        public async Task<Movie> GetMovieById(int id)
+        {
+            return await _movieRepo.GetMovieById(id);
+        }
     }
 }

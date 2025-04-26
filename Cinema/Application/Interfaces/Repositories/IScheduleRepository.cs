@@ -11,5 +11,8 @@ namespace Application.Interfaces.Repositories
     {
         Task<IEnumerable<Schedule>> GetByMovieAsync(int movieId);
         Task<IEnumerable<Schedule>> GetUpcomingAsync();
+        Task<IList<Schedule>> GetSchedulesByMovieId(int movieId, DateTime startDate, DateTime endDate);
+        Task<Schedule> GetScheduleById(int id);
+        Task<IList<DateTime>> GetDistinctDatesForMovie(int movieId, DateTime startDate, DateTime endDate);
     }
 }

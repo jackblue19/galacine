@@ -17,5 +17,8 @@ namespace Application.Interfaces.Services
         Task<Schedule> UpdateAsync(Schedule entity);
         Task<bool> HasOverlapAsync(Schedule entity);
         Task<bool> DeleteAsync(int id);
+        Task<IList<Schedule>> GetSchedulesForMovie(int movieId);
+        Task<Schedule> GetScheduleById(int id);
+        Task<IList<DateTime>> GetAvailableDatesForMovie(int movieId);
     }
 }

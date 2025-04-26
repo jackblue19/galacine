@@ -122,5 +122,23 @@ namespace Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
             return movie;
         }
+        public async Task<IList<Movie>> GetActiveMoviesByCategory(string categoryDesc)
+        {
+            return await _dbContext.Movies
+                .Include(m => m.Category)
+                .Include(m => m.MovieGenres)
+                    .ThenInclude(mg => mg.Genre)
+                .Where(m => m.MovieStatus == "Active" && m.Category.CategoryDesc == categoryDesc)
+                .ToListAsync();
+        }
+
+        public async Task<Movie> GetMovieById(int id)
+        {
+            return await _dbContext.Movies
+                .Include(m => m.Category)
+                .Include(m => m.MovieGenres)
+                    .ThenInclude(mg => mg.Genre)
+                .FirstOrDefaultAsync(m => m.MovieId == id);
+        }
     }
 }

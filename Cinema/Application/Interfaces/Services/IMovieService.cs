@@ -22,5 +22,7 @@ namespace Application.Interfaces.Services
         Task<Movie> CreateWithRelationsAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds);
         Task<Movie> UpdateWithRelationsAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds);
         Task<bool> DeleteWithRelationsAsync(int movieId);
+        Task<IList<Movie>> GetNowShowingMovies();
+        Task<Movie> GetMovieById(int id);
     }
 }

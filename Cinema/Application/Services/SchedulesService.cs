@@ -59,5 +59,25 @@ namespace Application.Services
 
             return await _scheduleRepository.DeleteAsync(id);
         }
+        public async Task<IList<Schedule>> GetSchedulesForMovie(int movieId)
+        {
+            var startDate = DateTime.Today;
+            var endDate = startDate.AddDays(7);
+
+            return await _scheduleRepository.GetSchedulesByMovieId(movieId, startDate, endDate);
+        }
+
+        public async Task<Schedule> GetScheduleById(int id)
+        {
+            return await _scheduleRepository.GetScheduleById(id);
+        }
+
+        public async Task<IList<DateTime>> GetAvailableDatesForMovie(int movieId)
+        {
+            var startDate = DateTime.Today;
+            var endDate = startDate.AddDays(7);
+
+            return await _scheduleRepository.GetDistinctDatesForMovie(movieId, startDate, endDate);
+        }
     }
 }

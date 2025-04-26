@@ -17,5 +17,7 @@ namespace Application.Interfaces.Repositories
         Task<Movie> CreateWithRelationsAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds);
         Task<Movie> UpdateWithRelationsAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds);
         Task<bool> DeleteWithRelationsAsync(int movieId);
+        Task<IList<Movie>> GetActiveMoviesByCategory(string categoryDesc);
+        Task<Movie> GetMovieById(int id);
     }
 }
