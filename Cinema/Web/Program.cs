@@ -35,6 +35,9 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IScheduleRepository, SchudelesRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();;
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
+builder.Services.AddScoped<ISeatRepository, SeatRepository>();
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IPriceRepository, PriceRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
@@ -49,7 +52,9 @@ builder.Services.AddScoped<IMovieGenreService, MovieGenreService>();
 builder.Services.AddScoped<IVoucherService, VoucherService>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IServiceService, ServiceService>();
-
+builder.Services.AddScoped<ISeatService, SeatService>();
+builder.Services.AddScoped<IPriceService, PriceService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
 // Cookies - Sessions
 builder.Services.AddDistributedMemoryCache();
 
@@ -69,7 +74,11 @@ builder.Services.AddSession(options =>
 });
 builder.Services.AddAuthorization();
 
-
+builder.Services.AddRazorPages()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -87,7 +96,11 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapGet("/", async context =>
+{
+    context.Response.Redirect("/client/index");
+    await Task.CompletedTask;
+});
 app.UseSession();
 
 app.MapRazorPages();

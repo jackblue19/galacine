@@ -1,0 +1,110 @@
+﻿@page
+@model Web.Pages.Client.ShowtimesModel
+@{
+    ViewData["Title"] = "Chọn Suất Chiếu";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <img src="@(string.IsNullOrEmpty(Model.Movie.MovieImg) ? "/images/default-movie.jpg" : Model.Movie.MovieImg)" class="card-img-top" alt="@Model.Movie.MovieName">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Movie.MovieName</h5>
+                    <p class="card-text">
+                        @foreach (var movieGenre in Model.Movie.MovieGenres)
+                        {
+                            <span class="badge bg-primary me-1">@movieGenre.Genre.GenreDesc</span>
+                        }
+                        <span class="badge bg-secondary">@Model.Movie.Duration phút</span>
+                        <span class="badge bg-info">@(Model.Movie.IsSub.HasValue && Model.Movie.IsSub.Value ? "Phụ đề" : "Lồng tiếng")</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <h2 class="mb-4">Chọn Suất Chiếu</h2>
+            
+            <ul class="nav nav-tabs mb-4" id="showDateTabs" role="tablist">
+                @for (int i = 0; i < Model.ShowDates.Count; i++)
+                {
+                    var date = Model.ShowDates[i];
+                    var isActive = i == 0;
+                    var dayOfWeek = date.ToString("dddd", new System.Globalization.CultureInfo("vi-VN"));
+                    var dateStr = date.ToString("dd/MM/yyyy");
+                    
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link @(isActive ? "active" : "")" 
+                                id="date-@date.ToString("yyyyMMdd")-tab" 
+                                data-bs-toggle="tab" 
+                                data-bs-target="#date-@date.ToString("yyyyMMdd")" 
+                                type="button" 
+                                role="tab" 
+                                aria-controls="date-@date.ToString("yyyyMMdd")" 
+                                aria-selected="@(isActive ? "true" : "false")">
+                            @dayOfWeek<br>@dateStr
+                        </button>
+                    </li>
+                }
+            </ul>
+            
+            <div class="tab-content" id="showDateTabContent">
+                @for (int i = 0; i < Model.ShowDates.Count; i++)
+                {
+                    var date = Model.ShowDates[i];
+                    var isActive = i == 0;
+                    var dateSchedules = Model.Schedules.Where(s => s.StartDatetime.Date == date.Date).ToList();
+                    
+                    <div class="tab-pane fade @(isActive ? "show active" : "")" 
+                         id="date-@date.ToString("yyyyMMdd")" 
+                         role="tabpanel" 
+                         aria-labelledby="date-@date.ToString("yyyyMMdd")-tab">
+                        
+                        @if (dateSchedules.Any())
+                        {
+                            var rooms = dateSchedules.Select(s => s.Room).Distinct().ToList();
+                            
+                            @foreach (var room in rooms)
+                            {
+                                var roomSchedules = dateSchedules.Where(s => s.RoomId == room.RoomId).ToList();
+                                
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">@room.RoomName (@room.RoomType)</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex flex-wrap gap-2">
+                                            @foreach (var schedule in roomSchedules)
+                                            {
+                                                <a asp-page="./SeatSelection" 
+                                                   asp-route-id="@schedule.ScheduleId" 
+                                                   class="btn btn-outline-primary showtime-btn">
+                                                    @schedule.StartDatetime.ToString("HH:mm")
+                                                    <small class="d-block">
+                                                        @(schedule.Is3D.HasValue && schedule.Is3D.Value ? "3D" : "2D")
+                                                        @(schedule.IsSubtitle.HasValue && schedule.IsSubtitle.Value ? "Phụ đề" : "Lồng tiếng")
+                                                    </small>
+                                                </a>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">
+                                Không có suất chiếu nào cho ngày này.
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <a asp-page="./Index" class="btn btn-secondary">Quay Lại</a>
+    </div>
+</div>

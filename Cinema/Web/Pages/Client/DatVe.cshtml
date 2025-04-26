@@ -1,0 +1,35 @@
+﻿@page
+@model Web.Pages.Client.DatVeModel
+@{
+    ViewData["Title"] = "Chọn Phim";
+}
+
+<div class="container mt-4 pt-3">
+    <h1 class="text-center mb-4">Phim Đang Chiếu</h1>
+
+    <div class="row">
+        @foreach (var movie in Model.Movies)
+        {
+            <div class="col-md-4 col-sm-6 mb-4">
+                <div class="card h-100 movie-card">
+                    <img src="@(string.IsNullOrEmpty(movie.MovieImg) ? "/images/default-movie.jpg" : movie.MovieImg)" class="card-img-top" alt="@movie.MovieName">
+                    <div class="card-body">
+                        <h5 class="card-title">@movie.MovieName</h5>
+                        <p class="card-text">
+                            @foreach (var movieGenre in movie.MovieGenres)
+                            {
+                                <span class="badge bg-primary me-1">@movieGenre.Genre.GenreDesc</span>
+                            }
+                            <span class="badge bg-secondary">@movie.Duration phút</span>
+                            <span class="badge bg-info">@(movie.IsSub.HasValue && movie.IsSub.Value ? "Phụ đề" : "Lồng tiếng")</span>
+                        </p>
+                        <p class="card-text">@(movie.MovieDesc?.Length > 150 ? movie.MovieDesc.Substring(0, 150) + "..." : movie.MovieDesc)</p>
+                    </div>
+                    <div class="card-footer">
+                        <a asp-page="./Showtimes" asp-route-id="@movie.MovieId" class="btn btn-primary w-100">Chọn Suất Chiếu</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

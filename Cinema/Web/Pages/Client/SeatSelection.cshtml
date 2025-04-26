@@ -1,0 +1,589 @@
+﻿@page
+@model Web.Pages.Client.SeatSelectionModel
+@{
+    ViewData["Title"] = "Chọn Chỗ Ngồi";
+}
+
+<!-- Add this debug section at the top of the page -->
+@if (ViewData["AuthStatus"] != null)
+{
+        <div class="alert alert-info mb-4">
+            <h5>Authentication Debug Info:</h5>
+            <ul>
+            @foreach (var item in (Dictionary<string, string>)ViewData["AuthStatus"])
+            {
+                        <li><strong>@item.Key:</strong> @item.Value</li>
+            }
+            </ul>
+        </div>
+}
+
+@if (TempData["AuthDebug"] != null)
+{
+        <div class="alert alert-warning mb-4">
+            <h5>Authentication Debug Info (Post):</h5>
+            <ul>
+            @foreach (var item in System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>((string)TempData["AuthDebug"]))
+            {
+                        <li><strong>@item.Key:</strong> @item.Value</li>
+            }
+            </ul>
+        </div>
+}
+
+<div class="container mt-4">
+    @if (Model.HasError)
+    {
+            <div class="alert alert-danger">
+                <h4>Error</h4>
+                <p>@Model.ErrorMessage</p>
+            </div>
+    }
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0">Chọn Chỗ Ngồi</h2>
+                </div>
+                <div class="card-body">
+                    @if (!ModelState.IsValid)
+                    {
+                            <div class="alert alert-warning mb-4">
+                                <ul class="mb-0">
+                                @foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                            <li>@error.ErrorMessage</li>
+                                }
+                                </ul>
+                            </div>
+                    }
+
+                    <div class="text-center mb-4">
+                        <div class="screen-container">
+                            <div class="screen">MÀN HÌNH</div>
+                        </div>
+                    </div>
+
+                    <div class="seat-map-container">
+                        <table class="seat-map">
+                            <!-- Column headers -->
+                            <tr>
+                                <th></th> <!-- Empty cell for row labels -->
+                                @for (int col = 1; col <= Model.MaxCol; col++)
+                                {
+                                        <th>@col</th>
+                                }
+                            </tr>
+
+                            <!-- Seat rows -->
+                            @for (int row = 1; row <= Model.MaxRow; row++)
+                            {
+                                    <tr>
+                                        <th>@((char)(64 + row))</th> <!-- Row label (A, B, C, etc.) -->
+
+                                    @for (int col = 1; col <= Model.MaxCol; col++)
+                                    {
+                                        var seat = Model.Seats.FirstOrDefault(s => s.RowNo == row && s.ColNo == col);
+
+                                        if (seat != null)
+                                        {
+                                            if (seat.SeatType == "Couple")
+                                            {
+                                                // Check if this is the first seat of a couple seat pair
+                                                var nextSeat = Model.Seats.FirstOrDefault(s => s.RowNo == row && s.ColNo == col + 1);
+                                                if (nextSeat != null && nextSeat.SeatType == "Couple")
+                                                {
+                                                    string coupleSeatClass = (seat.SeatStatus == "Available" && nextSeat.SeatStatus == "Available")
+                                                        ? "seat seat-couple"
+                                                        : "seat seat-couple seat-booked";
+
+                                                                        <td colspan="2">
+                                                                            <button type="button" 
+                                                                                    class="@coupleSeatClass" 
+                                                                                    data-seat-id="@seat.SeatId" 
+                                                                                    data-seat-id2="@nextSeat.SeatId" 
+                                                                                    data-row="@seat.RowNo" 
+                                                                                    data-col="@seat.ColNo" 
+                                                                                    data-col2="@nextSeat.ColNo" 
+                                                                                    data-type="Couple"
+                                                        @((seat.SeatStatus != "Available" || nextSeat.SeatStatus != "Available") ? "disabled" : "")>
+                                                                                <span class="couple-left">@col</span>
+                                                                                <span class="couple-right">@(col + 1)</span>
+                                                                            </button>
+                                                                        </td>
+
+                                                    // Skip the next column since we've already rendered it
+                                                    col++;
+                                                    continue;
+                                                }
+                                            }
+
+                                            // Regular single seat
+                                            string seatClass = seat.SeatStatus == "Available"
+                                                ? (seat.SeatType == "VIP" ? "seat seat-vip" : "seat seat-available")
+                                                : "seat seat-booked";
+
+                                                        <td>
+                                                            <button type="button" 
+                                                                    class="@seatClass" 
+                                                                    data-seat-id="@seat.SeatId" 
+                                                                    data-row="@seat.RowNo" 
+                                                                    data-col="@seat.ColNo" 
+                                                                    data-type="@seat.SeatType"
+                                                @(seat.SeatStatus != "Available" ? "disabled" : "")>
+                                                    @col
+                                                            </button>
+                                                        </td>
+                                        }
+                                        else
+                                        {
+                                                        <td><div class="seat-empty"></div></td>
+                                        }
+                                    }
+                                    </tr>
+                            }
+                        </table>
+                    </div>
+
+                    <div class="seat-legend mt-4">
+                        <div class="d-flex justify-content-center flex-wrap gap-3">
+                            <div class="d-flex align-items-center me-3">
+                                <div class="seat-example seat-available"></div>
+                                <span class="ms-2">Ghế trống</span>
+                            </div>
+                            <div class="d-flex align-items-center me-3">
+                                <div class="seat-example seat-selected"></div>
+                                <span class="ms-2">Ghế đang chọn</span>
+                            </div>
+                            <div class="d-flex align-items-center me-3">
+                                <div class="seat-example seat-booked"></div>
+                                <span class="ms-2">Ghế đã đặt</span>
+                            </div>
+                            <div class="d-flex align-items-center me-3">
+                                <div class="seat-example seat-vip"></div>
+                                <span class="ms-2">Ghế VIP</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="seat-example seat-couple"></div>
+                                <span class="ms-2">Ghế đôi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">Thông Tin Đặt Vé</h3>
+                </div>
+                <div class="card-body">
+                    <h5>@(Model.Movie?.MovieName ?? "Không có thông tin")</h5>
+                    <p>
+                        <strong>Rạp:</strong> @(Model.Room?.RoomName ?? "Không có thông tin") (@(Model.Room?.RoomType ?? ""))<br>
+                        <strong>Ngày:</strong> @(Model.Schedule?.StartDatetime.ToString("dd/MM/yyyy") ?? "Không có thông tin")<br>
+                        <strong>Giờ:</strong> @(Model.Schedule?.StartDatetime.ToString("HH:mm") ?? "Không có thông tin")<br>
+                        <strong>Định dạng:</strong> @(Model.Schedule?.Is3D == true ? "3D" : "2D") 
+                        @(Model.Schedule?.IsSubtitle == true ? "Phụ đề" : "Lồng tiếng")
+                    </p>
+
+                    <hr>
+
+                    <div id="selectedSeatsInfo">
+                        <p><strong>Ghế đã chọn:</strong> <span id="selectedSeatsText">Chưa chọn ghế</span></p>
+                        <p><strong>Tổng tiền:</strong> <span id="totalPrice">0 VNĐ</span></p>
+                    </div>
+
+                    <form method="post" id="bookingForm">
+                        <input type="hidden" id="selectedSeatsJson" name="SelectedSeatsJson" value="">
+                        <input type="hidden" asp-for="Bill.TotalCost" id="totalCostInput" value="0">
+                        <input type="hidden" id="scheduleId" name="id" value="@(Model.Schedule?.ScheduleId ?? 0)">
+
+                        <div class="mb-3">
+                            <label for="customerName" class="form-label">Họ tên</label>
+                            <input type="text" class="form-control" id="customerName" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="customerEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="customerEmail" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="customerPhone" class="form-label">Số điện thoại</label>
+                            <input type="tel" class="form-control" id="customerPhone" required>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary" id="confirmButton" disabled>Xác Nhận Đặt Vé</button>
+                            <a asp-page="./Showtimes" asp-route-id="@Model.Movie?.MovieId" class="btn btn-secondary">Quay Lại</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+        <script>
+            // Movie base price and price multipliers
+            const movieBasePrice = @(Model.MovieBasePrice?.BasePrice ?? 80000);
+            const priceMultipliers = {
+                "Standard": @(Model.SeatPrices.FirstOrDefault(p => p.SeatType == "Standard")?.PriceMultiplier ?? 1.0m),
+                "VIP": @(Model.SeatPrices.FirstOrDefault(p => p.SeatType == "VIP")?.PriceMultiplier ?? 2.0m),
+                "Couple": @(Model.SeatPrices.FirstOrDefault(p => p.SeatType == "Couple")?.PriceMultiplier ?? 3.0m)
+            };
+
+            // Selected seats tracking
+            let selectedSeats = [];
+
+            // Format currency
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+            }
+
+            // Calculate price for a seat
+            function calculateSeatPrice(seatType) {
+                const multiplier = priceMultipliers[seatType] || 1.0;
+                return movieBasePrice * multiplier;
+            }
+
+            // Initialize seat selection
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log("DOM loaded, initializing seat selection");
+                const seatButtons = document.querySelectorAll('.seat:not(.seat-booked)');
+                console.log(`Found ${seatButtons.length} available seats`);
+
+                seatButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const seatId = parseInt(this.getAttribute('data-seat-id'));
+                        const row = parseInt(this.getAttribute('data-row'));
+                        const col = parseInt(this.getAttribute('data-col'));
+                        const type = this.getAttribute('data-type');
+
+                        // Check if this is a couple seat
+                        const isCoupleSeat = type === 'Couple';
+                        const seatId2 = isCoupleSeat ? parseInt(this.getAttribute('data-seat-id2')) : null;
+                        const col2 = isCoupleSeat ? parseInt(this.getAttribute('data-col2')) : null;
+
+                        console.log(`Clicked seat: ${seatId}, row: ${row}, col: ${col}, type: ${type}`);
+                        if (isCoupleSeat) {
+                            console.log(`Couple seat with second seat ID: ${seatId2}, col: ${col2}`);
+                        }
+
+                        // Check if seat is already selected
+                        const seatIndex = isCoupleSeat 
+                            ? selectedSeats.findIndex(s => s.id === seatId && s.id2 === seatId2)
+                            : selectedSeats.findIndex(s => s.id === seatId);
+
+                        if (seatIndex === -1) {
+                            // Add to selected seats
+                            this.classList.add('seat-selected');
+                            this.classList.remove('seat-available');
+                            this.classList.remove('seat-vip');
+
+                            // Keep the couple seat class when selecting
+                            if (!isCoupleSeat) {
+                                this.classList.remove('seat-couple');
+                            }
+
+                            const price = calculateSeatPrice(type);
+                            console.log(`Adding seat with price: ${price}`);
+
+                            if (isCoupleSeat) {
+                                selectedSeats.push({
+                                    id: seatId,
+                                    id2: seatId2,
+                                    row: row,
+                                    col: col,
+                                    col2: col2,
+                                    type: type,
+                                    price: price
+                                });
+                            } else {
+                                selectedSeats.push({
+                                    id: seatId,
+                                    row: row,
+                                    col: col,
+                                    type: type,
+                                    price: price
+                                });
+                            }
+                        } else {
+                            // Remove from selected seats
+                            this.classList.remove('seat-selected');
+                            if (type === 'VIP') {
+                                this.classList.add('seat-vip');
+                            } else if (type === 'Couple') {
+                                this.classList.add('seat-couple');
+                            } else {
+                                this.classList.add('seat-available');
+                            }
+                            console.log(`Removing seat at index: ${seatIndex}`);
+                            selectedSeats.splice(seatIndex, 1);
+                        }
+
+                        updateSelectedSeatsInfo();
+                    });
+                });
+
+                // Update the JavaScript authentication check to use session-based authentication
+                const bookingForm = document.getElementById('bookingForm');
+                bookingForm.addEventListener('submit', function(event) {
+                    // Check if user is authenticated
+                    const isAuthenticated = @Json.Serialize(Model.IsAuthenticated);
+
+                    if (!isAuthenticated) {
+                        event.preventDefault(); // Prevent form submission
+
+                        // Get the current URL to use as return URL
+                        const scheduleId = document.getElementById('scheduleId').value;
+                        const returnUrl = `/Client/SeatSelection?id=${scheduleId}`;
+
+                        // Redirect to login page
+                        window.location.href = `/Auth/Login?returnUrl=${encodeURIComponent(returnUrl)}`;
+                    }
+                });
+            });
+
+            // Update selected seats information
+            function updateSelectedSeatsInfo() {
+                const selectedSeatsText = document.getElementById('selectedSeatsText');
+                const totalPrice = document.getElementById('totalPrice');
+                const confirmButton = document.getElementById('confirmButton');
+                const selectedSeatsJsonInput = document.getElementById('selectedSeatsJson');
+                const totalCostInput = document.getElementById('totalCostInput');
+
+                if (selectedSeats.length > 0) {
+                    // Format selected seats text
+                    const seatsText = selectedSeats
+                        .sort((a, b) => a.row - b.row || a.col - b.col)
+                        .map(s => {
+                            const rowLetter = String.fromCharCode(64 + s.row); // Convert row number to letter
+                            if (s.type === 'Couple') {
+                                return `${rowLetter}${s.col}-${s.col2}`;
+                            }
+                            return `${rowLetter}${s.col}`;
+                        })
+                        .join(', ');
+
+                    selectedSeatsText.textContent = seatsText;
+
+                    // Calculate total price
+                    const total = selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
+                    totalPrice.textContent = formatCurrency(total);
+                    totalCostInput.value = total;
+
+                    // Enable confirm button
+                    confirmButton.disabled = false;
+
+                    // Update hidden input with selected seat IDs
+                    // For couple seats, include both seat IDs
+                    const seatIds = [];
+                    selectedSeats.forEach(seat => {
+                        seatIds.push(seat.id);
+                        if (seat.id2) {
+                            seatIds.push(seat.id2);
+                        }
+                    });
+
+                    selectedSeatsJsonInput.value = JSON.stringify(seatIds);
+
+                    console.log(`Updated selection: ${seatsText}, total: ${total}`);
+                } else {
+                    selectedSeatsText.textContent = 'Chưa chọn ghế';
+                    totalPrice.textContent = formatCurrency(0);
+                    totalCostInput.value = 0;
+                    confirmButton.disabled = true;
+                    selectedSeatsJsonInput.value = '';
+
+                    console.log('No seats selected');
+                }
+            }
+        </script>
+}
+
+@section Styles {
+        <style>
+            /* Screen styles */
+            .screen-container {
+                margin-bottom: 30px;
+            }
+
+            .screen {
+                background-color: #f0f0f0;
+                padding: 10px;
+                border-radius: 5px 5px 0 0;
+                text-align: center;
+                width: 80%;
+                margin: 0 auto;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            }
+
+            /* Seat map styles */
+            .seat-map-container {
+                overflow-x: auto;
+                margin-bottom: 20px;
+            }
+
+            .seat-map {
+                margin: 0 auto;
+                border-collapse: separate;
+                border-spacing: 5px;
+            }
+
+            .seat-map th {
+                padding: 5px;
+                text-align: center;
+                font-weight: bold;
+            }
+
+            /* Seat styles */
+            .seat {
+                width: 35px;
+                height: 35px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                background-color: white;
+                cursor: pointer;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s;
+            }
+
+            .seat-available:hover {
+                background-color: #f0f0f0;
+            }
+
+            .seat-vip {
+                border-color: #f90;
+            }
+
+            .seat-selected {
+                background-color: #f90;
+                color: white;
+                border-color: #f90;
+            }
+
+            .seat-booked {
+                background-color: #ccc;
+                cursor: not-allowed;
+                color: #666;
+            }
+
+            .seat-empty {
+                width: 35px;
+                height: 35px;
+            }
+
+            /* Couple seat styles */
+            .seat-couple {
+                width: 75px; /* Width for two seats */
+                display: flex;
+                justify-content: space-between;
+                position: relative;
+            }
+
+            .seat-couple:after {
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 50%;
+                border-left: 1px dashed #999;
+            }
+
+            .couple-left, .couple-right {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Legend styles */
+            .seat-legend {
+                margin-top: 20px;
+            }
+
+            .seat-example {
+                width: 20px;
+                height: 20px;
+                border-radius: 3px;
+                display: inline-block;
+            }
+
+            .seat-example.seat-available {
+                background-color: white;
+                border: 1px solid #ccc;
+            }
+
+            .seat-example.seat-selected {
+                background-color: #f90;
+            }
+
+            .seat-example.seat-booked {
+                background-color: #ccc;
+            }
+
+            .seat-example.seat-vip {
+                background-color: white;
+                border: 1px solid #f90;
+            }
+
+            .seat-example.seat-couple {
+                background-color: white;
+                border: 1px solid #ccc;
+                position: relative;
+                overflow: hidden;
+                width: 30px;
+            }
+
+            .seat-example.seat-couple:after {
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 50%;
+                border-left: 1px dashed #999;
+            }
+
+            .seat-selected.seat-couple {
+                width: 75px; /* Keep the same width as regular couple seats */
+                background-color: #f90;
+                color: white;
+                border-color: #f90;
+            }
+
+            /* Responsive adjustments */
+            @@media (max-width: 768px) {
+                .seat {
+                    width: 30px;
+                    height: 30px;
+                    font-size: 10px;
+                }
+
+                .seat-couple {
+                    width: 65px;
+                }
+
+                .seat-empty {
+                    width: 30px;
+                    height: 30px;
+                }
+
+                .seat-map th {
+                    padding: 3px;
+                    font-size: 12px;
+                }
+
+                .seat-selected.seat-couple {
+                    width: 65px;
+                }
+            }
+        </style>
+}
