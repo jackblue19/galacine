@@ -9,12 +9,15 @@ using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddControllers();
+builder.Services.AddSession();
 builder.Services.AddControllers();
 builder.Services.AddSession();
 
@@ -81,6 +84,17 @@ builder.Services
 
 // Cookies - Sessions
 builder.Services.AddDistributedMemoryCache();
+    })
+    .AddGoogle(options =>
+    {
+        var googleSection = builder.Configuration.GetSection("Authentication:Google");
+        options.ClientId = googleSection["ClientId"];
+        options.ClientSecret = googleSection["ClientSecret"];
+        options.CallbackPath = "/signin-google"; 
+    });
+
+// Cookies - Sessions
+builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
 {
@@ -88,6 +102,12 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.MinimumSameSitePolicy = SameSiteMode.Lax;
+});
+
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
@@ -119,6 +139,9 @@ app.UseRouting();
 app.UseCookiePolicy();
 app.UseSession();
 
+app.UseCookiePolicy();
+app.UseSession();
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapGet("/", async context =>
@@ -129,6 +152,7 @@ app.MapGet("/", async context =>
 app.UseSession();
 
 app.MapRazorPages();
+app.MapControllers();
 app.MapControllers();
 
 app.Run();
