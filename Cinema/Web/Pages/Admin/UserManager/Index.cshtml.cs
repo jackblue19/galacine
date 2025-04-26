@@ -15,13 +15,6 @@ public class IndexModel : PageModel
     }
 
     public List<User> Users { get; set; } = new();
-    [BindProperty(SupportsGet = true)] public int Page { get; set; } = 1;
-    public int PageSize { get; set; } = 10;
-    public int TotalPages => (int)Math.Ceiling(FilteredUsers.Count() / (double)PageSize);
-
-    public IEnumerable<User> FilteredUsers { get; set; } = new List<User>();
-    public IEnumerable<User> PagedUsers => FilteredUsers.Skip((Page - 1) * PageSize).Take(PageSize);
-
     [BindProperty(SupportsGet = true)] public string SortBy { get; set; } = "CreatedAt";
     [BindProperty(SupportsGet = true)] public bool SortAsc { get; set; } = false;
 
@@ -43,7 +36,7 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
-        var allUsers = await _userService.GetAllAsync();
+        var allUsers = await _userService.GetAllAsync(u => u.Role);
 
         var filtered = allUsers.Where(u =>
             string.IsNullOrWhiteSpace(SearchQuery) ||
@@ -63,8 +56,7 @@ public class IndexModel : PageModel
             filtered = filtered.Where(u => u.CreatedAt <= to);
         }
 
-        FilteredUsers = ApplySorting(filtered);
-        Users = FilteredUsers.ToList();
+        Users = ApplySorting(filtered).ToList();
     }
 
     public async Task<IActionResult> OnPostSetStatusAsync(int id, bool status)
