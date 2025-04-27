@@ -1,0 +1,65 @@
+﻿@page "/manager/createnew"
+@model Web.Pages.Manager.MovieManager.CreateModel
+
+@{
+	ViewData["Title"] = "🎬 Thêm phim mới";
+	Layout = "_LayoutManager";
+}
+
+<div class="movie-create-container">
+    <!-- LEFT FORM -->
+    <form method="post" class="movie-form-section">
+        <h2>🎬 Thông Tin Phim</h2>
+
+        <label>Tên phim</label>
+        <input asp-for="Movie.MovieName" class="form-control" />
+
+        <label>Mô tả</label>
+        <textarea asp-for="Movie.MovieDesc" class="form-control"></textarea>
+
+        <label>Đạo diễn</label>
+        <input asp-for="Detail.Director" class="form-control" />
+
+        <label>Thể loại</label>
+        <div class="checkbox-group">
+            @foreach (var genre in Model.GenreList)
+            {
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="SelectedGenres" value="@genre.Value" checked="@genre.Selected" />
+                    @genre.Text
+                </label>
+            }
+        </div>
+
+        <label>Phân loại</label>
+        <select asp-for="Movie.CategoryId" class="form-control" asp-items="Model.CategoryList">
+            <option value="">-- Chọn thể loại chính --</option>
+        </select>
+
+        <button type="submit" class="btn-submit">🎞️ Lưu phim</button>
+    </form>
+
+    <!-- RIGHT PREVIEW -->
+    <div class="movie-preview-section">
+        <h3>📸 Ảnh Preview</h3>
+        <input type="file" class="form-control" />
+
+        <h4>🎞️ Trailer</h4>
+        <input type="text" placeholder="Nhập link YouTube" class="form-control" />
+
+        <h4>⭐ Rating</h4>
+        <input asp-for="Movie.Rating" type="number" class="form-control" step="0.1" min="0" max="10" />
+
+        <h4>🌍 Quốc gia</h4>
+        <input asp-for="Movie.Nation" class="form-control" />
+    </div>
+</div>
+<div>
+	<a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

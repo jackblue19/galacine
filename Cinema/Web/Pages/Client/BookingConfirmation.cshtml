@@ -1,0 +1,86 @@
+﻿@page
+@model Web.Pages.Client.BookingConfirmationModel
+@{
+    ViewData["Title"] = "Xác Nhận Đặt Vé";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h2 class="mb-0">Đặt Vé Thành Công</h2>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                    </div>  
+
+                    <h4 class="text-center mb-4">Cảm ơn bạn đã đặt vé!</h4>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Thông Tin Phim</h5>
+                            <p>
+                                <strong>Phim:</strong> @Model.Movie.MovieName<br>
+                                <strong>Thời lượng:</strong> @Model.Movie.Duration phút<br>
+                                <strong>Ngôn ngữ:</strong> @Model.Movie.Language<br>
+                                <strong>Định dạng:</strong> @(Model.Schedule.Is3D.HasValue && Model.Schedule.Is3D.Value ? "3D" : "2D") @(Model.Schedule.IsSubtitle.HasValue && Model.Schedule.IsSubtitle.Value ? "Phụ đề" : "Lồng tiếng")
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Thông Tin Suất Chiếu</h5>
+                            <p>
+                                <strong>Rạp:</strong> @Model.Schedule.Room.RoomName (@Model.Schedule.Room.RoomType)<br>
+                                <strong>Ngày:</strong> @Model.Schedule.StartDatetime.ToString("dd/MM/yyyy")<br>
+                                <strong>Giờ:</strong> @Model.Schedule.StartDatetime.ToString("HH:mm")<br>
+                                <strong>Kết thúc:</strong> @Model.Schedule.EndDatetime.ToString("HH:mm")
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Thông Tin Khách Hàng</h5>
+                            <p>
+                                <strong>Họ tên:</strong> @Model.Bill.User.FirstName @Model.Bill.User.LastName<br>
+                                <strong>Email:</strong> @Model.Bill.User.Email<br>
+                                <strong>Số điện thoại:</strong> @Model.Bill.User.Phone<br>
+                                <strong>Thời gian đặt:</strong> @(Model.Bill.BillDateTime?.ToString("dd/MM/yyyy HH:mm"))
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Thông Tin Vé</h5>
+                            <p>
+                                <strong>Mã đặt vé:</strong> #@Model.Bill.BillId.ToString("D6")<br>
+                                <strong>Ghế:</strong>
+                                @string.Join(", ", Model.SelectedSeats.OrderBy(s => s.RowNo).ThenBy(s => s.ColNo).Select(s => $"{s.RowNo}-{s.ColNo}"))
+                                <br>
+                                <strong>Tổng tiền:</strong> @Model.Bill.TotalCost.ToString("N0") VNĐ
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="alert alert-info">
+                        <p class="mb-0">
+                            <i class="bi bi-info-circle-fill me-2"></i>
+                            Vui lòng đến rạp trước giờ chiếu 15 phút và xuất trình mã đặt vé #@Model.Bill.BillId.ToString("D6") tại quầy vé để nhận vé.
+                        </p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a asp-page="./Index" class="btn btn-primary">Quay Về Trang Chủ</a>
+                        <button class="btn btn-outline-secondary" onclick="window.print()">
+                            <i class="bi bi-printer-fill me-2"></i>In Vé
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

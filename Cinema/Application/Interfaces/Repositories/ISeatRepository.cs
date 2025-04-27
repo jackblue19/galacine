@@ -15,6 +15,8 @@ namespace Application.Interfaces.Repositories
 
         // Lấy danh sách ghế theo schedule
         Task<IEnumerable<Seat>> GetByScheduleAsync(int scheduleId);
-
+        Task<IList<Seat>> GetSeatsByRoomId(int roomId);
+        Task<Seat> GetSeatById(int id);
+        Task<IList<int>> GetBookedSeatIdsForSchedule(int scheduleId);
     }
 }

@@ -1,0 +1,35 @@
+﻿@page
+@model WebApp.Pages.Vouchers.IndexModel
+@{
+    ViewData["Title"] = "Voucher List";
+}
+
+<h1>Vouchers</h1>
+
+<a asp-page="Create" class="btn btn-primary mb-3">+ Create Voucher</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Discount</th>
+            <th>Expires</th>
+            <th>Active</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var voucher in Model.Vouchers)
+        {
+            <tr>
+                <td>@voucher.Code</td>
+                <td>@voucher.DiscountPercent%</td>
+                <td>@voucher.ExpiredDate</td>
+                <td>@voucher.IsActive</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@voucher.VoucherId" class="btn btn-sm btn-warning">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

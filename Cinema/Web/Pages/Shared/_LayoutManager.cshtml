@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - 🎬 Cinema Manager</title>
+
+    @* ✅ THÊM DÒNG NÀY để Razor biết render phần Styles *@
+    @RenderSection("Styles", required: false)
+
+    <link rel="stylesheet" href="~/css/manager-layout.css" />
+</head>
+<body>
+    <main class="manager-layout">
+        @RenderBody()
+    </main>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
