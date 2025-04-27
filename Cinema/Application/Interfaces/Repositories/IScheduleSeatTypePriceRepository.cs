@@ -7,8 +7,10 @@ using Data.Entities;
 
 namespace Application.Interfaces.Repositories
 {
-    public interface IScheduleSeatTypePriceRepository : IGenericRepository<ScheduleSeatTypePrice>
+    public interface IScheduleSeatTypePriceRepository
     {
-        Task<IEnumerable<ScheduleSeatTypePrice>> GetByScheduleAsync(int scheduleId);
+        Task<ScheduleSeatTypePrice> AddAsync(ScheduleSeatTypePrice entity);
+        Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<ScheduleSeatTypePrice>> GetByScheduleIdAsync(int scheduleId);
     }
 }

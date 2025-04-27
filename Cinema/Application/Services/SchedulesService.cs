@@ -1,4 +1,5 @@
-﻿using Application.Interfaces.Repositories;
+﻿using Application.DTOs;
+using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
 using Data.Entities;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class SchedulesService(IScheduleRepository _scheduleRepository) : ISchedulesService
+    public class SchedulesService(IScheduleRepository _scheduleRepository,IScheduleSeatTypePriceRepository _seatTypePriceRepository) : ISchedulesService
     {
         
         public async Task<Schedule> AddAsync(Schedule entity)
@@ -79,5 +80,49 @@ namespace Application.Services
 
             return await _scheduleRepository.GetDistinctDatesForMovie(movieId, startDate, endDate);
         }
+        public async Task AddScheduleSeatTypePricesAsync(int scheduleId, decimal basePrice)
+        {
+            // Định nghĩa các loại ghế và giá
+            var seatTypePrices = new List<(string SeatType, decimal Price)>
+            {
+                ("Single", basePrice * 1.0m),
+                ("VIP", basePrice * 1.5m),
+                ("Couple", basePrice * 2.0m)
+            };
+
+            // Tạo và thêm các bản ghi ScheduleSeatTypePrice
+            foreach (var (seatType, price) in seatTypePrices)
+            {
+                // Tạo entity ScheduleSeatTypePrice với các thuộc tính phù hợp
+                var seatTypePrice = new ScheduleSeatTypePrice
+                {
+                    ScheduleId = scheduleId,
+                    SeatType = seatType,
+                    Price = price
+                };
+
+                await _seatTypePriceRepository.AddAsync(seatTypePrice);
+            }
+        }
+
+        public async Task UpdateScheduleSeatTypePricesAsync(int scheduleId, decimal basePrice)
+        {
+            // Xóa các bản ghi cũ
+            var existingPrices = await _seatTypePriceRepository.GetByScheduleIdAsync(scheduleId);
+            foreach (var price in existingPrices)
+            {
+                await _seatTypePriceRepository.DeleteAsync(price.Id);
+            }
+
+            // Thêm các bản ghi mới
+            await AddScheduleSeatTypePricesAsync(scheduleId, basePrice);
+        }
+
+        public async Task<IEnumerable<ScheduleSeatTypePrice>> GetScheduleSeatTypePricesAsync(int scheduleId)
+        {
+            return await _seatTypePriceRepository.GetByScheduleIdAsync(scheduleId);
+        }
+
     }
 }
+    
