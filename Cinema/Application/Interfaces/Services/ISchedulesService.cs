@@ -20,5 +20,8 @@ namespace Application.Interfaces.Services
         Task<IList<Schedule>> GetSchedulesForMovie(int movieId);
         Task<Schedule> GetScheduleById(int id);
         Task<IList<DateTime>> GetAvailableDatesForMovie(int movieId);
+        Task AddScheduleSeatTypePricesAsync(int scheduleId, decimal basePrice);
+        Task UpdateScheduleSeatTypePricesAsync(int scheduleId, decimal basePrice);
+        Task<IEnumerable<ScheduleSeatTypePrice>> GetScheduleSeatTypePricesAsync(int scheduleId);
     }
 }

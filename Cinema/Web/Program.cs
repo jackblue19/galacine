@@ -44,7 +44,7 @@ builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IPriceRepository, PriceRepository>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
-
+builder.Services.AddScoped<IScheduleSeatTypePriceRepository, ScheduleSeatTypePriceRepository>();
 
 // Add Scoped - service
 builder.Services.AddScoped<IAuthService, AuthService>();

@@ -232,7 +232,7 @@
             // Movie base price and price multipliers
             const movieBasePrice = @(Model.MovieBasePrice?.BasePrice ?? 80000);
             const priceMultipliers = {
-                "Standard": @(Model.SeatPrices.FirstOrDefault(p => p.SeatType == "Standard")?.PriceMultiplier ?? 1.0m),
+                "Single": @(Model.SeatPrices.FirstOrDefault(p => p.SeatType == "Single")?.PriceMultiplier ?? 1.0m),
                 "VIP": @(Model.SeatPrices.FirstOrDefault(p => p.SeatType == "VIP")?.PriceMultiplier ?? 2.0m),
                 "Couple": @(Model.SeatPrices.FirstOrDefault(p => p.SeatType == "Couple")?.PriceMultiplier ?? 3.0m)
             };
