@@ -82,7 +82,6 @@ builder.Services
         var googleSection = builder.Configuration.GetSection("Authentication:Google");
         options.ClientId = googleSection["ClientId"];
         options.ClientSecret = googleSection["ClientSecret"];
-        options.CallbackPath = "/signin-google"; 
         options.CallbackPath = "/signin-google";
     });
 
