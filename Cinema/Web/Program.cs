@@ -9,7 +9,6 @@ using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,8 +44,6 @@ builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IPriceRepository, PriceRepository>();
 builder.Services.AddScoped<IServiceRepository, ServiceRepository>();
-builder.Services.AddScoped<DashboardService>();
-builder.Services.AddScoped<ReportService>();
 
 // Add Scoped - service
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -54,7 +51,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISchedulesService, SchedulesService>();
 builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<ReportService>();
-// Cookies - Sessions
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
@@ -66,6 +62,8 @@ builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<ISeatService, SeatService>();
 builder.Services.AddScoped<IPriceService, PriceService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<ReportService>();
 
 
 // ========== Authentication & Google & Cookies & Session ==========
@@ -88,6 +86,13 @@ builder.Services
         options.ClientSecret = googleSection["ClientSecret"];
         options.CallbackPath = "/signin-google"; 
     });
+    //.AddGoogle(options =>
+    //{
+    //    var googleSection = builder.Configuration.GetSection("Authentication:Google");
+    //    options.ClientId = googleSection["ClientId"];
+    //    options.ClientSecret = googleSection["ClientSecret"];
+    //    options.CallbackPath = "/signin-google"; 
+    //});
 
 builder.Services.AddSession(options =>
 {
