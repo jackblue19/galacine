@@ -1,0 +1,241 @@
+﻿@page
+@model Web.Pages.Admin.ReportModel
+@{
+    ViewData["Title"] = "Báo cáo hệ thống";
+    Layout = null;
+}
+
+<style>
+    :root {
+        --color-bg: #1e1e2f;
+        --color-card: #2a2a40;
+        --color-accent: #6366f1;
+        --color-soft: #c084fc;
+        --text-muted: #9ca3af;
+        --border-soft: rgba(255, 255, 255, 0.05);
+    }
+
+    body {
+        background: var(--color-bg);
+        color: #f1f5f9;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 2rem;
+        background: linear-gradient(to right, #a78bfa, #f472b6, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .report-card {
+        background: var(--color-card);
+        border-radius: 1.5rem;
+        padding: 1.5rem;
+        box-shadow: 0 0 0 1px var(--border-soft), 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+        .report-card:hover {
+            transform: translateY(-4px);
+        }
+
+    .report-icon {
+        font-size: 2rem;
+        margin-right: 1rem;
+        background: linear-gradient(to right, #818cf8, #22d3ee);
+        padding: 0.5rem;
+        border-radius: 0.75rem;
+    }
+
+    .highlight-text {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--color-accent);
+    }
+
+    .ticket-section {
+        background: #2e2e42;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .ticket-item {
+        background: #3b3b55;
+        padding: 1rem 1.5rem;
+        border-radius: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s;
+    }
+
+        .ticket-item:hover {
+            background: #4c4c6d;
+        }
+
+        .ticket-item + .ticket-item {
+            margin-top: 0.75rem;
+        }
+</style>
+
+<div class="max-w-7xl mx-auto py-10 px-6">
+    <h2 class="section-title">📊 Báo cáo hệ thống</h2>
+    <form method="get" class="mb-6">
+        <div class="flex space-x-6">
+            <div class="flex flex-col">
+                <label for="startDate" class="text-sm text-gray-400">Ngày bắt đầu</label>
+                <input type="date" id="startDate" name="startDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" class="input-field" />
+            </div>
+            <div class="flex flex-col">
+                <label for="endDate" class="text-sm text-gray-400">Ngày kết thúc</label>
+                <input type="date" id="endDate" name="endDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" class="input-field" />
+            </div>
+            <div class="flex items-end">
+                <button type="submit" class="btn-filter">Lọc</button>
+            </div>
+        </div>
+    </form>
+
+    <style>
+        :root {
+            --color-bg: #1e1e2f;
+            --color-card: #2a2a40;
+            --color-accent: #6366f1;
+            --color-soft: #c084fc;
+            --text-muted: #9ca3af;
+            --border-soft: rgba(255, 255, 255, 0.05);
+            --input-bg: #2d2d3f;
+            --input-border: #6366f1;
+            --btn-bg: #6366f1;
+            --btn-bg-hover: #4f46e5;
+        }
+
+        body {
+            background: var(--color-bg);
+            color: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-field {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: white;
+            font-size: 1rem;
+            width: 100%;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+            .input-field:focus {
+                outline: none;
+                border-color: var(--color-accent);
+                background-color: #3b3b55;
+            }
+
+        .btn-filter {
+            background: var(--btn-bg);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-filter:hover {
+                background: var(--btn-bg-hover);
+            }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .space-x-6 {
+            gap: 1.5rem;
+        }
+
+        .items-end {
+            align-items: flex-end;
+        }
+    </style>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="report-card">
+            <div class="flex items-center">
+                <div class="report-icon">🧾</div>
+                <div>
+                    <div class="text-sm text-gray-400">Total Bill</div>
+                    <div class="highlight-text">@Model.TotalBills</div>
+                </div>
+            </div>
+        </div>
+        <div class="report-card">
+            <div class="flex items-center">
+                <div class="report-icon">👥</div>
+                <div>
+                    <div class="text-sm text-gray-400">Total Customer</div>
+                    <div class="highlight-text">@Model.TotalUsers</div>
+                </div>
+            </div>
+        </div>
+        <div class="report-card">
+            <div class="flex items-center">
+                <div class="report-icon"></div>
+                <div>
+                    <div class="text-sm text-gray-400">Total Revenue</div>
+                    <div class="highlight-text">@Model.TotalRevenue</div>
+                </div>
+            </div>
+        </div>
+        <div class="report-card">
+            <div class="flex items-center">
+                <div class="report-icon">🎬</div>
+                <div>
+                    <div class="text-sm text-gray-400">Active Movies</div>
+                    <div class="highlight-text">@Model.ActiveMovies</div>
+                </div>
+            </div>
+        </div>
+        <div class="report-card">
+            <div class="flex items-center">
+                <div class="report-icon">🍿</div>
+                <div>
+                    <div class="text-sm text-gray-400">Total Services</div>
+                    <div class="highlight-text">@Model.TotalServices</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticket Type Stats -->
+    <div class="ticket-section">
+        <h3 class="text-xl font-semibold mb-4 text-pink-400">🎟️ Phân loại vé (30 ngày gần nhất)</h3>
+        @foreach (var item in Model.TicketTypeStats)
+        {
+            <div class="ticket-item">
+                <div>
+                    <div class="font-medium">@item.Key</div>
+                    <div class="text-sm text-gray-400">Loại vé</div>
+                </div>
+                <div class="text-purple-300 text-lg font-bold">@item.Value</div>
+            </div>
+        }
+    </div>
+</div>

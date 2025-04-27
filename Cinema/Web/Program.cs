@@ -9,7 +9,6 @@ using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +60,8 @@ builder.Services.AddScoped<IServiceService, ServiceService>();
 builder.Services.AddScoped<ISeatService, SeatService>();
 builder.Services.AddScoped<IPriceService, PriceService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<ReportService>();
 
 
 // ========== Authentication & Google & Cookies & Session ==========
@@ -81,7 +82,7 @@ builder.Services
         var googleSection = builder.Configuration.GetSection("Authentication:Google");
         options.ClientId = googleSection["ClientId"];
         options.ClientSecret = googleSection["ClientSecret"];
-        options.CallbackPath = "/signin-google"; 
+        options.CallbackPath = "/signin-google";
     });
 
 builder.Services.AddSession(options =>
