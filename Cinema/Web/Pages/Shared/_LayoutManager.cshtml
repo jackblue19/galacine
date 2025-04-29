@@ -1,16 +1,31 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title - 🎬 Cinema Manager</title>
 
-    @* ✅ THÊM DÒNG NÀY để Razor biết render phần Styles *@
     @RenderSection("Styles", required: false)
-
     <link rel="stylesheet" href="~/css/manager-layout.css" />
 </head>
 <body>
+    <!-- Header -->
+    <header class="header-bar">
+        <div class="header-left">
+            <h1 class="brand-title">🎬 Cinema Manager</h1>
+        </div>
+        <div class="header-right">
+            <form method="get" asp-page="/Auth/Logout" class="logout-form">
+                <button type="submit" class="btn btn-sm btn-danger">
+                    🚪 Đăng xuất
+                </button>
+            </form>
+        </div>
+    </header>
+
     <main class="manager-layout">
         @RenderBody()
     </main>

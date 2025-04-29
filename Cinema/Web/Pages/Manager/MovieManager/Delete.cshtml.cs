@@ -29,7 +29,10 @@ namespace Web.Pages.Manager.MovieManager
                 return NotFound();
             }
 
-            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieId == id);
+            var movie = await _context.Movies
+                                .Include(m => m.Category)
+                                .FirstOrDefaultAsync(m => m.MovieId == id);
+
 
             if (movie == null)
             {

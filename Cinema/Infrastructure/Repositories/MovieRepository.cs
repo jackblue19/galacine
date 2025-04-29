@@ -20,6 +20,7 @@ namespace Infrastructure.Repositories
 
         public async Task<Movie> CreateWithRelationsAsync(Movie movie, MovieDetail? detail, IEnumerable<int>? genreIds)
         {
+            movie.Language = "Updating";
             await _dbContext.Movies.AddAsync(movie);
             await _dbContext.SaveChangesAsync();
 
@@ -88,35 +89,81 @@ namespace Infrastructure.Repositories
         {
             var existing = await _dbContext.Movies
                                     .Include(m => m.MovieDetails)
+                                    .Include(m => m.MovieGenres)
                                     //.Include(m => m.Genres)
                                     .FirstOrDefaultAsync(m => m.MovieId == movie.MovieId);
 
             if (existing == null) throw new Exception("Movie not found");
 
-            _dbContext.Entry(existing).CurrentValues.SetValues(movie);
+            existing.MovieName = movie.MovieName;
+            existing.MovieDesc = movie.MovieDesc;
+            existing.MovieStatus = movie.MovieStatus;
+            existing.Rating = movie.Rating;
+            existing.Nation = movie.Nation;
+            existing.ReleaseDate = movie.ReleaseDate;
+            existing.Language = movie.Language;
+            existing.IsSub = movie.IsSub;
+            existing.CategoryId = movie.CategoryId;
+            existing.Duration = movie.Duration;
+            existing.MovieStatus = "Active";
 
-            if (detail != null)
+            // Update MovieDetail (based on MovieId not MovieDetailId)
+            var existingDetail = await _dbContext.MovieDetails.FirstOrDefaultAsync(x => x.MovieId == movie.MovieId);
+
+            //_dbContext.Entry(existing).CurrentValues.SetValues(movie);
+
+            if (existingDetail == null)
             {
-                var existingDetail = await _dbContext.MovieDetails.FirstOrDefaultAsync(d => d.MovieId == movie.MovieId);
-                if (existingDetail != null)
-                    _dbContext.Entry(existingDetail).CurrentValues.SetValues(detail);
-                else
-                    await _dbContext.MovieDetails.AddAsync(detail);
+                existingDetail = new MovieDetail
+                {
+                    MovieId = movie.MovieId,
+                    Director = detail.Director,
+                    Actors = detail.Actors,
+                    AgeLimit = detail.AgeLimit,
+                    Language = detail.Language
+                };
+                await _dbContext.MovieDetails.AddAsync(existingDetail);
             }
+            else
+            {
+                existingDetail.Director = detail.Director;
+                existingDetail.Actors = detail.Actors;
+                existingDetail.AgeLimit = detail.AgeLimit;
+                existingDetail.Language = detail.Language;
+            }
+            existing.Language = existingDetail.Language;
 
             // Remove old genres
-            var oldGenres = _dbContext.Set<Dictionary<string, object>>("MovieGenre")
+            /*var oldGenres = _dbContext.Set<Dictionary<string, object>>("MovieGenre")
                 .Where(mg => (int)mg["MovieId"] == movie.MovieId);
-            _dbContext.RemoveRange(oldGenres);
+            _dbContext.RemoveRange(oldGenres);*/
+            var oldMovieGenres = await _dbContext.MovieGenres
+                                                    .Where(mg => mg.MovieId == movie.MovieId)
+                                                    .ToListAsync();
+
+            if (oldMovieGenres.Any())
+            {
+                _dbContext.MovieGenres.RemoveRange(oldMovieGenres);
+            }
 
             // Add new genres
-            if (genreIds != null)
+            /*if (genreIds != null)
             {
                 foreach (var gid in genreIds)
                 {
                     await _dbContext.Database.ExecuteSqlRawAsync(
                         $"INSERT INTO MovieGenre(MovieId, GenreId) VALUES({movie.MovieId}, {gid})");
                 }
+            }*/
+            if (genreIds != null && genreIds.Any())
+            {
+                var newMovieGenres = genreIds.Select(genreId => new MovieGenre
+                {
+                    MovieId = movie.MovieId,
+                    GenreId = genreId
+                });
+
+                await _dbContext.MovieGenres.AddRangeAsync(newMovieGenres);
             }
 
             await _dbContext.SaveChangesAsync();

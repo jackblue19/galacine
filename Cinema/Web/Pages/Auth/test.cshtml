@@ -1,0 +1,206 @@
+﻿@page "/test"
+@model Web.Pages.Auth.testModel
+@{
+	ViewData["Title"] = "Đăng nhập";
+	Layout = null;
+}
+
+<style>
+
+	body {
+		margin: 0;
+		padding: 0;
+		background: #000;
+		color: #fff;
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	}
+
+	.cinema-container {
+		display: flex;
+		height: 100vh;
+	}
+
+	.cinema-left, .cinema-right {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding: 40px;
+	}
+
+	.cinema-slider img {
+		max-width: 100%;
+		border-radius: 20px;
+		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+		transition: transform 0.5s ease;
+	}
+
+		.cinema-slider img:hover {
+			transform: scale(1.05);
+		}
+
+	.cinema-caption {
+		margin-top: 20px;
+		text-align: center;
+	}
+
+	.login-box {
+		width: 100%;
+		max-width: 400px;
+		background: rgba(255, 255, 255, 0.05);
+		padding: 30px;
+		border-radius: 20px;
+		backdrop-filter: blur(10px);
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+		animation: fadeIn 1s ease;
+	}
+
+		.login-box h2 {
+			text-align: center;
+			margin-bottom: 20px;
+			font-size: 28px;
+		}
+
+	.highlight {
+		color: #ffca28;
+	}
+
+	.form-group {
+		width: 100%;
+		margin-bottom: 15px;
+	}
+
+	.form-control {
+		width: 100%;
+		padding: 12px;
+		border: none;
+		border-radius: 10px;
+		background: rgba(255,255,255,0.2);
+		color: #fff;
+	}
+
+		.form-control::placeholder {
+			color: #ddd;
+		}
+
+	.btn-login {
+		width: 100%;
+		padding: 12px;
+		background: #ffca28;
+		color: #000;
+		border: none;
+		border-radius: 10px;
+		font-weight: bold;
+		cursor: pointer;
+		transition: background 0.3s;
+		margin-top: 10px;
+	}
+
+		.btn-login:hover {
+			background: #ffd740;
+		}
+
+	.btn-google {
+		margin-top: 10px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		background: #fff;
+		color: #000;
+		width: 100%;
+		padding: 12px;
+		border-radius: 10px;
+		text-decoration: none;
+		font-weight: bold;
+	}
+
+	.error {
+		color: #f44336;
+		margin-top: 10px;
+		text-align: center;
+	}
+
+	.animate-slide-in-left {
+		animation: slideInLeft 1s ease;
+	}
+
+	.animate-slide-in-right {
+		animation: slideInRight 1s ease;
+	}
+
+	@@keyframes slideInLeft {
+		from {
+			transform: translateX(-100%);
+			opacity: 0;
+		}
+
+		to {
+			transform: translateX(0);
+			opacity: 1;
+		}
+	}
+
+	@@keyframes slideInRight {
+		from {
+			transform: translateX(100%);
+			opacity: 0;
+		}
+
+		to {
+			transform: translateX(0);
+			opacity: 1;
+		}
+	}
+
+	@@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+
+		to {
+			opacity: 1;
+		}
+	}
+</style>
+
+<div class="cinema-container">
+	<div class="cinema-left animate-slide-in-left">
+		<div class="cinema-slider">
+			<img src="https://i.ebayimg.com/images/g/zRAAAOSwvaJgJSg1/s-l1600.webp" class="slide" alt="Poster phim hot" />
+			<div class="cinema-caption">
+				<h2>🎬 BỘ PHIM ĐANG HOT</h2>
+				<p>Đặt vé ngay hôm nay để nhận combo bắp nước!</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="cinema-right animate-slide-in-right">
+		<div class="login-box">
+			<h2>🍿 Chào mừng đến <span class="highlight">Galacine</span></h2>
+			<form method="post" class="login-form">
+				<div class="form-group">
+					<label>Tên đăng nhập</label>
+					<input asp-for="Username" class="form-control" placeholder="Nhập tên đăng nhập..." />
+				</div>
+				<div class="form-group">
+					<label>Mật khẩu</label>
+					<input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu..." />
+				</div>
+				<button type="submit" class="btn-login">🎟 Vào rạp</button>
+
+				<div class="form-group text-center mt-3">
+					<a class="btn-login btn-google" href="/auth/google-login">
+						<img src="https://developers.google.com/identity/images/g-logo.png" style="height: 20px; margin-right: 8px;" />
+						Đăng nhập bằng Google
+					</a>
+				</div>
+
+				@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+				{
+					<div class="error">@Model.ErrorMessage</div>
+				}
+			</form>
+		</div>
+	</div>
+</div>

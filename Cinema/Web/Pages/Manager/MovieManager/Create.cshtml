@@ -2,13 +2,13 @@
 @model Web.Pages.Manager.MovieManager.CreateModel
 
 @{
-	ViewData["Title"] = "🎬 Thêm phim mới";
-	Layout = "_LayoutManager";
+    ViewData["Title"] = "🎬 Thêm phim mới";
+    Layout = "_LayoutManager";
 }
 
-<div class="movie-create-container">
+<form method="post" enctype="multipart/form-data" class="movie-create-container">
     <!-- LEFT FORM -->
-    <form method="post" class="movie-form-section">
+    <div class="movie-form-section">
         <h2>🎬 Thông Tin Phim</h2>
 
         <label>Tên phim</label>
@@ -19,6 +19,14 @@
 
         <label>Đạo diễn</label>
         <input asp-for="Detail.Director" class="form-control" />
+
+        <label>Diễn viên</label>
+        <input asp-for="Detail.Actors" class="form-control" />
+
+        <label>Phân loại</label>
+        <select asp-for="Movie.CategoryId" class="form-control" asp-items="Model.CategoryList">
+            <option value="">-- Chọn thể loại chính --</option>
+        </select>
 
         <label>Thể loại</label>
         <div class="checkbox-group">
@@ -31,35 +39,54 @@
             }
         </div>
 
-        <label>Phân loại</label>
-        <select asp-for="Movie.CategoryId" class="form-control" asp-items="Model.CategoryList">
-            <option value="">-- Chọn thể loại chính --</option>
+        <label>🎯 Giới hạn độ tuổi (AgeLimit)</label>
+        <select asp-for="AgeLimit" class="form-control">
+            <option value="">-- Chọn giới hạn tuổi --</option>
+            <option value="P">P - Phổ biến</option>
+            <option value="13+">13+</option>
+            <option value="16+">16+</option>
+            <option value="18+">18+</option>
         </select>
 
-        <button type="submit" class="btn-submit">🎞️ Lưu phim</button>
-    </form>
+        <label>🈸 Ngôn ngữ</label>
+        <input asp-for="Detail.Language" class="form-control" />
 
-    <!-- RIGHT PREVIEW -->
+        <label>🌍 Quốc gia</label>
+        <input asp-for="Movie.Nation" class="form-control" />
+
+        <div class="form-group mt-2">
+            <label>🎥 Có phụ đề (IsSub)</label><br />
+            <input asp-for="IsSubBool" type="checkbox" />
+        </div>
+
+        <button type="submit" class="btn-submit">🎞️ Lưu phim</button>
+    </div>
+
+    <!-- RIGHT FORM: PREVIEW -->
     <div class="movie-preview-section">
-        <h3>📸 Ảnh Preview</h3>
+        <h3>📸 Ảnh Poster</h3>
         <input type="file" class="form-control" />
 
         <h4>🎞️ Trailer</h4>
-        <input type="text" placeholder="Nhập link YouTube" class="form-control" />
+        <input asp-for="Movie.Trailer" class="form-control" placeholder="Nhập link YouTube" />
+
+        <label>⏱️ Thời lượng (phút)</label>
+        <input asp-for="Movie.Duration" type="number" class="form-control" min="1" />
 
         <h4>⭐ Rating</h4>
         <input asp-for="Movie.Rating" type="number" class="form-control" step="0.1" min="0" max="10" />
 
-        <h4>🌍 Quốc gia</h4>
-        <input asp-for="Movie.Nation" class="form-control" />
+        <h4>📅 Ngày phát hành (ReleaseDate)</h4>
+        <input asp-for="Movie.ReleaseDate" type="date" class="form-control" />
     </div>
-</div>
+</form>
+
 <div>
-	<a asp-page="Index">Back to List</a>
+    <a asp-page="Index">← Quay về danh sách phim</a>
 </div>
 
 @section Scripts {
-	@{
-		await Html.RenderPartialAsync("_ValidationScriptsPartial");
-	}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
