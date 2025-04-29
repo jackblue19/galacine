@@ -18,6 +18,11 @@ namespace Application.Services
             _userRepo = userRepo;
         }
 
+        public async Task<User?> GetByUserName(string userName)
+        {
+            return await _userRepo.GetByUsernameAsync(userName);
+        }
+
         public async Task<User?> GetWithRoleAsync(int id)
             => await _userRepo.GetWithRoleAsync(id);
     }

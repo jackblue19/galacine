@@ -10,5 +10,6 @@ namespace Application.Interfaces.Services
     public interface IUserService : IGenericService<User>
     {
         Task<User?> GetWithRoleAsync(int id);
+        Task<User?> GetByUserName(string userName);
     }
 }
