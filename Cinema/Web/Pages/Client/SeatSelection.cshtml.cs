@@ -19,17 +19,20 @@ namespace Web.Pages.Client
         private readonly ISeatService _seatService;
         private readonly IPriceService _priceService;
         private readonly IBookingService _bookingService;
+        private readonly IUserService _userService;
 
         public SeatSelectionModel(
             ISchedulesService scheduleService,
             ISeatService seatService,
             IPriceService priceService,
-            IBookingService bookingService)
+            IBookingService bookingService,
+            IUserService userService)
         {
             _scheduleService = scheduleService;
             _seatService = seatService;
             _priceService = priceService;
             _bookingService = bookingService;
+            _userService = userService;
         }
 
         public Schedule Schedule { get; set; }
@@ -50,6 +53,8 @@ namespace Web.Pages.Client
         public string ErrorMessage { get; set; }
         public bool HasError { get; set; }
         public bool IsAuthenticated { get; set; }
+        public User? UserInfo { get; set; }
+
 
         [BindProperty]
         public Bill Bill { get; set; } = new Bill();
@@ -61,6 +66,15 @@ namespace Web.Pages.Client
         {
             // Check if user is authenticated
             IsAuthenticated = User.Identity.IsAuthenticated;
+
+            if (IsAuthenticated)
+            {
+                var usn = HttpContext.Session.GetString("User"); 
+                if (!string.IsNullOrEmpty(usn))
+                {
+                    UserInfo = await _userService.GetByUserName(usn);
+                }
+            }
 
             if (id == null)
             {
@@ -213,16 +227,18 @@ namespace Web.Pages.Client
         public async Task<IActionResult> OnPostAsync(int id)
         {
             // Check if user is authenticated
-            if (!User.Identity.IsAuthenticated)
-            {
-                // Redirect to login page with return URL
-                return RedirectToPage("/Auth/Login", new { returnUrl = $"/Client/SeatSelection?id={id}" });
-            }
+            //if (!User.Identity.IsAuthenticated)
+            //{
+            //    // Redirect to login page with return URL
+            //    return RedirectToPage("/Auth/Login", new { returnUrl = $"/Client/SeatSelection?id={id}" });
+            //}
 
-            if (!ModelState.IsValid)
-            {
-                return await OnGetAsync(id);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return await OnGetAsync(id);
+            //}
+            var usn = HttpContext.Session.GetString("User");
+            var user = _userService.GetByUserName(usn);
 
             try
             {
