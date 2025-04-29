@@ -19,6 +19,20 @@ namespace Web.Pages.Admin
         {
             Items = await _dashboardService.GetAllItemsSoldAsync();
         }
+        public async Task<IActionResult> OnPostDeleteAsync(int itemId)
+        {
+            var success = await _dashboardService.DeleteItemAsync(itemId);
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Items deleted successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Items to delete movie.";
+            }
+
+            return RedirectToPage(); // reload page
+        }
     }
 
 }

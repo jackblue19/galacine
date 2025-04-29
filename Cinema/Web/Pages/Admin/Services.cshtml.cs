@@ -20,6 +20,20 @@ namespace Web.Pages.Admin
         {   
             Services = await _dashboardService.GetAllServicesUsedAsync();
         }
+        public async Task<IActionResult> OnPostDeleteAsync(int serviceId)
+        {
+            var success = await _dashboardService.DeleteServiceAsync(serviceId);
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Services deleted successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Services to delete movie.";
+            }
+
+            return RedirectToPage(); // reload page
+        }
     }
 
 }

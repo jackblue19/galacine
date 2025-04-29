@@ -1,7 +1,8 @@
 using Application.Services;
-using Data.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Threading.Tasks;
 
 namespace Web.Pages.Admin
@@ -21,6 +22,20 @@ namespace Web.Pages.Admin
         {
             Movies = await _dashboardService.GetAllMoviesByTicketSoldAsync();
         }
-    }
 
+        public async Task<IActionResult> OnPostDeleteAsync(int movieId)
+        {
+            var success = await _dashboardService.DeleteMovieAsync(movieId);
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Movie deleted successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to delete movie.";
+            }
+
+            return RedirectToPage(); // reload page
+        }
+    }
 }

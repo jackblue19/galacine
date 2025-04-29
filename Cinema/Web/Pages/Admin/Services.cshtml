@@ -20,8 +20,15 @@
                 <tr>
                     <td>@service.ServiceDesc</td>
                     <td>@service.TotalUsed</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete" onsubmit="return confirm('Xoá dịch vụ này?');">
+                            <input type="hidden" name="serviceId" value="@service.ServiceId" />
+                            <button type="submit" class="btn-delete">Xoá</button>
+                        </form>
+                    </td>
                 </tr>
             }
+
         </tbody>
     </table>
 </div>

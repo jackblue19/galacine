@@ -280,6 +280,95 @@ namespace Application.Services
 
             return allServices;
         }
+        public async Task<bool> DeleteItemAsync(int itemId)
+        {
+            var item = await _context.Items
+                .Include(i => i.TicketAddons)
+                .FirstOrDefaultAsync(i => i.ItemId == itemId);
+
+            if (item == null) return false;
+
+            // Xoá tất cả các TicketAddons liên quan
+            _context.TicketAddons.RemoveRange(item.TicketAddons);
+
+            // Xoá item
+            _context.Items.Remove(item);
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+
+        public async Task<bool> DeleteServiceAsync(int serviceId)
+        {
+            var service = await _context.Services
+                .Include(s => s.TicketAddons)
+                .FirstOrDefaultAsync(s => s.ServiceId == serviceId);
+
+            if (service == null) return false;
+
+            // Xoá tất cả các TicketAddons liên quan
+            _context.TicketAddons.RemoveRange(service.TicketAddons);
+
+            // Xoá service
+            _context.Services.Remove(service);
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+
+        public async Task<bool> DeleteMovieAsync(int movieId)
+        {
+            var movie = await _context.Movies
+                .Include(m => m.Schedules)
+                    .ThenInclude(s => s.Tickets)
+                        .ThenInclude(t => t.TicketAddons)
+                .FirstOrDefaultAsync(m => m.MovieId == movieId);
+
+            if (movie == null)
+                return false;
+
+            // Xóa tất cả các TicketAddons, Tickets, và Schedules liên quan
+            foreach (var schedule in movie.Schedules)
+            {
+                foreach (var ticket in schedule.Tickets)
+                {
+                    _context.TicketAddons.RemoveRange(ticket.TicketAddons);
+                }
+
+                _context.Tickets.RemoveRange(schedule.Tickets);
+            }
+
+            _context.Schedules.RemoveRange(movie.Schedules);
+            _context.Movies.Remove(movie);
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> DeleteCustomerAsync(int userId)
+        {
+            var user = await _context.Users
+                .Include(u => u.Tickets)
+                    .ThenInclude(t => t.TicketAddons)
+                .Include(u => u.Bills)
+                .FirstOrDefaultAsync(u => u.UserId == userId && u.Role.RoleDesc.ToLower() == "customer");
+
+            if (user == null) return false;
+
+            // Xoá TicketAddons => Tickets => Bills
+            foreach (var ticket in user.Tickets)
+            {
+                _context.TicketAddons.RemoveRange(ticket.TicketAddons);
+            }
+
+            _context.Tickets.RemoveRange(user.Tickets);
+            _context.Bills.RemoveRange(user.Bills);
+            _context.Users.Remove(user);
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
 
 
     }

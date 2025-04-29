@@ -22,8 +22,15 @@
                     <td>@item.Name</td>
                     <td>@item.Type</td>
                     <td>@item.TotalSold</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete" onsubmit="return confirm('Xoá item này?');">
+                            <input type="hidden" name="itemId" value="@item.ItemId" />
+                            <button type="submit" class="btn-delete">Xoá</button>
+                        </form>
+                    </td>
                 </tr>
             }
+
         </tbody>
     </table>
 </div>

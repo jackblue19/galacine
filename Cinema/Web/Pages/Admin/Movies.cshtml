@@ -14,6 +14,7 @@
                     <th>Tên Phim</th>
                     <th>Số Vé Đã Bán</th>
                     <th>Đánh Giá</th>
+                    <th>Thao Tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,6 +24,12 @@
                         <td>@movie.MovieName</td>
                         <td>@movie.TicketSold</td>
                         <td>@movie.Rating</td>
+                        <td>
+                            <form method="post" asp-page-handler="Delete" onsubmit="return confirm('Bạn có chắc chắn muốn xoá phim này không?');">
+                                <input type="hidden" name="movieId" value="@movie.MovieId" />
+                                <button type="submit" class="btn-delete">Xoá</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -140,4 +147,19 @@
             font-size: 0.8rem;
         }
     }
+
+    .btn-delete {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
 </style>

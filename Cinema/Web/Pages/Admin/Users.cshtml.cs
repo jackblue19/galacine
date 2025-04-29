@@ -20,6 +20,21 @@ namespace Web.Pages.Admin
         {
             Customers = await _dashboardService.GetAllCustomersAsync();
         }
-    }
+        public async Task<IActionResult> OnPostDeleteAsync(int userId)
+        {
+            var success = await _dashboardService.DeleteCustomerAsync(userId);
+            if (success)
+            {
+                TempData["SuccessMessage"] = "Customer deleted successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Customer to delete movie.";
+            }
+
+            return RedirectToPage(); // reload page
+        }
+    
+}
 
 }

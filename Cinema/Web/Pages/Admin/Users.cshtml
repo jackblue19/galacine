@@ -24,6 +24,12 @@
                     <td>@user.Email</td>
                     <td>@user.Role?.RoleDesc</td>
                     <td>@user.CreatedAt?.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete" onsubmit="return confirm('Xoá người dùng này?');">
+                            <input type="hidden" name="userId" value="@user.UserId" />
+                            <button type="submit" class="btn-delete">Xoá</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
