@@ -1,0 +1,138 @@
+﻿@page
+@model Web.Pages.Admin.ServicesModel
+@{
+    Layout = null;
+}
+
+<h2 class="page-title">Danh Sách Dịch Vụ</h2>
+
+<div class="table-container">
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Mô Tả Dịch Vụ</th>
+                <th>Tổng Số Lượng Đã Dùng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var service in Model.Services)
+            {
+                <tr>
+                    <td>@service.ServiceDesc</td>
+                    <td>@service.TotalUsed</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<style>
+    /* Đảm bảo không gian của giao diện chiếm toàn màn hình */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+        color: #212529;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow-x: hidden;
+    }
+
+    .container {
+        width: 100%;
+        height: 100vh;
+        padding: 20px;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin: 20px 0;
+        color: #212529;
+    }
+
+    .table-container {
+        width: 100%;
+        margin: 0 auto;
+        overflow-x: auto;
+        padding: 10px 0;
+    }
+
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #212529;
+        color: white;
+    }
+
+        .styled-table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .styled-table th, .styled-table td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .styled-table tbody tr {
+            background-color: #3e454c;
+            transition: background-color 0.3s ease;
+        }
+
+            .styled-table tbody tr:nth-of-type(even) {
+                background-color: #454d56;
+            }
+
+            .styled-table tbody tr:hover {
+                background-color: #5a6268;
+            }
+
+        .styled-table th {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .styled-table td {
+            font-size: 0.95rem;
+        }
+
+    /* Media queries cho responsive */
+    @@media screen and (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .styled-table {
+            font-size: 0.9rem;
+        }
+
+            .styled-table th, .styled-table td {
+                padding: 8px;
+            }
+            /* Đảm bảo các cột không bị ẩn khi màn hình nhỏ */
+            .styled-table th, .styled-table td {
+                word-wrap: break-word;
+            }
+    }
+
+    /* Media queries cho mobile */
+    @@media screen and (max-width: 480px) {
+        .styled-table th, .styled-table td {
+            padding: 6px;
+        }
+
+        .styled-table {
+            font-size: 0.8rem;
+        }
+    }
+</style>

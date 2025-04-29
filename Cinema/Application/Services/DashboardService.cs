@@ -72,24 +72,8 @@ namespace Application.Services
                 .CountAsync();
         }
 
-        // Doanh thu theo phim để làm sơ đồ
-        public async Task<Dictionary<string, decimal>> GetRevenueByMovie1Async()
-        {
-            return await _context.Tickets
-                .Include(t => t.Schedule)
-                    .ThenInclude(s => s.Movie)
-                .Where(t => t.TicketStatus == "Used" || t.TicketStatus == "Active")  
-                .GroupBy(t => t.Schedule.Movie.MovieName)
-                .Select(g => new
-                {
-                    Movie = g.Key,
-                    Revenue = g.Sum(t => t.TicketPrice)
-                })
-                .ToDictionaryAsync(x => x.Movie, x => x.Revenue);
-        }
 
         // Top item bán chạy nhất
-        // For Items
         public async Task<List<dynamic>> GetTopItemsAsync()
         {
             var items = await _context.TicketAddons
@@ -210,7 +194,92 @@ namespace Application.Services
             return topServices;
         }
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        public async Task<List<dynamic>> GetAllItemsSoldAsync()
+        {
+            var items = await _context.TicketAddons
+                .GroupBy(ta => new { ta.ItemId, ta.Item.ItemDesc, ta.Item.Type })
+                .Select(g => new
+                {
+                    g.Key.ItemId,
+                    g.Key.ItemDesc,
+                    g.Key.Type,
+                    TotalSold = g.Sum(x => x.Quantity) ?? 0
+                })
+                .OrderByDescending(x => x.TotalSold)
+                .ToListAsync();
 
+            return items.Select(x =>
+            {
+                dynamic item = new ExpandoObject();
+                item.ItemId = x.ItemId;
+                item.Name = x.ItemDesc;
+                item.Type = x.Type;
+                item.TotalSold = x.TotalSold;
+                return item;
+            }).ToList<dynamic>();
+        }
+        public async Task<List<dynamic>> GetAllMoviesByTicketSoldAsync()
+        {
+            var movies = await _context.Tickets
+                .Where(t => (t.TicketStatus == "Used" || t.TicketStatus == "Active")
+                            && t.Schedule != null
+                            && t.Schedule.Movie != null)
+                .GroupBy(t => new
+                {
+                    t.Schedule.Movie.MovieId,
+                    t.Schedule.Movie.MovieName,
+                    t.Schedule.Movie.Rating
+                })
+                .Select(g => new
+                {
+                    g.Key.MovieId,
+                    g.Key.MovieName,
+                    TicketSold = g.Count(),
+                    Rating = g.Key.Rating ?? 0
+                })
+                .OrderByDescending(x => x.TicketSold)
+                .ToListAsync();
+
+            return movies.Select(x =>
+            {
+                dynamic movie = new ExpandoObject();
+                movie.MovieId = x.MovieId;
+                movie.MovieName = x.MovieName;
+                movie.TicketSold = x.TicketSold;
+                movie.Rating = x.Rating;
+                return movie;
+            }).ToList<dynamic>();
+        }
+        public async Task<List<User>> GetAllCustomersAsync()
+        {
+            var customerRoleId = await _context.Roles
+                .Where(r => r.RoleDesc.ToLower() == "customer")
+                .Select(r => r.RoleId)
+                .FirstOrDefaultAsync();
+
+            return await _context.Users
+                .Include(u => u.Role)
+                .Where(u => u.RoleId == customerRoleId)
+                .OrderByDescending(u => u.CreatedAt)
+                .ToListAsync();
+        }
+        public async Task<List<TopServiceDto>> GetAllServicesUsedAsync()
+        {
+            var allServices = await _context.TicketAddons
+                .Include(ta => ta.Service)
+                .GroupBy(ta => new { ta.ServiceId, ta.Service.ServiceDesc })
+                .Select(g => new TopServiceDto
+                {
+                    ServiceId = g.Key.ServiceId,
+                    ServiceDesc = g.Key.ServiceDesc,
+                    TotalUsed = g.Sum(x => x.Quantity) ?? 0
+                })
+                .OrderByDescending(x => x.TotalUsed)
+                .ToListAsync();
+
+            return allServices;
+        }
 
 
     }
