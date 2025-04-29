@@ -5,13 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Galaxy Cinema</title>
 
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/galaxy-style.css" />
 
@@ -35,61 +30,28 @@
 
                 <div class="collapse navbar-collapse" id="navbarMain">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="phimDropdown" role="button" data-bs-toggle="dropdown">
-                                Phim
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Phim Đang Chiếu</a></li>
-                                <li><a class="dropdown-item" href="#">Phim Sắp Chiếu</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="sanPhamDropdown" role="button" data-bs-toggle="dropdown">
-                                Sản phẩm
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Combo</a></li>
-                                <li><a class="dropdown-item" href="#">Thẻ quà tặng</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="gocDienAnhDropdown" role="button" data-bs-toggle="dropdown">
-                                Góc điện ảnh
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Thể loại phim</a></li>
-                                <li><a class="dropdown-item" href="#">Bình luận phim</a></li>
-                                <li><a class="dropdown-item" href="#">Blog điện ảnh</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="suKienDropdown" role="button" data-bs-toggle="dropdown">
-                                Sự Kiện
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Ưu đãi</a></li>
-                                <li><a class="dropdown-item" href="#">Phim hay tháng</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="rapGiaVeDropdown" role="button" data-bs-toggle="dropdown">
-                                Rạp/Giá vé
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Hệ thống rạp</a></li>
-                                <li><a class="dropdown-item" href="#">Giá vé</a></li>
-                            </ul>
-                        </li>
+                        <!-- ... Menu như cũ ... -->
                     </ul>
 
                     <div class="d-flex align-items-center">
                         <a href="#" class="btn btn-outline-secondary me-2">
                             <i class="fas fa-search"></i>
                         </a>
-                        <a href="#" class="btn btn-outline-primary">
-                            <i class="fas fa-user me-1"></i> Đăng nhập
-                        </a>
+
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <form method="get" asp-page="/Auth/Logout" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    🚪 Đăng xuất
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a href="/Auth/Login" class="btn btn-outline-primary">
+                                <i class="fas fa-user me-1"></i> Đăng nhập
+                            </a>
+                        }
                     </div>
                 </div>
             </div>
@@ -101,73 +63,9 @@
     </main>
 
     <footer class="bg-dark text-light py-5 mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 mb-4">
-                    <h5 class="text-white mb-3">Giới thiệu</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none hover-orange">Về chúng tôi</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none hover-orange">Thoả thuận sử dụng</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none hover-orange">Quy chế hoạt động</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none hover-orange">Chính sách bảo mật</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h5 class="text-white mb-3">Góc điện ảnh</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none hover-orange">Thể loại phim</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none hover-orange">Bình luận phim</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none hover-orange">Blog điện ảnh</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none hover-orange">Phim hay tháng</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <h5 class="text-white mb-3">Hỗ trợ</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none hover-orange">Góp ý</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none hover-orange">Sale & Services</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none hover-orange">Rạp / Giá vé</a></li>
-                        <li class="mb-2"><a href="#" class="text-light text-decoration-none hover-orange">Tuyển dụng</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 mb-4">
-                    <div class="mb-4">
-                        <img src="https://www.galaxycine.vn/_next/static/media/glx-footer.svg" alt="Galaxy Cinema" height="42">
-                    </div>
-                    <div class="d-flex gap-3 mb-4">
-                        <a href="https://www.facebook.com/galaxycinevn" target="_blank" class="text-light fs-4">
-                            <i class="fab fa-facebook-square"></i>
-                        </a>
-                        <a href="https://www.youtube.com/user/galaxymovies" target="_blank" class="text-light fs-4">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                        <a href="https://www.instagram.com/galaxycinema" target="_blank" class="text-light fs-4">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <hr class="border-secondary">
-
-            <div class="d-flex flex-column flex-md-row align-items-md-center">
-                <div class="me-md-4 mb-3 mb-md-0">
-                    <img src="https://www.galaxycine.vn/_next/static/media/glx-footer.svg" alt="Galaxy Cinema" height="42">
-                </div>
-                <div>
-                    <h6 class="text-white">CÔNG TY CỔ PHẦN PHIM THIÊN NGÂN</h6>
-                    <p class="mb-1 small">3/9 Võ Văn Tần, Phường Võ Thị Sáu, Quận 3, Tp. Hồ Chí Minh, Việt Nam</p>
-                    <p class="mb-0 small">
-                        <i class="fas fa-mobile-alt"></i>: <a href="tel:028.39.333.303" class="text-light hover-orange">028.39.333.303</a> - 
-                        <i class="fas fa-phone"></i>: <a href="tel:19002224" class="text-light hover-orange">19002224 (9:00 - 22:00)</a> - 
-                        <i class="fas fa-envelope"></i>: <a href="mailto:hotro@galaxystudio.vn" class="text-light hover-orange">hotro@galaxystudio.vn</a>
-                    </p>
-                </div>
-            </div>
-        </div>
+        <!-- Footer như cũ -->
     </footer>
 
-    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js"></script>

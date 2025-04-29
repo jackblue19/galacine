@@ -6,7 +6,6 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>@ViewData["Title"] - Admin</title>
 
     <link rel="stylesheet" href="~/css/bootstrap.min.css" />
@@ -35,9 +34,11 @@
                 <span>Admin</span>
                 <p>@User.Identity?.Name</p>
             </div>
-            <button class="sidebar__user-btn" type="button">
-                <!-- icon here -->
-            </button>
+            <form method="get" asp-page="/Auth/Logout" class="d-inline mt-3">
+                <button type="submit" class="btn btn-sm btn-danger w-100">
+                    🚪 Đăng xuất
+                </button>
+            </form>
         </div>
 
         @await Html.PartialAsync("_SideBarAdmin")

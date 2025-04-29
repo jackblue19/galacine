@@ -1,0 +1,63 @@
+﻿@page "/newindex"
+@model Web.Pages.Client.newIndexModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>🎬 Trang Chủ - Đặt Vé Xem Phim</title>
+    <link rel="stylesheet" href="~/css/client-home.css" />
+</head>
+<body>
+
+    <div class="cinema-slider">
+        @if (Model.ActiveMovies.Any())
+        {
+            @foreach (var movie in Model.ActiveMovies)
+            {
+                <img src="@movie.MovieImg" class="slide" alt="@movie.MovieName" style="display:none;" />
+            }
+
+            <div class="cinema-caption">
+                <h2>🎬 BỘ PHIM ĐANG HOT</h2>
+                <p>Đặt vé ngay hôm nay để nhận combo bắp nước miễn phí! 🍿🥤</p>
+            </div>
+        }
+        else
+        {
+            <div class="cinema-caption">
+                <h2>❗ Chưa có phim đang chiếu</h2>
+                <p>Quay lại sau nhé... 🎬</p>
+            </div>
+        }
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const slides = document.querySelectorAll(".slide");
+            if (slides.length > 0) {
+                let currentSlide = 0;
+
+                function showSlide(index) {
+                    slides.forEach((slide, idx) => {
+                        slide.style.display = (idx === index) ? "block" : "none";
+                    });
+                }
+
+                function nextSlide() {
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    showSlide(currentSlide);
+                }
+
+                showSlide(currentSlide); // 👉 Load ảnh đầu tiên ngay lập tức
+                setInterval(nextSlide, 4000); // 👉 Chuyển ảnh sau mỗi 4s
+            }
+        });
+    </script>
+
+</body>
+</html>

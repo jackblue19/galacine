@@ -1,4 +1,5 @@
 ﻿using Application;
+using Application.DTOs;
 using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Interfaces.Services;
@@ -17,6 +18,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 builder.Services.AddSession();
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddDbContext<CinemaDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
@@ -62,6 +66,7 @@ builder.Services.AddScoped<IPriceService, PriceService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<ReportService>();
+builder.Services.AddScoped<IMovieDetailService, MovieDetailService>();
 
 
 // ========== Authentication & Google & Cookies & Session ==========
@@ -74,7 +79,8 @@ builder.Services
     .AddCookie(options =>
     {
         options.LoginPath = "/auth/login";
-        options.AccessDeniedPath = "/auth";
+        options.LogoutPath = "/Auth/Logout";
+        options.AccessDeniedPath = "/auth/logout";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     })
     .AddGoogle(options =>

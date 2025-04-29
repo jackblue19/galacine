@@ -1,5 +1,5 @@
-﻿@page "/auth/login"
-@model Web.Pages.Auth.LoginModel
+﻿@page "/test"
+@model Web.Pages.Auth.testModel
 @{
 	ViewData["Title"] = "Đăng nhập";
 	Layout = null;
@@ -130,46 +130,37 @@
 	}
 
 	@@keyframes slideInLeft {
-		from
+		from {
+			transform: translateX(-100%);
+			opacity: 0;
+		}
 
-	{
-		transform: translateX(-100%);
-		opacity: 0;
-	}
-
-	to {
-		transform: translateX(0);
-		opacity: 1;
-	}
-
+		to {
+			transform: translateX(0);
+			opacity: 1;
+		}
 	}
 
 	@@keyframes slideInRight {
-		from
+		from {
+			transform: translateX(100%);
+			opacity: 0;
+		}
 
-	{
-		transform: translateX(100%);
-		opacity: 0;
-	}
-
-	to {
-		transform: translateX(0);
-		opacity: 1;
-	}
-
+		to {
+			transform: translateX(0);
+			opacity: 1;
+		}
 	}
 
 	@@keyframes fadeIn {
-		from
+		from {
+			opacity: 0;
+		}
 
-	{
-		opacity: 0;
-	}
-
-	to {
-		opacity: 1;
-	}
-
+		to {
+			opacity: 1;
+		}
 	}
 </style>
 
@@ -197,13 +188,10 @@
 					<input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu..." />
 				</div>
 				<button type="submit" class="btn-login">🎟 Vào rạp</button>
-				<br />
-				<br />
-				<div class="form-group text-center mt-3"
-					style="display: flex; flex-direction: row; justify-content: center;text-align: center;">
+
+				<div class="form-group text-center mt-3">
 					<a class="btn-login btn-google" href="/auth/google-login">
-						<img src="https://developers.google.com/identity/images/g-logo.png"
-							style="height: 20px; margin-right: 8px; border-radius: 50%;" />
+						<img src="https://developers.google.com/identity/images/g-logo.png" style="height: 20px; margin-right: 8px;" />
 						Đăng nhập bằng Google
 					</a>
 				</div>
@@ -216,6 +204,3 @@
 		</div>
 	</div>
 </div>
-
-
-@* <script src="~/js/slider.js" defer></script> *@

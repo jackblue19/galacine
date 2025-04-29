@@ -1,41 +1,134 @@
-﻿@page
+﻿@page "/mng/film"
 @model Web.Pages.Manager.MovieManager.IndexModel
 
 @{
-    ViewData["Title"] = "📽️ Danh sách phim";
-    Layout = "_LayoutManager";
+	ViewData["Title"] = "📽️ Danh sách phim";
+	Layout = "_LayoutManager";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/movie-index.css" />
+	<link rel="stylesheet" href="~/css/movie-index.css" />
 }
+<style>
+	.search-form {
+		margin-bottom: 1.5rem;
+		display: flex;
+		gap: 0.5rem;
+		max-width: 500px;
+	}
+
+		.search-form input[type="text"] {
+			flex: 1;
+			padding: 0.5rem;
+			border-radius: 6px;
+			border: 1px solid #ccc;
+			background: #333;
+			color: white;
+		}
+
+			.search-form input[type="text"]::placeholder {
+				color: #aaa;
+			}
+
+		.search-form button {
+			padding: 0.5rem 1rem;
+			background-color: crimson;
+			border: none;
+			border-radius: 6px;
+			color: white;
+			font-weight: bold;
+			cursor: pointer;
+		}
+
+			.search-form button:hover {
+				background-color: #FFD700;
+				color: #000;
+			}
+
+	.btn-add-movie {
+		font-weight: bold;
+		background-color: #FFD700;
+		color: black;
+		padding: 0.5rem 1rem;
+		border-radius: 8px;
+		text-decoration: none;
+		transition: background-color 0.3s ease;
+	}
+
+		.btn-add-movie:hover {
+			background-color: #ffc107;
+			color: #000;
+		}
+
+	.d-flex {
+		display: flex;
+	}
+
+	.justify-content-between {
+		justify-content: space-between;
+	}
+
+	.align-items-center {
+		align-items: center;
+	}
+
+	.mb-3 {
+		margin-bottom: 1.5rem;
+	}
+</style>
+
 
 <div class="index-container">
-    <h1 class="index-title">📽️ Danh sách phim</h1>
-    <table class="table-movie">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tên phim</th>
-                <th>Thể loại</th>
-                <th>Thời lượng</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var movie in Model.Movies)
-            {
-                <tr>
-                    <td>@movie.MovieId</td>
-                    <td>@movie.MovieName</td>
-                    @* <td>@string.Join(", ", movie.Genres.Select(g => g.GenreDesc))</td> *@
-                    <td>@movie.Duration phút</td>
-                    <td>
-                        <a asp-page="Edit" asp-route-id="@movie.MovieId" class="action-link">✏️ Sửa</a>
-                        <a asp-page="Delete" asp-route-id="@movie.MovieId" class="action-link">🗑️ Xoá</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+	<h1 class="index-title">📽️ Danh sách phim</h1>
+
+	<!-- Search Form -->
+	<form method="get" class="search-form">
+		<input type="text" name="SearchQuery" value="@Model.SearchQuery" placeholder="Tìm tên phim..." />
+		<button type="submit">🔍</button>
+	</form>
+
+	<!-- Table -->
+	<table class="table-movie">
+		<thead>
+			<tr>
+				<th><a asp-page="./Index" asp-route-SortBy="MovieName" asp-route-SortAsc="@(Model.SortBy == "MovieName" ? !Model.SortAsc : true)">Tên phim</a></th>
+				@* <th>Thể loại</th> *@
+				<th><a asp-page="./Index" asp-route-SortBy="Duration" asp-route-SortAsc="@(Model.SortBy == "Duration" ? !Model.SortAsc : true)">Thời lượng</a></th>
+				<th>Thao tác</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var movie in Model.PagedMovies)
+			{
+				<tr>
+					<td>@movie.MovieName</td>
+					@* <td>@string.Join(", ", movie.Genres.Select(g => g.GenreDesc))</td> *@
+					<td>@movie.Duration phút</td>
+					<td>
+						<a asp-page="Update" asp-route-id="@movie.MovieId" class="action-link">✏️ Sửa</a>
+						<a asp-page="Delete" asp-route-id="@movie.MovieId" class="action-link">🗑️ Xoá</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	<!-- Pagination -->
+	@*<div class="pagination">
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <a asp-page="./Index"
+               asp-route-Page="@i"
+               asp-route-SortBy="@Model.SortBy"
+               asp-route-SortAsc="@Model.SortAsc"
+               asp-route-SearchQuery="@Model.SearchQuery"
+               class="@(Model.Page == i ? "active" : "")">
+                @i
+            </a>
+        }
+    </div>*@
+
+	<div class="d-flex justify-content-between align-items-center mb-3">
+		<a asp-page="Create" class="btn btn-warning btn-add-movie">🎬 Thêm phim mới</a>
+	</div>
 </div>
